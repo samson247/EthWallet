@@ -32,10 +32,10 @@ public class AccountRepository {
         //accountDatabase = Room.databaseBuilder(context, AccountDatabase.class, DB_NAME).build();
     }
 
-    public void insertAccount(String public_key, String password) {
+    public void insertAccount(String publicKey, String accountFile) {
         AccountEntity entity = new AccountEntity();
-        entity.setPublic_key(public_key);
-        entity.setPassword(password);
+        entity.setPublicKey(publicKey);
+        entity.setPassword(accountFile);
         insertAccount(entity);
     }
 

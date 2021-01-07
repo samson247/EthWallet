@@ -17,7 +17,7 @@ public class AccountEntity implements Serializable {
     @ColumnInfo(name = "fileName")
     public String fileName;
 
-    public void setPublic_key(String publicKey) {
+    public void setPublicKey(String publicKey) {
         this.publicKey = publicKey;
     }
 

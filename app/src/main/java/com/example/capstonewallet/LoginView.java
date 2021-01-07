@@ -13,8 +13,9 @@ import android.widget.Button;
 
 import com.example.capstonewallet.databinding.LoginBinding;
 
-public class LoginView extends AppCompatActivity {
-    private LoginViewModel model;
+public class LoginView extends AppCompatActivity implements View.OnClickListener {
+    private LoginViewModel loginViewModel;
+    private WalletView walletView;
     private KeyEvent.Callback loginCallback;
     private LoginBinding binding;
     private AccountRepository repository;
@@ -25,15 +26,22 @@ public class LoginView extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        model = new ViewModelProvider(this).get(LoginViewModel.class);
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        walletView = new WalletView();
         repository = new AccountRepository(getApplicationContext());
-        binding.button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                model.setPublicKey(binding.editTextTextPersonName.getText().toString());
-                model.setPassword(binding.editTextTextPersonName2.getText().toString());
-                model.onClick(v, model, repository);
-            }
-        });
+        binding.loginButton.setOnClickListener(this::onClick);
+        binding.createAccountButton.setOnClickListener(this::onClick);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.loginButton) {
+            loginViewModel.setPublicKey(binding.editTextTextPersonName.getText().toString());
+            loginViewModel.setPassword(binding.editTextTextPersonName2.getText().toString());
+            loginViewModel.onClick(repository);
+        }
+        else if (v.getId() == R.id.createAccountButton){
+            walletView.setVisible(true);
+        }
     }
 }

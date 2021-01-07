@@ -54,11 +54,11 @@ public class LoginViewModel extends ViewModel {
         this.password.setValue(password);
     }
 
-    public void onClick(View view, LoginViewModel model, AccountRepository repository) {
+    public void onClick(AccountRepository repository) {
         Log.d("yo123", "pubkey" + getPublicKey());
         Log.d("yo123", "password" + getPassword());
         LoginModel login = new LoginModel(getPublicKey(), getPassword());
-        login.loginAccount(model, repository);
+        login.loginAccount(repository);
         // Load next activity
     }
 }
