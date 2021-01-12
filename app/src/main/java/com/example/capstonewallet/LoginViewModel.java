@@ -1,5 +1,6 @@
 package com.example.capstonewallet;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -54,11 +55,11 @@ public class LoginViewModel extends ViewModel {
         this.password.setValue(password);
     }
 
-    public void onClick(AccountRepository repository) {
+    public void onClick(Context context) {
         Log.d("yo123", "pubkey" + getPublicKey());
         Log.d("yo123", "password" + getPassword());
-        LoginModel login = new LoginModel(getPublicKey(), getPassword());
-        login.loginAccount(repository);
+        LoginModel login = new LoginModel(getPublicKey(), getPassword(), context);
+        login.loginAccount();
         // Load next activity
     }
 }

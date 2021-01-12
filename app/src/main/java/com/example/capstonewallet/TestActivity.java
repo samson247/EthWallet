@@ -11,7 +11,7 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
-        WalletModel model = new WalletModel();
+        WalletModel model = new WalletModel(getApplicationContext());
         model.setupBouncyCastle();
         model.createWallet("kingcobra");
     }
