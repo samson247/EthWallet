@@ -14,6 +14,7 @@ import org.web3j.protocol.core.methods.response.EthGetBalance;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -24,10 +25,11 @@ import java.util.concurrent.ExecutionException;
 public class WalletModel {
     private static final String DIRECTORY_DOWNLOADS = Environment.DIRECTORY_DOWNLOADS;
     private String address;
-    private String publicKey;
+    private BigInteger publicKey;
     private int balance;
     private String fileName;
     private AccountRepository repository;
+    private Credentials credentials2;
 
     public WalletModel(Context context) {
         repository = new AccountRepository(context);
@@ -37,13 +39,23 @@ public class WalletModel {
 
     }
 
+    public void setPublicKey(BigInteger publicKey) {
+
+        this.publicKey = publicKey;
+    }
+
+    public BigInteger getPublicKey() {
+        return this.publicKey;
+    }
+
     public void createWallet(String password)
     {
+        this.setupBouncyCastle();
         String path = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS).getPath();
         try {
             fileName = WalletUtils.generateLightNewWalletFile(password, new File(path));
-            Log.d("yo123", fileName);
-            Log.d("yo123", path);
+            Log.d("yo123", "Filename" + fileName);
+            Log.d("yo123", "Path" + path);
         } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
             noSuchAlgorithmException.printStackTrace();
             Log.d("yo123", noSuchAlgorithmException.getMessage());
@@ -62,26 +74,35 @@ public class WalletModel {
         }
 
         if(fileName != null) {
-            repository.insertAccount(publicKey, fileName);
+            loadWalletFromFile(password, path + "/" + fileName, true);
         }
     }
 
     // Here or in login?
-    public void loadWalletFromFile(String password, String walletFilePath)
+    public void loadWalletFromFile(String password, String walletFilePath, Boolean justCreated)
     {
         Credentials credentials = null;
         try {
-            credentials = WalletUtils.loadCredentials(
-                    "password",
-                    "/storage/emulated/0/Download/UTC--2020-12-16T20-29-36.3Z--dffac6a321bfeff9cdc59763006bc42dd555ed52.json");
+            credentials = WalletUtils.loadCredentials(password, walletFilePath);
         } catch (IOException e) {
             Log.d("yo123", e.getMessage());
         } catch (CipherException e) {
             e.printStackTrace();
             Log.d("yo123", e.getMessage());
         }
-        Log.i("yo123", "Credentials loaded");
-        Log.i("yo123", credentials.getAddress());
+
+        if (credentials != null) {
+            Log.i("yo123", "Credentials loaded");
+            Log.i("yo123", credentials.getAddress());
+            Log.d("yo123", credentials.getEcKeyPair().getPublicKey().toString(16));
+            setPublicKey(credentials.getEcKeyPair().getPublicKey());
+
+            if(justCreated == true) {
+                setPublicKey(credentials.getEcKeyPair().getPublicKey());
+                Log.d("yo123", publicKey.toString(16));
+                repository.insertAccount(publicKey.toString(16), fileName);
+            }
+        }
     }
 
     public EthGetBalance getBalance(Web3j web3, EthGetBalance ethGetBalance, Credentials credentials)

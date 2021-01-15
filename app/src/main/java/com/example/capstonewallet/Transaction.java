@@ -1,4 +1,4 @@
-//import android.net.Credentials;
+package com.example.capstonewallet;//import android.net.Credentials;
 import android.util.Log;
 
 import org.web3j.crypto.RawTransaction;

@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CapstoneWallet">
-        <activity android:name=".Credentials"></activity>
+        <activity android:name=".CredentialsView"></activity>
         <activity android:name=".TestActivity"></activity>
         <activity android:name=".WalletView" />
         <activity android:name=".LoginView">

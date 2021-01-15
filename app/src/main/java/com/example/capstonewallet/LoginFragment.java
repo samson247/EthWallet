@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,6 +47,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         fragmentBinding = LoginFragmentBinding.inflate(getLayoutInflater());
         //fragmentBinding.createAccountButton.setOnClickListener(this::onClick);
         //fragmentBinding.loginButton.setOnClickListener(this::onClick);
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         final Button loginButton = (Button) view.findViewById(fragmentBinding.loginButton.getId());
         loginButton.setOnClickListener(this::onClick);
         final Button createAccountButton = (Button) view.findViewById(fragmentBinding.createAccountButton.getId());
@@ -58,9 +60,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         Log.d("yo123", "inonclick");
         if(v.getId() == fragmentBinding.loginButton.getId()) {
-            loginViewModel.setPublicKey(loginBinding.editTextTextPersonName.getText().toString());
-            loginViewModel.setPassword(loginBinding.editTextTextPersonName2.getText().toString());
+            loginViewModel.setPublicKey(fragmentBinding.editTextTextPersonName.getText().toString());
+            loginViewModel.setPassword(fragmentBinding.editTextTextPersonName2.getText().toString());
             loginViewModel.onClick(getContext());
+            Intent intent = new Intent(getActivity(), WalletView.class);
+            // pass credentials
+            startActivity(intent);
         }
         else if (v.getId() == fragmentBinding.createAccountButton.getId()){
             Log.d("yo123", "onclick");
