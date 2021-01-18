@@ -21,7 +21,7 @@ public class AccountEntity implements Serializable {
         this.publicKey = publicKey;
     }
 
-    public void setPassword(String fileName) {
+    public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 }

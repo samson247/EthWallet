@@ -99,9 +99,12 @@ public class WalletModel {
 
             if(justCreated == true) {
                 setPublicKey(credentials.getEcKeyPair().getPublicKey());
-                Log.d("yo123", publicKey.toString(16));
-                repository.insertAccount(publicKey.toString(16), fileName);
+                Log.d("yo123", "Login " + credentials.getAddress());
+                repository.insertAccount(credentials.getAddress(), fileName);
             }
+
+            setPublicKey(credentials.getEcKeyPair().getPublicKey());
+            // Initialize rest of data
         }
     }
 

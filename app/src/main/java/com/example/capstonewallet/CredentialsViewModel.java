@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 public class CredentialsViewModel {
+
     private MutableLiveData<String> publicKey = new MutableLiveData<String>() {
         @Nullable
         @Override

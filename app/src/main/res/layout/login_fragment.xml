@@ -12,7 +12,7 @@
         android:layout_height="39dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text=""
+        android:text="0x5934a20d487ab4c9e29032122e854b89a27fbae1"
         android:layout_marginLeft="200dp" />
 
     <EditText

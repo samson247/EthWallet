@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
 
 import java8.util.Optional;
 
-public class Transaction {
+public class TransactionModel {
     private Web3j web3;
     private Credentials credentials;
 
@@ -29,12 +29,12 @@ public class Transaction {
         Log.d("yo123", "sup");
         // FIXME: Add your own API key here
         //web3 = Web3j.build(new HttpService("https://rinkeby.infura.io/v3/8fa740a033224723a9a6bd808bc20e44"));
-        web3 = Web3j.build(new HttpService("HTTP://192.168.10.18:7545"));
+        web3 = Web3j.build(new HttpService("HTTP://192.168.1.107:7545"));
         try {
             Web3ClientVersion clientVersion = web3.web3ClientVersion().sendAsync().get();
             if(!clientVersion.hasError()){
                 //toastAsync("Connected!");
-                Log.d("yo123", "sup");
+                Log.d("yo123", "connected");
             }
             else {
                 //toastAsync(clientVersion.getError().getMessage());
@@ -47,7 +47,10 @@ public class Transaction {
 
     public void sendEther(String recipient_address)
     {
-        Credentials credentials = Credentials.create("28f3f4f5df206bb2b29cbe954ff037fff64be23aa28e6a427d69965cc4ff69d9");
+        if (credentials == null) {
+            credentials = Credentials.create("e2cdbadca25bf5a8a6e79a51ed0f2293a1b25bcba3985d9eebdb6d0f379830b7");
+        }
+        //credentials = Credentials.create("e2cdbadca25bf5a8a6e79a51ed0f2293a1b25bcba3985d9eebdb6d0f379830b7");
         EthGetTransactionCount ethGetTransactionCount = null;
         try {
             ethGetTransactionCount = web3
@@ -63,7 +66,7 @@ public class Transaction {
         BigInteger nonce = ethGetTransactionCount.getTransactionCount();
 
         // Recipient address
-        String recipientAddress = "0xdffac6a321bfeff9cdc59763006bc42dd555ed52";
+        String recipientAddress = "0x5934a20d487ab4c9e29032122e854b89a27fbae1";
         // Value to transfer (in wei)
         String amountToBeSent= "1";
         BigInteger value = Convert.toWei(amountToBeSent, Convert.Unit.ETHER).toBigInteger(); // Gas Parameter
@@ -93,6 +96,7 @@ public class Transaction {
         }
 
         Log.d("yo123", "sent");
+        confirm_transaction(ethSendTransaction);
     }
 
     // Get transaction receipt
@@ -119,7 +123,7 @@ public class Transaction {
             }
             transactionReceipt = ethGetTransactionReceiptResp.getTransactionReceipt();
             try {
-                Thread.sleep(15000); // Wait for 3 sec
+                Thread.sleep(10); // Wait for 3 sec
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 Log.d("yo123", e.getMessage());

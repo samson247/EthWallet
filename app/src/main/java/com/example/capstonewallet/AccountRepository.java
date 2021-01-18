@@ -35,7 +35,7 @@ public class AccountRepository {
     public void insertAccount(String publicKey, String accountFile) {
         AccountEntity entity = new AccountEntity();
         entity.setPublicKey(publicKey);
-        entity.setPassword(accountFile);
+        entity.setFileName(accountFile);
         insertAccount(entity);
     }
 
