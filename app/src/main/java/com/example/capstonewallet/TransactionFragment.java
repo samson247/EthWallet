@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.capstonewallet.databinding.FragmentTransactionBinding;
@@ -19,12 +20,20 @@ import com.example.capstonewallet.databinding.LoginFragmentBinding;
 public class TransactionFragment extends Fragment implements View.OnClickListener {
     FragmentTransactionBinding binding;
     TransactionModel transactionModel;
+    //FragmentManager fragmentManager;
+    //FragmentTransaction fragmentTransaction;
+    WalletView walletView;
     /*
     public LoginFragment getInstance(Context context) {
         //super(R.layout.create_account);
         //walletModel = new WalletModel(context);
         return this;
     }*/
+
+    public void setWalletView(WalletView walletView) {
+        this.walletView = walletView;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
@@ -35,6 +44,12 @@ public class TransactionFragment extends Fragment implements View.OnClickListene
         //transactionModel.sendEther("7889");
         final ImageButton sendEtherButton = (ImageButton) view.findViewById(binding.imageButton.getId());
         sendEtherButton.setOnClickListener(this::onClick);
+
+        final Button historyButton = (Button) view.findViewById(binding.button5.getId());
+        historyButton.setOnClickListener(this::onClick);
+
+        //fragmentManager = getSupportFragmentManager();
+        //fragmentTransaction = fragmentManager.beginTransaction();
         //fragmentBinding.createAccountButton.setOnClickListener(this::onClick);
         //fragmentBinding.loginButton.setOnClickListener(this::onClick);
         //loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
@@ -49,8 +64,14 @@ public class TransactionFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
+        Log.d("yo123", "List?");
         if(v.getId() == binding.imageButton.getId()) {
             transactionModel.sendEther(binding.editTextTextPersonName4.getText().toString());
+        }
+        else if(v.getId() == binding.button5.getId()) {
+            walletView.addListFragment();
+
+            Log.d("yo123", "onclicked");
         }
     }
 }
