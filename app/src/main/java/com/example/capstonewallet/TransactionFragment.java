@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.example.capstonewallet.databinding.FragmentTransactionBinding;
@@ -45,8 +46,15 @@ public class TransactionFragment extends Fragment implements View.OnClickListene
         final ImageButton sendEtherButton = (ImageButton) view.findViewById(binding.imageButton.getId());
         sendEtherButton.setOnClickListener(this::onClick);
 
+        Button button = (Button) view.findViewById(binding.button6.getId());
+        button.setOnClickListener(this::onClick);
+
+        EditText editText = (EditText) view.findViewById(binding.getEtherAmount.getId());
+
         final Button historyButton = (Button) view.findViewById(binding.button5.getId());
         historyButton.setOnClickListener(this::onClick);
+
+
 
         //fragmentManager = getSupportFragmentManager();
         //fragmentTransaction = fragmentManager.beginTransaction();
@@ -57,7 +65,7 @@ public class TransactionFragment extends Fragment implements View.OnClickListene
         //loginButton.setOnClickListener(this::onClick);
         //final Button createAccountButton = (Button) view.findViewById(fragmentBinding.createAccountButton.getId());
         //createAccountButton.setOnClickListener(this::onClick);
-        Log.d("yo123", "oncreateview");
+        Log.d("yo123", "oncreateview Trans Frag");
         return view;
     }
 
@@ -72,6 +80,9 @@ public class TransactionFragment extends Fragment implements View.OnClickListene
             walletView.addListFragment();
 
             Log.d("yo123", "onclicked");
+        }
+        else if(v.getId() == binding.button6.getId()) {
+            walletView.startBraintree();
         }
     }
 }

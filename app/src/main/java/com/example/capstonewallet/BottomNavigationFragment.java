@@ -24,6 +24,7 @@ import com.example.capstonewallet.databinding.LoginFragmentBinding;
 public class BottomNavigationFragment extends Fragment implements View.OnClickListener {
     private FragmentBottomNavigationBinding binding;
     private FragmentManager fragmentManager;
+    private WalletView walletView;
 
     /*
     public LoginFragment getInstance(Context context) {
@@ -36,6 +37,10 @@ public class BottomNavigationFragment extends Fragment implements View.OnClickLi
         this.fragmentManager = fragmentManager;
     }
 
+    public void setWalletView(WalletView walletView) {
+        this.walletView = walletView;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
         View view = inflater.inflate(R.layout.fragment_bottom_navigation, container, false);
@@ -45,9 +50,13 @@ public class BottomNavigationFragment extends Fragment implements View.OnClickLi
         //loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         //final Button loginButton = (Button) view.findViewById(fragmentBinding.loginButton.getId());
         //loginButton.setOnClickListener(this::onClick);
-        //final Button createAccountButton = (Button) view.findViewById(fragmentBinding.createAccountButton.getId());
-        //createAccountButton.setOnClickListener(this::onClick);
-        Log.d("yo123", "oncreateview");
+        final Button transactionButton = (Button) view.findViewById(binding.button2.getId());
+        transactionButton.setOnClickListener(this::onClick);
+        final Button stockNewsButton = (Button) view.findViewById(binding.button3.getId());
+        stockNewsButton.setOnClickListener(this::onClick);
+        final Button accountButton = (Button) view.findViewById(binding.button4.getId());
+        accountButton.setOnClickListener(this::onClick);
+        Log.d("yo123", "oncreateview Bottom Frag");
         return view;
     }
 
@@ -55,19 +64,23 @@ public class BottomNavigationFragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View v) {
         Log.d("yo123", "inonclick");
+        String fragmentClass = "";
         if(v.getId() == binding.button2.getId()) {
-            if(fragmentManager.findFragmentById(R.id.login_fragment) != null) {
-                fragmentManager.beginTransaction().remove(fragmentManager.findFragmentById(R.id.transaction)).commit();
-            }
-            //fragman.beginTransaction().remove(fragman.findFragmentById(R.id.fraglog)).commit();
-            CreateAccountFragment fragment = new CreateAccountFragment();
-            fragmentManager.beginTransaction().replace(R.id.container_top, fragment).commit();
+            //TransactionFragment fragment = new TransactionFragment();
+            fragmentClass = "TransactionFragment";
+            //walletView.switchTopFragment("TransactionFragment");
         }
         else if(v.getId() == binding.button3.getId()) {
-
+            fragmentClass = "StockNewsFragment";
+            //walletView.switchTopFragment("");
         }
         else if(v.getId() == binding.button4.getId()) {
-
+            //AccountFragment fragment = new AccountFragment();
+            fragmentClass = "AccountFragment";
+            //walletView.switchTopFragment("AccountFragment");
         }
+
+        walletView.switchTopFragment(fragmentClass);
+
     }
 }

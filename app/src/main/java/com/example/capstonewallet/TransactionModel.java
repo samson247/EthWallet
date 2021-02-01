@@ -123,7 +123,7 @@ public class TransactionModel {
             }
             transactionReceipt = ethGetTransactionReceiptResp.getTransactionReceipt();
             try {
-                Thread.sleep(10); // Wait for 3 sec
+                Thread.sleep(1); // Wait for 3 sec
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 Log.d("yo123", e.getMessage());

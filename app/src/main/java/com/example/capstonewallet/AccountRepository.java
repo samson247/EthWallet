@@ -32,6 +32,12 @@ public class AccountRepository {
         //accountDatabase = Room.databaseBuilder(context, AccountDatabase.class, DB_NAME).build();
     }
 
+    public void closeDatabase() {
+        if(accountDatabase.isOpen()) {
+            accountDatabase.close();
+        }
+    }
+
     public void insertAccount(String publicKey, String accountFile) {
         AccountEntity entity = new AccountEntity();
         entity.setPublicKey(publicKey);

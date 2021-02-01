@@ -41,4 +41,25 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2">
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/container_news"
+        android:layout_width="fill_parent"
+        android:layout_height="180pt"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2">
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/container_stock"
+        android:layout_width="fill_parent"
+        android:layout_height="100pt"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/container_news"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
