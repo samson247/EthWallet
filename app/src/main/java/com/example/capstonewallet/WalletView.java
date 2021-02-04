@@ -127,9 +127,14 @@ public class WalletView extends AppCompatActivity {
     }
 
 
-    public void startBraintree() {
-        client = new BraintreeClient();
+    public void startBraintree()  {
+        try {
+            client = new BraintreeClient();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         DropInRequest dropInRequest = new DropInRequest().clientToken(client.getClientToken());
+        Log.d("yo123", "dropin created");
         startActivityForResult(dropInRequest.getIntent(this), 400);
     }
 
@@ -137,7 +142,7 @@ public class WalletView extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // String amount = transactionFragment.getEtherAmount...
+        String amount = transactionFragment.getEtherAmount();
         client.onActivityResult(requestCode, resultCode, data, amount);
     }
 }

@@ -24,6 +24,7 @@ public class TransactionFragment extends Fragment implements View.OnClickListene
     //FragmentManager fragmentManager;
     //FragmentTransaction fragmentTransaction;
     WalletView walletView;
+    EditText editText;
     /*
     public LoginFragment getInstance(Context context) {
         //super(R.layout.create_account);
@@ -49,7 +50,7 @@ public class TransactionFragment extends Fragment implements View.OnClickListene
         Button button = (Button) view.findViewById(binding.button6.getId());
         button.setOnClickListener(this::onClick);
 
-        EditText editText = (EditText) view.findViewById(binding.getEtherAmount.getId());
+        editText = (EditText) view.findViewById(binding.getEtherAmount.getId());
 
         final Button historyButton = (Button) view.findViewById(binding.button5.getId());
         historyButton.setOnClickListener(this::onClick);
@@ -84,5 +85,12 @@ public class TransactionFragment extends Fragment implements View.OnClickListene
         else if(v.getId() == binding.button6.getId()) {
             walletView.startBraintree();
         }
+    }
+
+    public String getEtherAmount() {
+        Log.d("yo123", "binding" + binding.getEtherAmount.getText().toString());
+        Log.d("yo123", "view" + editText.getText().toString());
+        return editText.getText().toString();
+        //return binding.getEtherAmount.getText().toString();
     }
 }

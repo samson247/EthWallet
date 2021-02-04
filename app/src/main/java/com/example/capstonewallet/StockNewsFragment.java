@@ -5,12 +5,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 //import com.loopj.android.http.*;
+
+import com.example.capstonewallet.databinding.StockNewsFragmentBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +31,7 @@ public class StockNewsFragment extends Fragment {
     NewsClient client;
     NewsClient.ArticleData [] articles;
     RecyclerView.RecycledViewPool viewPool;
+    StockNewsFragmentBinding binding;
     /*
     public LoginFragment getInstance(Context context) {
         //super(R.layout.create_account);
@@ -45,6 +50,26 @@ public class StockNewsFragment extends Fragment {
             e.printStackTrace();
         }
         // Add elements to recycler view
+        EtherPriceClient client = new EtherPriceClient();
+        try {
+            Thread thread = new Thread()
+            {
+                public void run() {
+                    try {
+                        TextView usdValue = (TextView) view.findViewById(R.id.amountUSD);
+                        String price = client.getPrice();
+                        usdValue.setText(price);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            thread.start();
+            thread.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return view;
     }
 

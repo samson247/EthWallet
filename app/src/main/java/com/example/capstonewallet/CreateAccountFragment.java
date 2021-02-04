@@ -57,7 +57,7 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
         //cavm instamce call onclick with context
         //createAccountBinding = CreateAccountBinding.inflate(getLayoutInflater());
         //password = (EditText) v.findViewById(R.id.editTextTextPersonName3);
-        Log.d("yo123", "piss?" + password);
+        Log.d("yo123", "piss?" + password.getText().toString());
         Log.d("yo123", "piss?" + createAccountBinding.editTextTextPersonName3.getText().toString());
         createAccountViewModel.setPassword(password.getText().toString());
         createAccountViewModel.onClick(getContext());
@@ -73,7 +73,10 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
         //String[] credentialArray = new String[] {binding.editTextTextPersonName2.getText().toString(), binding.editTextTextPersonName.getText().toString()};
 
         // get public key from wallet object
-        String[] credentialArray = new String[] {createAccountViewModel.getPassword(), "Example"};
+        Log.d("yo123", "Stop: " + createAccountViewModel.getPassword());
+        Log.d("yo123", "Stop: " + createAccountViewModel.getFileName());
+        String[] credentialArray = new String[] {createAccountViewModel.getPassword(), createAccountViewModel.getFileName()};
+        //intent.getParcelableExtra(walletModel);
         intent.putExtra("credentials", credentialArray);
         startActivity(intent);
     }

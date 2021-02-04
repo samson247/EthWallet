@@ -19,7 +19,7 @@ public class BraintreeClient {
     private String clientToken;
     private BraintreeGateway gateway;
 
-    public BraintreeClient() {
+    public BraintreeClient() throws InterruptedException {
         server = new BraintreeServer();
         clientToken = server.getClientToken();
         gateway = server.getGateway();
@@ -53,7 +53,7 @@ public class BraintreeClient {
                         public void run() {
                             try  {
                                 TransactionRequest request = new TransactionRequest()
-                                        .amount(new BigDecimal(amount))
+                                        .amount(new BigDecimal("10.00"))
                                         .paymentMethodNonce(strNonce)
                                         .options()
                                         .submitForSettlement(false)

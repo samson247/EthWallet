@@ -26,6 +26,7 @@ public class WalletModel {
     private static final String DIRECTORY_DOWNLOADS = Environment.DIRECTORY_DOWNLOADS;
     private String address;
     private BigInteger publicKey;
+    private BigInteger privateKey;
     private int balance;
     private String fileName;
     private AccountRepository repository;
@@ -39,13 +40,44 @@ public class WalletModel {
 
     }
 
+    public WalletModel(String [] credentials) {
+        Log.d("yo123", "model" + credentials[0]);
+        Log.d("yo123", credentials[0]);
+        loadWalletFromFile(credentials[0], credentials[1], false);
+    }
+
     public void setPublicKey(BigInteger publicKey) {
 
         this.publicKey = publicKey;
     }
 
-    public BigInteger getPublicKey() {
-        return this.publicKey;
+    public String getPublicKey() {
+        return this.publicKey.toString();
+    }
+
+    public void setPrivateKey(BigInteger privateKey) {
+
+        this.privateKey = privateKey;
+    }
+
+    public String getPrivateKey() {
+        return this.privateKey.toString();
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return this.address;
+    }
+
+    public String getFileName() {
+        return this.fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public void createWallet(String password)
@@ -54,6 +86,7 @@ public class WalletModel {
         String path = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS).getPath();
         try {
             fileName = WalletUtils.generateLightNewWalletFile(password, new File(path));
+            Log.d("yo123", "Password" + password);
             Log.d("yo123", "Filename" + fileName);
             Log.d("yo123", "Path" + path);
         } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
@@ -74,6 +107,7 @@ public class WalletModel {
         }
 
         if(fileName != null) {
+            setFileName(path + "/" + fileName);
             loadWalletFromFile(password, path + "/" + fileName, true);
         }
     }
@@ -104,6 +138,8 @@ public class WalletModel {
             }
 
             setPublicKey(credentials.getEcKeyPair().getPublicKey());
+            setPrivateKey(credentials.getEcKeyPair().getPrivateKey());
+            setAddress(credentials.getAddress());
             // Initialize rest of data
         }
     }

@@ -35,12 +35,33 @@ public class CreateAccountViewModel {
         }
     };
 
+    private MutableLiveData<String> fileName = new MutableLiveData<String>() {
+        @Nullable
+        @Override
+        public String getValue() {
+            return super.getValue();
+        }
+
+        @Override
+        public void setValue(String fileName) {
+            super.setValue(fileName);
+        }
+    };
+
     public String getPassword() {
         return this.password.getValue();
     }
 
     public void setPassword(String password) {
         this.password.setValue(password);
+    }
+
+    public String getFileName() {
+        return this.fileName.getValue();
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName.setValue(fileName);
     }
 
     public void onClick(Context context) {
@@ -51,8 +72,9 @@ public class CreateAccountViewModel {
         //EditText password = (EditText) v.findViewById(R.id.editTextTextPersonName2);
         //EditText publicKey = (EditText) v.findViewById(R.id.editTextTextPersonName);
 
-        walletModel.createWallet(this.password.toString());
-        Log.d("yo123", "password?" + this.password.toString());
+        walletModel.createWallet(this.getPassword());
+        setFileName(walletModel.getFileName());
+        Log.d("yo123", "password?" + this.getPassword());
         //popup showing credentials and telling them to take note
     }
 }

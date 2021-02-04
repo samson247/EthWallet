@@ -9,7 +9,7 @@ public class BraintreeServer {
     private BraintreeGateway gateway;
     private String clientToken;
 
-    public String getClientToken() {
+    public String getClientToken() throws InterruptedException {
         if(this.clientToken == null) {
             Thread thread = new Thread(new Runnable() {
 
@@ -32,6 +32,7 @@ public class BraintreeServer {
             });
 
             thread.start();
+            thread.join();
         }
         return this.clientToken;
     }

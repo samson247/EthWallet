@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Account"
+        android:inputType="textPassword"
         android:layout_marginTop="150dp"/>
 
     <ImageView
@@ -20,4 +21,28 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="300dp"
         app:srcCompat="@android:drawable/btn_star"/>
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:inputType="textPassword"
+        android:layout_marginTop="250dp"/>
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show all"
+        android:layout_marginTop="350dp"/>
+
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="150dp"/>
+
 </FrameLayout>
