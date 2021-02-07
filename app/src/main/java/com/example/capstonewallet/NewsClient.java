@@ -115,6 +115,10 @@ public class NewsClient {
         String getTitle() {
             return this.title;
         }
+
+        String getImageUrl() {
+            return this.imageUrl;
+        }
     }
 }
 

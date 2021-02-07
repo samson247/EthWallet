@@ -33,6 +33,10 @@ public class LoginModel {
             repository.insertAccount(this.publicKey, this.password);
         }
         //repository.insertAccount(publicKey.getText().toString(), password.getText().toString());
+        int MAX_CONTACT_LENGTH = 20;
+        if(this.publicKey.length() < MAX_CONTACT_LENGTH) {
+            this.publicKey = repository.getContactName(this.publicKey);
+        }
         String file = repository.getAccountFile(this.publicKey);
         Log.d("yo123", "Done" + file);
 

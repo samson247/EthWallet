@@ -22,7 +22,7 @@
     <LinearLayout
         android:id="@+id/container_bottom"
         android:layout_width="fill_parent"
-        android:layout_height="70pt"
+        android:layout_height="75dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,8 +48,7 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2">
+        app:layout_constraintStart_toStartOf="parent">
     </LinearLayout>
 
     <LinearLayout
@@ -60,6 +59,7 @@
         app:layout_constraintBottom_toTopOf="@+id/container_news"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+        app:layout_constraintTop_toTopOf="parent">
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

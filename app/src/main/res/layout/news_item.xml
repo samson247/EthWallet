@@ -3,15 +3,27 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clickable="true"
     android:id="@+id/news_layout">
+
+    <ImageView
+        android:id="@+id/news_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/external_link"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:paddingLeft="30dp"
         android:id="@+id/news_text"
         android:layout_centerHorizontal="true"
+        android:layout_toRightOf="@+id/news_image"
         android:text="Placeholder"
-        android:textSize="12dp">
+        android:textSize="20dp"
+        android:textColor="@color/navy"
+        android:clickable="true"
+        android:background="?attr/selectableItemBackground">
     </TextView>
 
 </RelativeLayout>

@@ -1,42 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grey"
     tools:context=".LoginFragment">
 
     <EditText
         android:id="@+id/editTextTextPersonName"
-        android:layout_width="172dp"
-        android:layout_height="39dp"
+        android:layout_width="175dp"
+        android:layout_height="50dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="0x5934a20d487ab4c9e29032122e854b89a27fbae1"
-        android:layout_marginLeft="200dp" />
+        android:text="0xa9602d8ad536edea73879f306fa73dd17b8d1de4"
+        android:layout_marginLeft="37.5dp" />
 
     <EditText
         android:id="@+id/editTextTextPersonName2"
-        android:layout_width="166dp"
-        android:layout_height="46dp"
+        android:layout_width="175dp"
+        android:layout_height="50dp"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:text=""
-        android:layout_marginLeft="200dp"
-        android:layout_marginTop="50dp"/>
+        android:hint="password"
+        android:layout_marginLeft="37.5dp"
+        android:layout_marginTop="70dp"/>
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginLeft="75dp"
         android:onClick="@{ClickHandler::onClickMeClicked}"
         android:text="Login" />
 
-    <Button
-        android:id="@+id/createAccountButton"
+    <TextView
+        android:id="@+id/newUserTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create Account" />
+        android:layout_marginTop="250dp"
+        android:layout_marginLeft="50dp"
+        android:text="New to CapstoneWallet?" />
+
+    <TextView
+        android:id="@+id/createOrAddTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="270dp"
+        android:layout_marginLeft="50dp"
+        android:background="?attr/selectableItemBackground"
+        android:textColor="@color/bt_text_blue"
+        android:text="Create or add an account" />
 
 </FrameLayout>

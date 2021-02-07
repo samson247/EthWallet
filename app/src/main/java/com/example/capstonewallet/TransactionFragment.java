@@ -52,8 +52,8 @@ public class TransactionFragment extends Fragment implements View.OnClickListene
 
         editText = (EditText) view.findViewById(binding.getEtherAmount.getId());
 
-        final Button historyButton = (Button) view.findViewById(binding.button5.getId());
-        historyButton.setOnClickListener(this::onClick);
+        //final Button historyButton = (Button) view.findViewById(binding.button5.getId());
+        //historyButton.setOnClickListener(this::onClick);
 
 
 
@@ -77,11 +77,11 @@ public class TransactionFragment extends Fragment implements View.OnClickListene
         if(v.getId() == binding.imageButton.getId()) {
             transactionModel.sendEther(binding.editTextTextPersonName4.getText().toString());
         }
-        else if(v.getId() == binding.button5.getId()) {
+        /*else if(v.getId() == binding.button5.getId()) {
             walletView.addListFragment();
 
             Log.d("yo123", "onclicked");
-        }
+        }*/
         else if(v.getId() == binding.button6.getId()) {
             walletView.startBraintree();
         }

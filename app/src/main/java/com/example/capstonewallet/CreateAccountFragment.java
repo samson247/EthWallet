@@ -43,7 +43,7 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
         createAccountButton.setOnClickListener(this::onClick);
 
         //binding.editTextTextPersonName2.getText().toString();
-        password = (EditText) view.findViewById(R.id.editTextTextPersonName3);
+        password = (EditText) view.findViewById(R.id.editTextNewPassword);
         //password = createAccountBinding.editTextTextPersonName3.getText().toString();
         //createAccountViewModel.setPassword(password.getText().toString());
        // publicKey = (EditText) view.findViewById(R.id.editTextTextPersonName);
@@ -58,7 +58,7 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
         //createAccountBinding = CreateAccountBinding.inflate(getLayoutInflater());
         //password = (EditText) v.findViewById(R.id.editTextTextPersonName3);
         Log.d("yo123", "piss?" + password.getText().toString());
-        Log.d("yo123", "piss?" + createAccountBinding.editTextTextPersonName3.getText().toString());
+        Log.d("yo123", "piss?" + createAccountBinding.editTextNewPassword.getText().toString());
         createAccountViewModel.setPassword(password.getText().toString());
         createAccountViewModel.onClick(getContext());
         //work on 2 way binding

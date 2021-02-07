@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.capstonewallet.databinding.LoginBinding;
 import com.example.capstonewallet.databinding.LoginFragmentBinding;
@@ -50,8 +51,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         final Button loginButton = (Button) view.findViewById(fragmentBinding.loginButton.getId());
         loginButton.setOnClickListener(this::onClick);
-        final Button createAccountButton = (Button) view.findViewById(fragmentBinding.createAccountButton.getId());
-        createAccountButton.setOnClickListener(this::onClick);
+        //final Button createAccountButton = (Button) view.findViewById(fragmentBinding.createAccountButton.getId());
+        //createAccountButton.setOnClickListener(this::onClick);
+        final TextView createAccountTextView = (TextView) view.findViewById(fragmentBinding.createOrAddTextView.getId());
+        createAccountTextView.setOnClickListener(this::onClick);
+
         Log.d("yo123", "oncreateview");
         return view;
     }
@@ -60,6 +64,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         Log.d("yo123", "inonclick");
         if(v.getId() == fragmentBinding.loginButton.getId()) {
+            if(fragmentBinding.editTextTextPersonName.getText().toString().length() < 20) {
+                getAddress();
+            }
+
+            checkLoginCredentials(fragmentBinding.editTextTextPersonName.getText().toString(), fragmentBinding.editTextTextPersonName2.getText().toString());
             loginViewModel.setPublicKey(fragmentBinding.editTextTextPersonName.getText().toString());
             loginViewModel.setPassword(fragmentBinding.editTextTextPersonName2.getText().toString());
             loginViewModel.onClick(getContext());
@@ -67,7 +76,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             // pass credentials
             startActivity(intent);
         }
-        else if (v.getId() == fragmentBinding.createAccountButton.getId()){
+        else if (v.getId() == fragmentBinding.createOrAddTextView.getId()){
             Log.d("yo123", "onclick");
             if(fragmentManager.findFragmentById(R.id.login_fragment) != null) {
                 fragmentManager.beginTransaction().remove(fragmentManager.findFragmentById(R.id.login_fragment)).commit();
@@ -79,5 +88,43 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             //fragtran.add(R.id.trans, fm3, "HELLO");
             //fragtran.commit();
         }
+    }
+
+    private boolean checkLoginCredentials(String address, String password) {
+        boolean proceed = true;
+        if(!checkPublicKey() || !checkPassword()) {
+            proceed = false;
+        }
+        return proceed;
+    }
+
+    private boolean checkPublicKey() {
+        boolean proceed = false;
+        String [] keys = repository.getKeys();
+
+        for(key in keys) {
+            if key = publicKey {
+                proceed = true;
+            }
+        }
+        return proceed;
+
+    }
+    private boolean checkPassword() {
+        boolean proceed = false;
+
+        String[] passwords = repository.getPasswords();
+
+        for (password in passwords) {
+            if password = this.password {
+                proceed = true;
+            }
+        }
+
+        return proceed;
+    }
+
+    private String getAddress() {
+        return repository.getAddress(username);
     }
 }

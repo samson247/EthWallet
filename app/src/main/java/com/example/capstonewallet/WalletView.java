@@ -39,6 +39,7 @@ public class WalletView extends AppCompatActivity {
         bottomNavigationFragment.setFragmentManager(fragmentManager);
         //bottomNavigationFragment.setFragmentTransaction(fragmentTransaction);
         fragmentTransaction.add(walletBinding.containerBottom.getId(), bottomNavigationFragment, "");
+
         //fragmentTransaction.commit();
         //fragmentManager.beginTransaction().add(walletBinding.containerBottom.getId(), bottomNavigationFragment, "").commitNow();
 
@@ -113,6 +114,9 @@ public class WalletView extends AppCompatActivity {
         }
         else if(fragmentStr == "AccountFragment") {
             fragment = new AccountFragment();
+        }
+        else if(fragmentStr == "AddressBookFragment") {
+            fragment = new AddressBookFragment();
         }
         else {
             fragment = new Fragment();

@@ -7,20 +7,13 @@
     android:id="@+id/transaction"
     tools:context=".TransactionFragment">
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="216dp"
-        android:layout_height="90dp"
-        android:layout_marginTop="150dp"
-        android:text="Transaction Fragment" />
-
     <ImageButton
         android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_send"
-        android:layout_marginTop="150dp"
-        android:layout_marginLeft="250dp"/>
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="400dp"
+        android:src="@drawable/send" />
 
     <EditText
         android:id="@+id/editTextTextPersonName4"
@@ -28,15 +21,30 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:hint="Name or Address"
         android:layout_marginTop="250dp"/>
 
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="transaction history"
-        android:layout_marginTop="76dp"/>
+
+    <RelativeLayout
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="450dp"
+        android:layout_marginLeft="250dp"
+        android:background="@color/navy"
+        android:clickable="true">
+
+        <TextView
+            android:id="@+id/transactionHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Transaction History"
+            android:textColor="@color/grey"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignRight="@id/transactionHistory"
+            app:srcCompat="@drawable/history"/>
+    </RelativeLayout>
 
     <Button
         android:id="@+id/button6"
@@ -54,4 +62,33 @@
         android:inputType="textPersonName"
         android:hint="Amount"
         android:layout_marginTop="300dp"/>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Ether"
+        android:textSize="30dp"
+        android:textColor="@color/navy"
+        android:shadowColor="@color/black"
+        android:shadowDx="-2"
+        android:shadowDy="-2"
+        android:shadowRadius="1"/>
+
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="150dp">
+        <RadioButton android:id="@+id/radio_pirates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send Ether"
+            android:textColor="@color/bt_text_blue"/>
+        <RadioButton android:id="@+id/radio_ninjas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get Ether"
+            android:textColor="@color/bt_text_blue"/>
+    </RadioGroup>
 </FrameLayout>
