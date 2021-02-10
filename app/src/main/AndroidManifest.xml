@@ -11,10 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CapstoneWallet"
         android:usesCleartextTraffic="true">
-        <activity android:name=".CredentialsView"></activity>
-        <activity android:name=".TestActivity"></activity>
-        <activity android:name=".WalletView" />
-        <activity android:name=".LoginView">
+        <activity android:name=".Views.Fragments.CredentialsView"></activity>
+        <activity android:name=".Views.TestActivity"></activity>
+        <activity android:name=".Views.Activities.WalletView" />
+        <activity android:name=".Views.Activities.LoginView">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -13,6 +13,6 @@ public interface ContactDao {
     @Delete
     void deleteContact(ContactEntity a);
 
-    @Query("SELECT address FROM contactentity WHERE name = :name")
+    @Query("SELECT address FROM contactentity WHERE name LIKE :name")
     String getContact(String name);
 }

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="75dp"
     android:background="@color/navy"
-    tools:context=".BottomNavigationFragment">
+    tools:context=".Views.Fragments.BottomNavigationFragment">
 
     <RelativeLayout
         android:id="@+id/transactionButton"

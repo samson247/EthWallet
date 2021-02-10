@@ -11,14 +11,14 @@ import java.io.Serializable;
 public class AccountEntity implements Serializable {
     @PrimaryKey
     @NonNull
-    @ColumnInfo(name = "publicKey")
-    public String publicKey;
+    @ColumnInfo(name = "address")
+    public String address;
 
     @ColumnInfo(name = "fileName")
     public String fileName;
 
-    public void setPublicKey(String publicKey) {
-        this.publicKey = publicKey;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public void setFileName(String fileName) {

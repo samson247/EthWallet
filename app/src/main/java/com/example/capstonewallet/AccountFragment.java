@@ -1,9 +1,7 @@
 package com.example.capstonewallet;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,20 +10,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.capstonewallet.databinding.FragmentTransactionBinding;
+import com.example.capstonewallet.Views.Activities.WalletView;
 
 // Last button in navigation bar will load this fragment
 public class AccountFragment extends Fragment {
     private TextView password;
     private TextView publicKey;
+    private WalletView walletView;
+    private String [] credentials = new String[2];
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
@@ -42,6 +40,9 @@ public class AccountFragment extends Fragment {
 
         password = (TextView) view.findViewById(R.id.textView7);
         publicKey = (TextView) view.findViewById(R.id.textView8);
+
+        password.setText(credentials[0]);
+        publicKey.setText(credentials[1]);
 
         return view;
     }
@@ -64,10 +65,12 @@ public class AccountFragment extends Fragment {
         if (state == true) {
             //password.setInputType(InputType.TYPE_CLASS_TEXT);
             password.setTransformationMethod(null);
+            publicKey.setTransformationMethod(null);
         } else if (state == false) {
             Log.d("yo123", "doing it");
             //password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
             password.setTransformationMethod(new PasswordTransformationMethod());
+            publicKey.setTransformationMethod(new PasswordTransformationMethod());
         }
     }
 
@@ -81,5 +84,21 @@ public class AccountFragment extends Fragment {
             // do what you want
             return true;
         }
+    }
+
+    public void setWalletView(WalletView walletView) {
+        this.walletView = walletView;
+    }
+
+    public void setPassword(String password) {
+        this.password.setText(password);
+    }
+
+    public void setPublicKey(String publicKey) {
+        this.publicKey.setText(publicKey);
+    }
+
+    public void setCredentials(String [] credentials) {
+        this.credentials = credentials;
     }
 }

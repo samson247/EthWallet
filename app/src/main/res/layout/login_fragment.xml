@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey"
-    tools:context=".LoginFragment">
+    tools:context=".Views.Fragments.LoginFragment">
 
     <EditText
         android:id="@+id/editTextTextPersonName"
@@ -14,7 +14,7 @@
         android:layout_height="50dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="0xa9602d8ad536edea73879f306fa73dd17b8d1de4"
+        android:text="0x87d2201493f2764dd1b70449fde732d01c9d864a"
         android:layout_marginLeft="37.5dp" />
 
     <EditText

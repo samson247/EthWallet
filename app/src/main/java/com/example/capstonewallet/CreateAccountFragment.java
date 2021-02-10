@@ -6,14 +6,16 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import com.example.capstonewallet.Models.WalletModel;
+import com.example.capstonewallet.ViewModels.CreateAccountViewModel;
+import com.example.capstonewallet.Views.Fragments.CredentialsView;
 import com.example.capstonewallet.databinding.CreateAccountBinding;
 
 

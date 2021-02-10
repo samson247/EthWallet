@@ -15,9 +15,9 @@ public interface AccountDao {
     @Delete
     void deleteAccount(AccountEntity a);
 
-    @Query("SELECT fileName FROM accountentity WHERE publicKey = :key")
-    String getAccount(String key);
+    @Query("SELECT fileName FROM accountentity WHERE address LIKE :address")
+    String getAccount(String address);
 
-    // @Query()
-    // Boolean checkKey(String key);
+    @Query("SELECT COUNT(address) FROM accountentity WHERE address = :address")
+    int checkAddress(String address);
 }

@@ -17,11 +17,19 @@ public class ContactEntity implements Serializable {
     @ColumnInfo(name = "name")
     public String name;
 
-    public void setAddress(String Address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAddress() {
+        return this.address;
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

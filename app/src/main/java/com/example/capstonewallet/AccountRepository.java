@@ -49,7 +49,7 @@ public class AccountRepository {
 
     public void insertAccount(String publicKey, String accountFile) {
         AccountEntity entity = new AccountEntity();
-        entity.setPublicKey(publicKey);
+        entity.setAddress(publicKey);
         entity.setFileName(accountFile);
         insertAccount(entity);
     }
@@ -69,10 +69,11 @@ public class AccountRepository {
         t.start();
     }
 
-    public void getAccount(String key) {
+    private void getAccount(String key) {
         Thread t = new Thread()
         {
             public void run() {
+                Log.d("yo123", "repo " + key);
                 accountFile = accountDatabase.accountDao().getAccount(key);
                 Log.d("yo123", "repo " + accountFile);
             }
@@ -88,14 +89,25 @@ public class AccountRepository {
     public String getAccountFile(String key) {
 
         getAccount(key);
+        Log.d("yo123", "repo key " + key);
         Log.d("yo123", "repo file" + accountFile);
 
         return accountFile;
     }
 
 
-    void insertContact(ContactEntity a) {
+    void insertContact(ContactEntity entity) {
+        Log.d("yo123", "in insert contact");
+        Log.d("yo123", "address " + entity.getAddress());
+        Log.d("yo123", "name " + entity.getName());
 
+        Thread t = new Thread(() -> accountDatabase.contactDao().insertContact(entity));
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e){
+            Log.d("yo123", "error " + String.valueOf(e));
+        }
     }
 
     void deleteContact(ContactEntity a) {
@@ -121,6 +133,16 @@ public class AccountRepository {
     public String getContactName(String name) {
         getContact(name);
         return address;
+    }
+
+    Boolean checkAddress(String address) {
+        Log.d("yo123", "checking");
+        boolean exists = false;
+        if(accountDatabase.accountDao().checkAddress(address) > 0) {
+            Log.d("yo123", "checking2");
+            exists = true;
+        }
+        return exists;
     }
 
     //public Boolean checkKey(String key) {
