@@ -33,7 +33,7 @@ public class TransactionClient {
                 .addPathSegment("api")
                 .addQueryParameter("module", "account")
                 .addQueryParameter("action", "txlist")
-                .addQueryParameter("address", "0xddbd2b932c763ba5b1b7ae3b362eac3e8d40121a")
+                .addQueryParameter("address", "0x41752a78cf3823dfc5b0969f6545edc1479fd3bb")
                 .addQueryParameter("startblock", "0")
                 .addQueryParameter("endblock", "99999999")
                 .addQueryParameter("sort", "asc")
@@ -62,7 +62,7 @@ public class TransactionClient {
     }
 
     public void getTransactionData() throws JSONException {
-        int totalTransactions = 20;
+        int totalTransactions = 2;
         Log.d("yo123", String.valueOf(totalTransactions));
 
         for(int i = 0; i < totalTransactions - 1; i++) {

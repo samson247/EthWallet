@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.braintreepayments.api.dropin.DropInRequest;
-import com.example.capstonewallet.AccountFragment;
+import com.example.capstonewallet.Views.Fragments.AccountFragment;
 import com.example.capstonewallet.AddContactFragment;
 import com.example.capstonewallet.Views.Fragments.AddressBookFragment;
 import com.example.capstonewallet.Views.Fragments.BottomNavigationFragment;
@@ -19,7 +19,7 @@ import com.example.capstonewallet.R;
 import com.example.capstonewallet.Views.Fragments.StockNewsFragment;
 import com.example.capstonewallet.Views.Fragments.TransactionFragment;
 import com.example.capstonewallet.Views.Fragments.TransactionListFragment;
-import com.example.capstonewallet.ViewModels.WalletViewModel;
+import com.example.capstonewallet.viewmodels.WalletViewModel;
 import com.example.capstonewallet.databinding.WalletBinding;
 
 public class WalletView extends AppCompatActivity {
@@ -36,101 +36,72 @@ public class WalletView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wallet);
         // initialize walletviewmodel with intent
+        String password = getIntent().getExtras().getString("password");
+        String fileName = getIntent().getExtras().getString("fileName");
+
+        Log.d("yo123", "walletview" + password + " " + fileName);
+        walletViewModel = new WalletViewModel(getApplicationContext(), password, fileName);
+
         walletBinding = WalletBinding.inflate(getLayoutInflater());
 
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
+
+        // Bottom navigation fragment is displayed to user
         bottomNavigationFragment = new BottomNavigationFragment();
         bottomNavigationFragment.setWalletView(this);
         bottomNavigationFragment.setFragmentManager(fragmentManager);
-        //bottomNavigationFragment.setFragmentTransaction(fragmentTransaction);
-        fragmentTransaction.add(walletBinding.containerBottom.getId(), bottomNavigationFragment, "");
+        fragmentTransaction.add(walletBinding.containerBottom.getId(), bottomNavigationFragment, null);
 
-        //fragmentTransaction.commit();
-        //fragmentManager.beginTransaction().add(walletBinding.containerBottom.getId(), bottomNavigationFragment, "").commitNow();
-
-        transactionFragment = new TransactionFragment();
-        transactionFragment.setWalletView(this);
-        //transactionFragment.setFragmentManager(fragmentManager);
-        //transactionFragment.setFragmentTransaction(fragmentTransaction);
-        fragmentTransaction.add(walletBinding.containerTop.getId(), transactionFragment, "");
+        // Transaction fragment is displayed to user
+        transactionFragment = new TransactionFragment(this);
+        Bundle bundle = new Bundle();
+        bundle.putString("privateKey", walletViewModel.getPrivateKey());
+        transactionFragment.setArguments(bundle);
+        //transactionFragment.setWalletView(this);
+        fragmentTransaction.add(walletBinding.containerTop.getId(), transactionFragment, null);
         fragmentTransaction.commit();
-        /*new Thread(() -> {
-            try {
 
-                // code runs in a thread
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        fragmentManager.beginTransaction().add(walletBinding.containerTop.getId(), transactionFragment, "").commitNow();
-                    }
-                });
-            } catch (final Exception ex) {
-                Log.i("---","Exception in thread");
-            }
-        }).start();*/
     }
 
-    public void addListFragment() {
-        //fragmentTransaction = fragmentManager.beginTransaction();
+    /*public void addListFragment() {
         TransactionListFragment listFragment = new TransactionListFragment();
-        //fragmentTransaction.add(walletBinding.containerMiddle.getId(), listFragment, "");
-        //fragmentTransaction.commit();
 
         fragmentManager.beginTransaction().add(walletBinding.containerMiddle.getId(), listFragment, "").commitNow();
         fragmentManager.beginTransaction().hide(bottomNavigationFragment).commitNow();
         Log.d("yo123", "Added list fragment");
 
-        /*
-        if(fragmentManager.findFragmentById(R.id.bottom_navigation) != null) {
-            fragmentManager.beginTransaction().remove(fragmentManager.findFragmentById(R.id.bottom_navigation)).commit();
-        }
-        //fragmentManager.beginTransaction().remove(fragmentManager.findFragmentById(R.id.fraglog)).commit();
-        //CreateAccountFragment fragment = new CreateAccountFragment();
-        TransactionListFragment listFragment = new TransactionListFragment();
+    }*/
 
-        fragmentManager.beginTransaction().replace(R.id.container_bottom, listFragment).commit();
-        LinearLayout layout = walletBinding.containerBottom;
-        ViewGroup.LayoutParams params = layout.getLayoutParams();
-        //params.height = 400;*/
-
-    }
-
-    public void addAddContactFragment() {
+    /*public void addAddContactFragment() {
         AddContactFragment fragment = new AddContactFragment(getApplicationContext());
         fragmentManager.beginTransaction().add(walletBinding.containerMiddle.getId(), fragment, "").commitNow();
-    }
-
-    /*public void switchTopFragment(Fragment fragment) {
-        if(fragmentManager.findFragmentById(walletBinding.containerTop.getId()) != null) {
-            fragmentManager.beginTransaction().remove(transactionFragment).commit();
-        }
-        //fragman.beginTransaction().remove(fragman.findFragmentById(R.id.fraglog)).commit();
-        fragmentManager.beginTransaction().replace(walletBinding.containerTop.getId(), fragment).commit();
-
-        if(fragment.getClass().getName() == "TransactionFragment") {
-            fragmentTransaction = (FragmentTransaction) fragment;
-
-        }
     }*/
+
 
     public void switchTopFragment(String fragmentStr) {
         Fragment fragment;
-        if(fragmentStr == "TransactionFragment") {
-            fragment = new TransactionFragment();
-            ((TransactionFragment) fragment).setWalletView(this);
+        if(fragmentStr.equals("TransactionFragment")) {
+            fragment = new TransactionFragment(this);
+            Bundle bundle = new Bundle();
+            bundle.putString("privateKey", walletViewModel.getPrivateKey());
+            fragment.setArguments(bundle);
+            //((TransactionFragment) fragment).setWalletView(this);
         }
-        else if(fragmentStr == "StockNewsFragment") {
+        else if(fragmentStr.equals("StockNewsFragment")) {
             fragment = new StockNewsFragment();
+            Bundle bundle = new Bundle();
+            //bundle.putStringArrayList();
         }
-        else if(fragmentStr == "AccountFragment") {
+        else if(fragmentStr.equals("AccountFragment")) {
             fragment = new AccountFragment();
-            ((AccountFragment) fragment).setWalletView(this);
-            ((AccountFragment) fragment).setCredentials(new String[]{"add", "app"});
+            Bundle bundle = new Bundle();
+            bundle.putStringArrayList("credentials", walletViewModel.getCredentials());
+            fragment.setArguments(bundle);
         }
-        else if(fragmentStr == "AddressBookFragment") {
+        else if(fragmentStr.equals("AddressBookFragment")) {
             fragment = new AddressBookFragment();
-            ((AddressBookFragment) fragment).setWalletView(this);
+            //((AddressBookFragment) fragment).setWalletView(this);
         }
         else {
             fragment = new Fragment();
@@ -141,11 +112,25 @@ public class WalletView extends AppCompatActivity {
         }
         //fragman.beginTransaction().remove(fragman.findFragmentById(R.id.fraglog)).commit();
         fragmentManager.beginTransaction().replace(walletBinding.containerTop.getId(), fragment).commit();
-
     }
 
 
-    public void startBraintree()  {
+    /*public void startBraintree()  {
+        String token = walletViewModel.getToken();
+        DropInRequest dropInRequest;
+        if(token != null) {
+            dropInRequest = new DropInRequest().clientToken(token);
+            Log.d("yo123", "newway");
+        }
+        else {
+            try {
+                client = new BraintreeClient();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            dropInRequest = new DropInRequest().clientToken(client.getClientToken());
+            Log.d("yo123", "oldway");
+        }
         try {
             client = new BraintreeClient();
         } catch (InterruptedException e) {
@@ -154,7 +139,7 @@ public class WalletView extends AppCompatActivity {
         DropInRequest dropInRequest = new DropInRequest().clientToken(client.getClientToken());
         Log.d("yo123", "dropin created");
         startActivityForResult(dropInRequest.getIntent(this), 400);
-    }
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -162,5 +147,9 @@ public class WalletView extends AppCompatActivity {
 
         String amount = transactionFragment.getEtherAmount();
         client.onActivityResult(requestCode, resultCode, data, amount);
+    }
+
+    public WalletViewModel getWalletViewModel() {
+        return this.walletViewModel;
     }
 }

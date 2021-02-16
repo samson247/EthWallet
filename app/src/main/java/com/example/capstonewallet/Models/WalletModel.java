@@ -1,10 +1,13 @@
 package com.example.capstonewallet.Models;
 
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.util.Log;
 
 import com.example.capstonewallet.AccountRepository;
+import com.example.capstonewallet.Models.Clients.NewsClient;
+import com.example.capstonewallet.Models.Clients.TransactionClient;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.web3j.crypto.CipherException;
@@ -14,12 +17,8 @@ import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.Provider;
 import java.security.Security;
 import java.util.concurrent.ExecutionException;
@@ -33,6 +32,10 @@ public class WalletModel {
     private String fileName;
     private AccountRepository repository;
     private Credentials credentials2;
+    private String clientToken;
+    private String etherPrice;
+    private TransactionClient.TransactionData [] transactionData;
+    private NewsClient.ArticleData [] articleData;
 
     public WalletModel(Context context) {
         repository = new AccountRepository(context);
@@ -63,7 +66,7 @@ public class WalletModel {
     }
 
     public String getPrivateKey() {
-        return this.privateKey.toString();
+        return this.privateKey.toString(16);
     }
 
     public void setAddress(String address) {
@@ -82,7 +85,7 @@ public class WalletModel {
         this.fileName = fileName;
     }
 
-    public boolean createWallet(String password)
+    /*public boolean createWallet(String password)
     {
         this.setupBouncyCastle();
         String path = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS).getPath();
@@ -114,7 +117,7 @@ public class WalletModel {
             loadWalletFromFile(password, fileName, true);
         }
         return true;
-    }
+    }*/
 
     // Here or in login?
     public void loadWalletFromFile(String password, String walletFilePath, Boolean justCreated)
@@ -145,6 +148,8 @@ public class WalletModel {
             setPublicKey(credentials.getEcKeyPair().getPublicKey());
             setPrivateKey(credentials.getEcKeyPair().getPrivateKey());
             setAddress(credentials.getAddress());
+            Log.d("privateKey", "key: " + credentials.getEcKeyPair().getPrivateKey().toString());
+            Log.d("privateKey", "key16: " + credentials.getEcKeyPair().getPrivateKey().toString(16));
             // Initialize rest of data
         }
     }
@@ -184,7 +189,70 @@ public class WalletModel {
         Security.insertProviderAt(new BouncyCastleProvider(), 1);
     }
 
-    public void insertPassword(String address, String password, String initVector) {
+    /*public void insertPassword(String address, String password, String initVector) {
         //repository.insertPassword(String address, String password, String initVector);
+        repository.insertPassword(address, password, initVector);
+        //Log.d("yo123", "passwordrecord " + address + " " + password + " " + initVector);
+        Log.d("yo123", "address " + address);
+        Log.d("yo123", "password " + password);
+        Log.d("yo123", "init " + initVector);
+    }
+
+    public void getEncryptedRecord() {
+        Log.d("yo123", "wya: " + repository.getPassword(this.getAddress()));
+        Log.d("yo123", "wya: " + repository.getInitVector(this.getAddress()));
+    }*/
+
+    public void loadApiServices() {
+        ApiServiceAsync service = new ApiServiceAsync();
+        service.startAll();
+
+        CountDownTimer timer = new CountDownTimer(10000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                clientToken = service.getToken();
+                etherPrice = service.getEtherPrice();
+                transactionData = service.getTransactionData();
+                articleData = service.getArticleData();
+
+                Log.d("yo123", "time" + millisUntilFinished);
+            }
+
+            @Override
+            public void onFinish() {
+                Log.d("yo123", "client token" + getClientToken());
+                Log.d("yo123", "ether price" + getEtherPrice());
+                Log.d("yo123", "articles" + getArticleData());
+                Log.d("yo123", "transactions" + getTransactionData());
+
+            }
+        };
+        timer.start();
+    }
+
+    public String getClientToken() {
+        return this.clientToken;
+    }
+
+    public String getEtherPrice() {
+        return this.etherPrice;
+    }
+
+    public NewsClient.ArticleData [] getArticleData() {
+        return this.articleData;
+    }
+
+    public TransactionClient.TransactionData [] getTransactionData() {
+        return this.transactionData;
+    }
+
+    public String getWalletName() {
+        //return repository.getName(this.getAddress());
+        //FIXME add query to database
+        return "Temp Name";
+    }
+
+    public String getPassword() {
+        return repository.getPassword(this.getAddress());
     }
 }

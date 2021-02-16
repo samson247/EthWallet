@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="loginviewmodel"
+            type="com.example.capstonewallet.viewmodels.LoginViewModel"/>
+    </data>
+
+
+<FrameLayout
     android:id="@+id/login_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,8 +24,8 @@
         android:layout_height="50dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="0x87d2201493f2764dd1b70449fde732d01c9d864a"
-        android:layout_marginLeft="37.5dp" />
+        android:text="Cappy"
+        android:layout_marginStart="37.5dp" />
 
     <EditText
         android:id="@+id/editTextTextPersonName2"
@@ -23,9 +33,8 @@
         android:layout_height="50dp"
         android:ems="10"
         android:inputType="textPassword"
-        android:text=""
         android:hint="password"
-        android:layout_marginLeft="37.5dp"
+        android:layout_marginStart="37.5dp"
         android:layout_marginTop="70dp"/>
 
     <Button
@@ -33,8 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="140dp"
-        android:layout_marginLeft="75dp"
-        android:onClick="@{ClickHandler::onClickMeClicked}"
+        android:layout_marginStart="75dp"
         android:text="Login" />
 
     <TextView
@@ -42,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="250dp"
-        android:layout_marginLeft="50dp"
+        android:layout_marginStart="50dp"
         android:text="New to CapstoneWallet?" />
 
     <TextView
@@ -50,9 +58,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="270dp"
-        android:layout_marginLeft="50dp"
+        android:layout_marginStart="50dp"
         android:background="?attr/selectableItemBackground"
         android:textColor="@color/bt_text_blue"
         android:text="Create or add an account" />
 
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="200dp"
+        android:entries="@array/settingsItems"
+        android:drawSelectorOnTop="true"
+        android:prompt="@string/selectLanguage"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </FrameLayout>
+
+</layout>

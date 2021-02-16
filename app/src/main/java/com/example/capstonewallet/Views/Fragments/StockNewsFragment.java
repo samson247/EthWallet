@@ -19,6 +19,7 @@ import com.example.capstonewallet.Models.Clients.NewsClient;
 import com.example.capstonewallet.R;
 import com.example.capstonewallet.Views.Adapters.StockNewsAdapter;
 import com.example.capstonewallet.databinding.StockNewsFragmentBinding;
+import com.example.capstonewallet.viewmodels.StockNewsViewModel;
 
 import java.util.ArrayList;
 
@@ -35,6 +36,7 @@ public class StockNewsFragment extends Fragment {
     StockNewsFragmentBinding binding;
     Bitmap image;
     String urlToImage;
+    StockNewsViewModel stockNewsViewModel;
     /*
     public LoginFragment getInstance(Context context) {
         //super(R.layout.create_account);
@@ -46,12 +48,11 @@ public class StockNewsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
         View view = inflater.inflate(R.layout.stock_news_fragment, container, false);
         Log.d("yo123", "oncreateview");
+        stockNewsViewModel = new StockNewsViewModel();
 
-        try {
-            setupStockNewsRecyclerView(view);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
+        setupStockNewsRecyclerView(view);
+
         // Add elements to recycler view
         EtherPriceClient client = new EtherPriceClient();
         try {
@@ -76,10 +77,11 @@ public class StockNewsFragment extends Fragment {
         return view;
     }
 
-    private void setupStockNewsRecyclerView(View view) throws InterruptedException {
+    private void setupStockNewsRecyclerView(View view) {
         recyclerView = view.findViewById(R.id.news_recycler);
 
-        setNewsText();
+        newsText = stockNewsViewModel.startNewsService();
+
         adapter = new StockNewsAdapter(getContext(), this.newsText, this.newsImage);
         adapter.setHasStableIds(true);
 

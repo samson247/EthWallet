@@ -1,4 +1,4 @@
-package com.example.capstonewallet.ViewModels;
+package com.example.capstonewallet.viewmodels;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
@@ -7,13 +7,34 @@ import com.example.capstonewallet.Models.WalletModel;
 
 public class CredentialsViewModel {
     private WalletModel model;
+    private String fileName;
 
-    public CredentialsViewModel(String [] credentials) {
-        model = new WalletModel(credentials);
-        setPublicKey(model.getPublicKey());
-        setPrivateKey(model.getPrivateKey());
-        setAddress(model.getAddress());
+    private String password;
 
+    public CredentialsViewModel(String password, String fileName) {
+        //model = new WalletModel(credentials);
+        //setPublicKey(model.getPublicKey());
+        //setPrivateKey(model.getPrivateKey());
+        //setAddress(model.getAddress());
+       // setFileName(model.getFileName());
+        setPassword(password);
+        setFileName(fileName);
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     private MutableLiveData<String> publicKey = new MutableLiveData<String>() {

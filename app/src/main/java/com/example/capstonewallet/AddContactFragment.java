@@ -25,6 +25,8 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
+        //FIXME context from container test
+        Context context = container.getContext();
         View view = inflater.inflate(R.layout.add_contact_fragment, container, false);
 
         name = (EditText) view.findViewById(R.id.addContactName);
@@ -56,7 +58,7 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
             contactEntity.setAddress("0x87d2201493f2764dd1b70449fde732d01c9d864a");
             //Log.d("yo123", this.address.getText().toString());
             repository.insertContact(contactEntity);
-            Log.d("yo123", "first contact" + repository.getContactName("Test"));
+            Log.d("yo123", "first contact" + repository.getContactAddress("Test"));
         }
     }
 }

@@ -26,6 +26,7 @@
 
 
     <RelativeLayout
+        android:id="@+id/transactionHistory"
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_marginTop="450dp"
@@ -34,7 +35,7 @@
         android:clickable="true">
 
         <TextView
-            android:id="@+id/transactionHistory"
+            android:id="@+id/transactionHistoryText"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Transaction History"
@@ -42,7 +43,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignRight="@id/transactionHistory"
+            android:layout_alignRight="@id/transactionHistoryText"
             app:srcCompat="@drawable/history"/>
     </RelativeLayout>
 
@@ -91,4 +92,20 @@
             android:text="Get Ether"
             android:textColor="@color/bt_text_blue"/>
     </RadioGroup>
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="280dp"
+        android:layout_marginTop="50dp"
+        android:text="Balance: $100.00" />
+
+    <LinearLayout
+        android:id="@+id/containerTransactionList"
+        android:layout_width="fill_parent"
+        android:layout_height="120pt"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom">
+    </LinearLayout>
 </FrameLayout>

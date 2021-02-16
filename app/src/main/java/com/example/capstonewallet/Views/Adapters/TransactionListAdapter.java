@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class TransactionListAdapter extends RecyclerView.Adapter<TransactionListAdapter.TransactionListViewHolder>{
     private Context context;
-    private ArrayList<String> transactionText = new ArrayList<>();
+    private ArrayList<String> transactionText;
     private TransactionListItemBinding binding;
     private static final String TAG = "TransactionListAdapter";
 

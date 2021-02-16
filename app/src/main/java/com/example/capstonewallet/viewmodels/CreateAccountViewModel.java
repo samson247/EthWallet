@@ -1,4 +1,4 @@
-package com.example.capstonewallet.ViewModels;
+package com.example.capstonewallet.viewmodels;
 
 import android.content.Context;
 import android.util.Log;
@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.capstonewallet.Models.CreateAccountModel;
 import com.example.capstonewallet.Models.PasswordModel;
 import com.example.capstonewallet.Models.WalletModel;
 
@@ -25,11 +26,21 @@ import javax.crypto.NoSuchPaddingException;
 public class CreateAccountViewModel {
     private WalletModel walletModel;
     private PasswordModel passwordModel;
+    private CreateAccountModel createAccountModel;
+    //private String walletName;
 
-    public CreateAccountViewModel getInstance(Context context) {
+    /*public CreateAccountViewModel getInstance(Context context) {
         //super(R.layout.create_account);
         if(walletModel == null) {
             walletModel = new WalletModel(context);
+        }
+        return this;
+    }*/
+
+    public CreateAccountViewModel getInstance(Context context) {
+        //super(R.layout.create_account);
+        if(createAccountModel == null) {
+            createAccountModel = new CreateAccountModel(context, walletName.getValue());
         }
         return this;
     }
@@ -51,7 +62,7 @@ public class CreateAccountViewModel {
         }
     };
 
-    private MutableLiveData<String> fileName = new MutableLiveData<String>() {
+    private MutableLiveData<String> walletName = new MutableLiveData<String>() {
         @Nullable
         @Override
         public String getValue() {
@@ -59,8 +70,8 @@ public class CreateAccountViewModel {
         }
 
         @Override
-        public void setValue(String fileName) {
-            super.setValue(fileName);
+        public void setValue(String walletName) {
+            super.setValue(walletName);
         }
     };
 
@@ -73,14 +84,15 @@ public class CreateAccountViewModel {
     }
 
     public String getFileName() {
-        return this.fileName.getValue();
+        return this.walletName.getValue();
     }
 
     public void setFileName(String fileName) {
-        this.fileName.setValue(fileName);
+        this.walletName.setValue(fileName);
     }
 
-    public void onClick(Context context) throws IOException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchProviderException, SignatureException, KeyStoreException, IllegalBlockSizeException {
+    // Move some or all of this logic to LoginModel createAccount
+    public void onClick(Context context) {
         getInstance(context);
 
         //work on 2 way binding
@@ -88,16 +100,10 @@ public class CreateAccountViewModel {
         //EditText password = (EditText) v.findViewById(R.id.editTextTextPersonName2);
         //EditText publicKey = (EditText) v.findViewById(R.id.editTextTextPersonName);
 
-        boolean success = walletModel.createWallet(this.getPassword());
+        boolean success = createAccountModel.createWallet(this.getPassword());
 
-        if(success) {
-            String [] passwordRecord = passwordModel.storePassword(getPassword(), walletModel.getAddress());
-            walletModel.insertPassword(passwordRecord[0], passwordRecord[1], passwordRecord[2]);
-        }
-
-
-        setFileName(walletModel.getFileName());
-        Log.d("yo123", "password?" + this.getPassword());
+        setFileName(createAccountModel.getFileName());
+        //Log.d("yo123", "password?" + this.getPassword());
         //popup showing credentials and telling them to take note
     }
 }

@@ -1,4 +1,4 @@
-package com.example.capstonewallet.Models.Clients;
+package com.example.capstonewallet.Models.Servers;
 
 import android.util.Log;
 

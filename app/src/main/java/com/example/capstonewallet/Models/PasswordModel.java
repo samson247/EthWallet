@@ -31,7 +31,7 @@ public class PasswordModel {
 
     private KeyStore keyStore;
     private String decryptedPassword;
-    private String [] passwordRecord = new String[2];
+    private String [] passwordRecord = new String[3];
 
 
     public String [] storePassword(String password, String alias) throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException,
@@ -66,15 +66,16 @@ public class PasswordModel {
         byte [] initVector = cipher.getIV();
 
         byte [] encryption = cipher.doFinal(password.getBytes("UTF-8"));
-        Log.d("yo123", encryption.toString());
+        Log.d("yo123", "enc " + encryption.toString());
 
         passwordRecord[0] = Base64.encodeToString(encryption, Base64.DEFAULT);
         passwordRecord[1] = Base64.encodeToString(initVector, Base64.DEFAULT);
-        Log.d("yo123", Base64.encodeToString(encryption, Base64.DEFAULT));
-        Log.d("yo123", Base64.encodeToString(initVector, Base64.DEFAULT));
+        Log.d("yo123", "enc " + Base64.encodeToString(encryption, Base64.DEFAULT));
+        Log.d("yo123", "init " + Base64.encodeToString(initVector, Base64.DEFAULT));
 
     }
     private void decryptPassword(String alias, byte[] encryptedPassword, byte[] initVector) throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException, NoSuchPaddingException, UnrecoverableEntryException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+        Log.d("yo123", "duh: " + encryptedPassword + " " + initVector);
         keyStore = KeyStore.getInstance(ANDROID_KEY_STORE);
         keyStore.load(null);
 

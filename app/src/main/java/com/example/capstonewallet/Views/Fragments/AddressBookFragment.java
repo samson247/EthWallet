@@ -7,7 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.example.capstonewallet.AddContactFragment;
 import com.example.capstonewallet.R;
 import com.example.capstonewallet.Views.Activities.WalletView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -18,7 +21,10 @@ public class AddressBookFragment extends Fragment implements View.OnClickListene
     //Alphabetically organized
     //Search feature
     private FloatingActionButton createAccountButton;
-    private WalletView walletView;
+
+    public AddressBookFragment() {
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
@@ -27,15 +33,7 @@ public class AddressBookFragment extends Fragment implements View.OnClickListene
 
         createAccountButton = (FloatingActionButton) view.findViewById(R.id.addContactButton);
         createAccountButton.setOnClickListener(this::onClick);
-        //fragmentManager = getSupportFragmentManager();
-        //fragmentTransaction = fragmentManager.beginTransaction();
-        //fragmentBinding.createAccountButton.setOnClickListener(this::onClick);
-        //fragmentBinding.loginButton.setOnClickListener(this::onClick);
-        //loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-        //final Button loginButton = (Button) view.findViewById(fragmentBinding.loginButton.getId());
-        //loginButton.setOnClickListener(this::onClick);
-        //final Button createAccountButton = (Button) view.findViewById(fragmentBinding.createAccountButton.getId());
-        //createAccountButton.setOnClickListener(this::onClick);
+
         Log.d("yo123", "oncreateview Address book Frag");
         return view;
     }
@@ -43,11 +41,15 @@ public class AddressBookFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if(v.getId() == createAccountButton.getId()) {
-            walletView.addAddContactFragment();
+            addAddContactFragment();
         }
     }
 
-    public void setWalletView(WalletView walletView) {
-        this.walletView = walletView;
+    public void addAddContactFragment() {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        AddContactFragment addContactFragment = new AddContactFragment(getContext());
+        fragmentTransaction.add(R.id.containerTransactionList, addContactFragment, null);
+        fragmentTransaction.commit();
     }
 }

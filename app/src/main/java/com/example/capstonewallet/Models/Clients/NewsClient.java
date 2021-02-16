@@ -56,28 +56,9 @@ public class NewsClient {
             articles = obj1.get("articles").toString();
 
 
-           // Log.d("yo123", auth);
-
-            //int totalResults = obj1.getInt("totalResults");
-           // articles = obj1.get("articles").toString();
             int totalResults = 20;
             Log.d("yo123", String.valueOf(totalResults));
             getArticleData();
-            /*for(int i = 0; i < totalResults - 1; i++) {
-                obj2 = new JSONArray(articles);
-                author = obj2.get(i).toString();
-                obj3 = new JSONObject(author);
-                auth = obj3.getString("author");
-
-                Log.d("yo123", auth);
-            }*/
-            //JSONObject obj2 = obj1.getJSONObject("articles");
-            //String author = obj2.getString("author");
-            //Log.d("yo123", author);
-
-            // ArticleArray art = gson.fromJson(article, ArticleArray.class);
-
-
         }
     }
 

@@ -1,10 +1,14 @@
 package com.example.capstonewallet.Models;//import android.net.Credentials;
 import android.util.Log;
 
+import com.example.capstonewallet.Models.Clients.EtherPriceClient;
+
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
@@ -23,13 +27,20 @@ import java8.util.Optional;
 public class TransactionModel {
     private Web3j web3;
     private Credentials credentials;
+    private String privateKey;
+
+    public TransactionModel(String privateKey) {
+        connectToEthNetwork();
+        credentials = Credentials.create(privateKey);
+    }
+
+    public void setCredentials(String privateKey) {
+        credentials = Credentials.create(privateKey);
+    }
 
     public void connectToEthNetwork() {
-        //toastAsync("Connecting to Ethereum network...");
-        Log.d("yo123", "sup");
-        // FIXME: Add your own API key here
-        //web3 = Web3j.build(new HttpService("https://rinkeby.infura.io/v3/8fa740a033224723a9a6bd808bc20e44"));
-        web3 = Web3j.build(new HttpService("HTTP://192.168.1.107:7545"));
+        web3 = Web3j.build(new HttpService("https://rinkeby.infura.io/v3/8fa740a033224723a9a6bd808bc20e44"));
+        //web3 = Web3j.build(new HttpService("HTTP://192.168.1.107:7545"));
         try {
             Web3ClientVersion clientVersion = web3.web3ClientVersion().sendAsync().get();
             if(!clientVersion.hasError()){
@@ -45,12 +56,14 @@ public class TransactionModel {
         }
     }
 
-    public void sendEther(String recipient_address)
+    public void sendEther(String recipient_address, String amount)
     {
         if (credentials == null) {
             credentials = Credentials.create("e2cdbadca25bf5a8a6e79a51ed0f2293a1b25bcba3985d9eebdb6d0f379830b7");
         }
-        //credentials = Credentials.create("e2cdbadca25bf5a8a6e79a51ed0f2293a1b25bcba3985d9eebdb6d0f379830b7");
+
+        //EthGetBalance ethGetBalance = web3.ethGetBalance(credentials.getAddress(), DefaultBlockParameterName.LATEST).sendAsync().get();
+
         EthGetTransactionCount ethGetTransactionCount = null;
         try {
             ethGetTransactionCount = web3
@@ -137,5 +150,24 @@ public class TransactionModel {
     public void get_transactions()
     {
 
+    }
+
+    public void getBalance(String privateKey) {
+       // Web3j web3 = Web3j.build(new HttpService("https://rinkeby.infura.io/v3/8fa740a033224723a9a6bd808bc20e44"));
+
+        // Have to use 16 not bigdecimalkey
+        //e2cdbadca25bf5a8a6e79a51ed0f2293a1b25bcba3985d9eebdb6d0f379830b7
+        //81a8d3cd0d7467afc4b83022ef72a475ff8431ecdad14a164f9b386653712296
+        //Credentials credentials = Credentials.create("81a8d3cd0d7467afc4b83022ef72a475ff8431ecdad14a164f9b386653712296");
+        Log.d("addy", "addy " + credentials.getAddress());
+        try {
+            EthGetBalance ethGetBalance = web3.ethGetBalance(credentials.getAddress(), DefaultBlockParameterName.LATEST).sendAsync().get();
+            //ethGetBalance.getBalance();
+            Log.d("yo123", "address balance " + ethGetBalance.getBalance());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 }

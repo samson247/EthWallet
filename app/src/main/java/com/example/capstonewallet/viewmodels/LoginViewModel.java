@@ -1,4 +1,4 @@
-package com.example.capstonewallet.ViewModels;
+package com.example.capstonewallet.viewmodels;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,8 +9,12 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.capstonewallet.Models.LoginModel;
 
+/**
+ * The view model class for the login activity
+ */
 public class LoginViewModel extends ViewModel {
-    private MutableLiveData<String> publicKey = new MutableLiveData<String>() {
+    private LoginModel loginModel;
+    private MutableLiveData<String> address = new MutableLiveData<String>() {
         @Nullable
         @Override
         public String getValue() {
@@ -18,17 +22,17 @@ public class LoginViewModel extends ViewModel {
         }
 
         @Override
-        public void setValue(String publicKey) {
-            super.setValue(publicKey);
+        public void setValue(String address) {
+            super.setValue(address);
         }
     };
 
-    public String getPublicKey() {
-        return this.publicKey.getValue();
+    public String getAddress() {
+        return this.address.getValue();
     }
 
-    public void setPublicKey(String publicKey) {
-        this.publicKey.setValue(publicKey);
+    public void setAddress(String address) {
+        this.address.setValue(address);
     }
 
     private MutableLiveData<String> password = new MutableLiveData<String>() {
@@ -52,12 +56,20 @@ public class LoginViewModel extends ViewModel {
         this.password.setValue(password);
     }
 
+    private String fileName;
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     public boolean onClick(Context context) {
-        Log.d("yo123", "pubkey" + this.getPublicKey());
-        Log.d("yo123", "password" + this.getPassword());
-        LoginModel login = new LoginModel(this.getPublicKey(), this.getPassword(), context);
-        boolean loginSuccess = login.loginAccount();
+        loginModel = new LoginModel(this.getAddress(), this.getPassword(), context);
+        boolean loginSuccess = loginModel.loginAccount();
+        fileName = loginModel.getFileName();
         return loginSuccess;
-        // Load next activity
     }
 }

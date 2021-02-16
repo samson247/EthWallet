@@ -11,8 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CapstoneWallet"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Views.Fragments.CredentialsView"></activity>
-        <activity android:name=".Views.TestActivity"></activity>
+        <activity android:name=".Views.Activities.CredentialsView"></activity>
         <activity android:name=".Views.Activities.WalletView" />
         <activity android:name=".Views.Activities.LoginView">
             <intent-filter>
