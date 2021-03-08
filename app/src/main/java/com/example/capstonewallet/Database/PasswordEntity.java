@@ -1,4 +1,4 @@
-package com.example.capstonewallet;
+package com.example.capstonewallet.Database;
 
 import android.util.Log;
 

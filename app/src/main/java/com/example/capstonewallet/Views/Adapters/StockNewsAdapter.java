@@ -1,7 +1,10 @@
 package com.example.capstonewallet.Views.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +13,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.capstonewallet.R;
+import com.example.capstonewallet.Views.Fragments.ContactFragment;
 import com.example.capstonewallet.databinding.TransactionListItemBinding;
 
 import java.util.ArrayList;
@@ -49,6 +54,13 @@ public class StockNewsAdapter extends RecyclerView.Adapter<StockNewsAdapter.Stoc
         holder.newsText.setText(this.newsText.get(position));
 
         //holder.newsImage.setImageBitmap(this.newsImage.get(position));
+        holder.newsText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent newsLinkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+                context.startActivity(newsLinkIntent);
+            }
+        });
     }
 
     @Override

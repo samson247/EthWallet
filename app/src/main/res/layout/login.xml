@@ -35,7 +35,7 @@
         android:id="@+id/fragment_container_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.example.capstonewallet.CreateAccountFragment"
+        android:name="com.example.capstonewallet.Views.Fragments.CreateAccountFragment"
         android:visibility="invisible"/>-->
 
     <LinearLayout
@@ -51,7 +51,7 @@
 
         <!--<androidx.fragment.app.FragmentContainerView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/fragment_container_view"
-            android:name="com.example.capstonewallet.CreateAccountFragment"
+            android:name="com.example.capstonewallet.Views.Fragments.CreateAccountFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible" />-->
@@ -66,5 +66,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/wallet" />
+
+    <RelativeLayout
+        android:id="@+id/loadingScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="invisible">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,13 +4,14 @@ import android.content.Context;
 //import android.os.AsyncTask;
 import android.util.Log;
 
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.Query;
 import androidx.room.Room;
 
+import com.example.capstonewallet.Database.AccountDatabase;
+import com.example.capstonewallet.Database.AccountEntity;
+import com.example.capstonewallet.Database.ContactEntity;
+import com.example.capstonewallet.Database.PasswordEntity;
+
 import java.io.File;
-import java.util.List;
 
 public class AccountRepository {
 
@@ -24,6 +25,7 @@ public class AccountRepository {
     public String address = "";
     private String password = "";
     private String initVector = "";
+    private ContactEntity[] contacts;
 
     public AccountRepository(Context context) {
         Log.d("yo123", "in repo constructor");
@@ -157,6 +159,26 @@ public class AccountRepository {
     public String getContactAddress(String name) {
         getContact(name);
         return address;
+    }
+
+    public void getContactsHelper() {
+        Thread t = new Thread()
+        {
+            public void run() {
+                contacts = accountDatabase.contactDao().getContacts();
+                Log.d("yo123", "in contacts");
+            }
+        };
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e){
+            Log.d("yo123", "error " + String.valueOf(e));
+        }
+    }
+    public ContactEntity[] getContacts() {
+        getContactsHelper();
+        return contacts;
     }
 
     Boolean checkAddress(String address) {

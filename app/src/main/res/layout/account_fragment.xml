@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,24 +11,27 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                android:layout_width="200dp"
-                android:layout_height="100dp"
-                android:text="Account"
-                android:textSize="40sp"
-                android:textColor="@color/navy"/>
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:text="Account"
+            android:textColor="@color/navy"
+            android:textSize="40sp" />
 
-            <ImageButton
-                android:id="@+id/imageView"
-                android:layout_width="54dp"
-                android:layout_height="44dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="150dp"
-                android:background="@color/grey"
-                app:srcCompat="@drawable/settings" />
+        <ImageButton
+            android:id="@+id/imageView"
+            android:layout_width="54dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/grey"
+            app:srcCompat="@drawable/settings" />
 
     </LinearLayout>
 
@@ -56,18 +59,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:text="Account"
-                            android:inputType="textPassword"
-                            android:layout_marginTop="150dp"
-                            android:textSize="50sp"/>
+                            android:text="Drako Wallet"
+                            android:layout_marginTop="160dp"
+                            android:textSize="25sp"/>
 
                         <TextView
                             android:id="@+id/addressHeading"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:text="Address Name"
-                            android:layout_marginTop="250dp"
+                            android:text="Address"
+                            android:layout_marginTop="300dp"
                             android:textSize="25sp"/>
 
                         <TextView
@@ -75,12 +77,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:text="Account"
-                            android:inputType="textPassword"
-                            android:layout_marginTop="275dp"
-                            android:textSize="50sp"/>
+                            android:text="Ox34jhj34k3j5k45hk34jk5"
+                            android:layout_marginTop="335dp"
+                            android:textSize="25sp"/>
 
-                        <TextView
+                       <!-- <TextView
                             android:id="@+id/publicKeyHeading"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -97,15 +98,17 @@
                             android:text="Account"
                             android:inputType="textPassword"
                             android:layout_marginTop="400dp"
-                            android:textSize="50sp"/>
+                            android:textSize="50sp"/>-->
 
                         <TextView
                             android:id="@+id/privateKeyHeading"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:text="Private Key"
-                            android:layout_marginTop="500dp"
+                            android:text="Show private key"
+                            android:drawablePadding="10dp"
+                            android:drawableRight="@drawable/show_credential"
+                            android:layout_marginTop="365dp"
                             android:textSize="25sp"/>
 
                         <TextView
@@ -115,6 +118,7 @@
                             android:layout_gravity="center_horizontal"
                             android:text="e2cdbadca25bf5a8a6e79a51ed0f2293a1b25bcba3985d9eebdb6d0f379830b7"
                             android:inputType="textPassword"
+                            android:visibility="invisible"
                             android:layout_marginTop="525dp"
                             android:textSize="20sp"/>
 
@@ -123,8 +127,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:text="Password"
-                            android:layout_marginTop="625dp"
+                            android:text="Show password"
+                            android:drawablePadding="10dp"
+                            android:drawableRight="@drawable/show_credential"
+                            android:layout_marginTop="200dp"
                             android:textSize="25sp"/>
 
                         <TextView
@@ -134,10 +140,11 @@
                             android:layout_gravity="center_horizontal"
                             android:text="TextView"
                             android:inputType="textPassword"
+                            android:visibility="invisible"
                             android:layout_marginTop="650dp"
                             android:textSize="50sp"/>
 
-                        <ImageButton
+                       <!-- <ImageButton
                             android:id="@+id/nameButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -185,7 +192,7 @@
                             android:layout_marginLeft="300dp"
                             android:layout_marginTop="670dp"
                             android:background="@color/grey"
-                            app:srcCompat="@drawable/show_credential"/>
+                            app:srcCompat="@drawable/show_credential"/>-->
 
                         <Switch
                             android:id="@+id/switch1"
@@ -195,4 +202,4 @@
                             android:layout_marginTop="600dp"/>
                 </FrameLayout>
             </ScrollView>
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

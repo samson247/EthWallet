@@ -33,6 +33,7 @@ public class CreateAccountModel {
     private String name;
     private String fileName;
     private String password;
+    String privateKey;
     private static final String DIRECTORY_DOWNLOADS = Environment.DIRECTORY_DOWNLOADS;
 
 
@@ -96,6 +97,14 @@ public class CreateAccountModel {
         else {
             Log.d("yo123", "fail");
         }
+    }
+
+    public void addExistingAccount() {
+        Credentials credentials = null;
+        credentials = Credentials.create(privateKey);
+        setAddress(credentials.getAddress());
+        insertName();
+        insertPassword();
     }
 
     public void insertName() {

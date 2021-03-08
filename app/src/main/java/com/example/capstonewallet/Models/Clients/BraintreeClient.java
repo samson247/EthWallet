@@ -19,6 +19,7 @@ public class BraintreeClient {
     final private BraintreeServer server;
     private String clientToken;
     private BraintreeGateway gateway;
+    private String amount;
 
     public BraintreeClient() throws InterruptedException {
         server = new BraintreeServer();
@@ -31,11 +32,17 @@ public class BraintreeClient {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data, String amount) {
+        Log.d("onactres", "here client");
+        Log.d("onactres", "request " + requestCode);
+        Log.d("onactres", "result " + resultCode);
+        Log.d("onactres", "amount " + amount);
+        //amount = "ten";
+        this.amount = amount;
         if(requestCode == 400) {
             if(resultCode == Activity.RESULT_OK)
             {
-                DropInResult result=data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
-                PaymentMethodNonce nonce= result.getPaymentMethodNonce();
+                DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
+                PaymentMethodNonce nonce = result.getPaymentMethodNonce();
                 String strNonce = nonce.getNonce();
                 if(!amount.isEmpty())
                 {
@@ -54,7 +61,7 @@ public class BraintreeClient {
                         public void run() {
                             try  {
                                 TransactionRequest request = new TransactionRequest()
-                                        .amount(new BigDecimal("10.00"))
+                                        .amount(new BigDecimal(amount))
                                         .paymentMethodNonce(strNonce)
                                         .options()
                                         .submitForSettlement(false)
@@ -89,7 +96,7 @@ public class BraintreeClient {
             }
             else
             {
-                Exception error=(Exception)data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
+                Exception error = (Exception)data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
                 Log.d("Err",error.toString());
             }
         }

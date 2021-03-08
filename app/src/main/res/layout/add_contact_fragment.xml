@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,7 +12,8 @@
         android:hint="Name"
         android:layout_centerHorizontal="true"
         android:paddingBottom="50dp"
-        android:imeOptions="actionSend"/>
+        android:inputType="text"
+        android:imeOptions="actionNext"/>
 
     <EditText
         android:id="@+id/addContactAddress"
@@ -20,7 +22,8 @@
         android:hint="Address"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/addContactName"
-        android:imeOptions="actionSend"/>
+        android:inputType="text"
+        android:imeOptions="actionDone"/>
 
     <Button
         android:id="@+id/addContactAddButton"
@@ -30,5 +33,11 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="51dp"
         android:text="Add Contact" />
+
+    <!--<ImageButton
+        android:id="@+id/backArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/back_arrow" />-->
 
 </RelativeLayout>

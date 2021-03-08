@@ -16,10 +16,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.capstonewallet.CreateAccountFragment;
 import com.example.capstonewallet.viewmodels.LoginViewModel;
 import com.example.capstonewallet.R;
 import com.example.capstonewallet.Views.Activities.WalletView;
@@ -35,6 +35,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private FragmentManager fragmentManager;
     private EditText password;
     private EditText address;
+    private ProgressBar progressBar;
+    private Button loginButton;
 
     public void setFragmentManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -46,11 +48,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         fragmentBinding = LoginFragmentBinding.inflate(getLayoutInflater());
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
-        final Button loginButton = (Button) view.findViewById(fragmentBinding.loginButton.getId());
+        loginButton = view.findViewById(fragmentBinding.loginButton.getId());
         loginButton.setOnClickListener(this::onClick);
 
         final TextView createAccountTextView = (TextView) view.findViewById(fragmentBinding.createOrAddTextView.getId());
         createAccountTextView.setOnClickListener(this::onClick);
+
+        progressBar = view.findViewById(fragmentBinding.progressBar.getId());
 
         password = (EditText) view.findViewById(R.id.editTextTextPersonName2);
         address = (EditText) view.findViewById(R.id.editTextTextPersonName);
@@ -78,6 +82,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             boolean proceed = loginViewModel.onClick(getContext());
 
             if(proceed) {
+                loginButton.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+
                 Intent intent = new Intent(getActivity(), WalletView.class);
                 // pass credentials
                 intent.putExtra("password", loginViewModel.getPassword());

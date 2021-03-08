@@ -17,6 +17,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import com.example.capstonewallet.R;
+import com.example.capstonewallet.viewmodels.AccountViewModel;
 import com.example.capstonewallet.viewmodels.CredentialsViewModel;
 import com.example.capstonewallet.Views.Activities.WalletView;
 import com.example.capstonewallet.viewmodels.WalletViewModel;
@@ -35,9 +36,7 @@ public class AccountFragment extends Fragment {
     private ImageButton publicKeyButton;
     private ImageButton privateKeyButton;
     private ImageButton passwordButton;
-    private WalletView walletView;
-    private String [] credentials = new String[2];
-    private CredentialsViewModel credentialsViewModel;
+    private AccountViewModel accountViewModel;
 
     /**
      * Creates the view for the AccountFragment
@@ -52,47 +51,42 @@ public class AccountFragment extends Fragment {
 
         Log.d("yo123", "oncreateview AccountFragment");
 
-        Switch showHideSwitch = (Switch) view.findViewById(R.id.switch1);
+        Switch showHideSwitch = view.findViewById(R.id.switch1);
         showHideSwitch.setOnCheckedChangeListener(this::onCheckChanged);
 
-        nameButton = (ImageButton) view.findViewById(R.id.nameButton);
+        nameButton = view.findViewById(R.id.nameButton);
         nameButton.setOnTouchListener(this::onTouch);
 
-        addressButton = (ImageButton) view.findViewById(R.id.addressButton);
+        addressButton = view.findViewById(R.id.addressButton);
         addressButton.setOnTouchListener(this::onTouch);
 
-        publicKeyButton = (ImageButton) view.findViewById(R.id.publicKeyButton);
+        publicKeyButton = view.findViewById(R.id.publicKeyButton);
         publicKeyButton.setOnTouchListener(this::onTouch);
 
-        privateKeyButton = (ImageButton) view.findViewById(R.id.privateKeyButton);
+        privateKeyButton = view.findViewById(R.id.privateKeyButton);
         privateKeyButton.setOnTouchListener(this::onTouch);
 
-        passwordButton = (ImageButton) view.findViewById(R.id.passwordButton);
+        passwordButton = view.findViewById(R.id.passwordButton);
         passwordButton.setOnTouchListener(this::onTouch);
 
-        walletName = (TextView) view.findViewById(R.id.walletNameTextView);
-        address = (TextView) view.findViewById(R.id.addressTextView);
-        publicKey = (TextView) view.findViewById(R.id.publicKeyTextView);
-        privateKey = (TextView) view.findViewById(R.id.privateKeyTextView);
-        password = (TextView) view.findViewById(R.id.passwordTextView);
+        walletName = view.findViewById(R.id.walletNameTextView);
+        address = view.findViewById(R.id.addressTextView);
+        publicKey = view.findViewById(R.id.publicKeyTextView);
+        privateKey = view.findViewById(R.id.privateKeyTextView);
+        password = view.findViewById(R.id.passwordTextView);
 
         Bundle bundle = getArguments();
 
         if(bundle != null) {
             ArrayList<String> credentials = bundle.getStringArrayList("credentials");
-            walletName.setText(credentials.get(0));
-            address.setText(credentials.get(1));
-            privateKey.setText(credentials.get(2));
-            password.setText(credentials.get(3));
             Log.d("yo123", "account bundle");
-        }
-        else {
-            Log.d("yo123", "account bundle null");
+            accountViewModel = new AccountViewModel(credentials);
         }
 
-
-        //password.setText(credentials[0]);
-        //publicKey.setText(credentials[1]);
+        walletName.setText(accountViewModel.getWalletName());
+        address.setText(accountViewModel.getAddress());
+        privateKey.setText(accountViewModel.getPrivateKey());
+        password.setText(accountViewModel.getPassword());
 
         return view;
     }
@@ -167,14 +161,6 @@ public class AccountFragment extends Fragment {
     }
 
     /**
-     *
-     * @param walletView
-     */
-    public void setWalletView(WalletView walletView) {
-        this.walletView = walletView;
-    }
-
-    /**
      * Sets the value
      * @param password password for wallet account
      */
@@ -188,13 +174,5 @@ public class AccountFragment extends Fragment {
      */
     public void setPublicKey(String publicKey) {
         this.publicKey.setText(publicKey);
-    }
-
-    /**
-     *
-     * @param credentials
-     */
-    public void setCredentials(String [] credentials) {
-        this.credentials = credentials;
     }
 }

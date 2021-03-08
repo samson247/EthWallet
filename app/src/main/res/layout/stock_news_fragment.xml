@@ -4,10 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/grey">
 
 
     <RelativeLayout
+        android:id="@+id/topFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
@@ -20,32 +22,67 @@
             android:id="@+id/etherAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/navy"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingStart="15dp"
+            android:textSize="20sp"
             android:text="Ether Amount: " />
 
         <EditText
             android:id="@+id/amountValue"
-            android:layout_width="42dp"
-            android:layout_height="71dp"
-            android:layout_marginLeft="63dp"
-            android:layout_toRightOf="@+id/etherAmount"
-            android:baselineAligned="false"
-            android:text="1" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/etherAmount"
+            android:layout_alignBottom="@+id/etherAmount"
+            android:text="1"
+            android:textSize="20sp"
+            android:textColor="@color/navy"
+            app:backgroundTint="@color/navy"/>
 
         <TextView
             android:id="@+id/usdValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/etherAmount"
-            android:text="USD value: " />
+            android:paddingBottom="20dp"
+            android:paddingStart="15dp"
+            android:text="USD value: "
+            android:textSize="20sp"
+            android:textColor="@color/navy"/>
 
         <TextView
             android:id="@+id/amountUSD"
-            android:layout_width="31dp"
-            android:layout_height="38dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/amountValue"
-            android:layout_marginTop="-19dp"
-            android:layout_toRightOf="@+id/usdValue"
-            android:text="50" />
+            android:layout_toEndOf="@+id/usdValue"
+            android:layout_alignBottom="@+id/usdValue"
+            android:layout_alignStart="@id/amountValue"
+            android:text="50"
+            android:textSize="20sp"
+            android:textColor="@color/navy"/>
+
+        <Spinner
+            android:id="@+id/units"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/amountValue"
+            android:paddingTop="10dp"
+            android:drawSelectorOnTop="true"
+            android:entries="@array/unitOptions"
+            android:prompt="@string/selectUnit" />
+
+        <TextView
+            android:id="@+id/chartIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/chart"
+            android:text="Show Chart"
+            android:layout_toRightOf="@id/amountValue"
+            android:layout_marginLeft="150dp"
+            android:clickable="true"
+            android:textColor="@color/navy"/>
 
 
 
@@ -58,6 +95,17 @@
         android:layout_height="match_parent"
         android:nestedScrollingEnabled="false"
         android:layout_marginTop="175dp"
+        android:clickable="true"
         tools:layout_editor_absoluteX="206dp"
         tools:layout_editor_absoluteY="520dp" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/chartContainer"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_marginBottom="75dp"
+        app:layout_constraintBottom_toBottomOf="@+id/news_recycler"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topFragment"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

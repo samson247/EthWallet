@@ -32,12 +32,17 @@ public class WalletViewModel extends ViewModel {
         setFileName(fileName);
         walletModel.loadWalletFromFile(password, fileName, false);
 
-        String key = walletModel.getPrivateKey();
-        transactionModel = new TransactionModel(key);
-        transactionModel.getBalance(key);
+        //String key = walletModel.getPrivateKey();
+        //transactionModel = new TransactionModel(key);
+        //transactionModel.getBalance();
 
         //Do something similar to this to set values: setPublicKey(walletModel.getPublicKey());
-        walletModel.loadApiServices();
+        //walletModel.loadApiServices();
+    }
+
+    public WalletViewModel(Context context, String privateKey) {
+        walletModel = new WalletModel(context);
+        walletModel.loadExistingWallet(privateKey);
     }
 
     public String getToken() {
@@ -48,7 +53,7 @@ public class WalletViewModel extends ViewModel {
         return walletModel.getEtherPrice();
     }
 
-    public TransactionClient.TransactionData [] getTransactionData() {
+    public ArrayList<TransactionClient.TransactionData> getTransactionData() {
         return walletModel.getTransactionData();
     }
 

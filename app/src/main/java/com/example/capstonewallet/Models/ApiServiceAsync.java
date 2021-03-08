@@ -5,6 +5,7 @@ import com.example.capstonewallet.Models.Clients.NewsClient;
 import com.example.capstonewallet.Models.Clients.TransactionClient;
 import com.example.capstonewallet.Models.Servers.BraintreeServer;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -15,7 +16,7 @@ public class ApiServiceAsync implements ApiService {
     private BraintreeServer braintreeServer;
     private EtherPriceClient etherPriceClient;
     private NewsClient newsClient;
-    private TransactionClient.TransactionData [] transactionData;
+    private ArrayList<TransactionClient.TransactionData> transactionData;
     private NewsClient.ArticleData [] articleData;
     private String token;
     private String etherPrice;
@@ -67,6 +68,10 @@ public class ApiServiceAsync implements ApiService {
         });
     }
 
+    public void startPriceClient() {
+
+    }
+
     public void startBraintreeServer() {
         executorService.execute(new Runnable() {
             @Override
@@ -86,7 +91,7 @@ public class ApiServiceAsync implements ApiService {
         startNewsClient();
     }
 
-    public TransactionClient.TransactionData[] getTransactionData() {
+    public ArrayList<TransactionClient.TransactionData> getTransactionData() {
         return this.transactionData;
     }
 

@@ -27,6 +27,7 @@ public class CreateAccountViewModel {
     private WalletModel walletModel;
     private PasswordModel passwordModel;
     private CreateAccountModel createAccountModel;
+    private String fileName;
     //private String walletName;
 
     /*public CreateAccountViewModel getInstance(Context context) {
@@ -83,16 +84,24 @@ public class CreateAccountViewModel {
         this.password.setValue(password);
     }
 
-    public String getFileName() {
+    public String getWalletName() {
         return this.walletName.getValue();
     }
 
+    public void setWalletName(String walletName) {
+        this.walletName.setValue(walletName);
+    }
+
+    public String getFileName() {
+        return this.fileName;
+    }
+
     public void setFileName(String fileName) {
-        this.walletName.setValue(fileName);
+        this.fileName = fileName;
     }
 
     // Move some or all of this logic to LoginModel createAccount
-    public void onClick(Context context) {
+    public boolean onClick(Context context, boolean addExisting) {
         getInstance(context);
 
         //work on 2 way binding
@@ -101,9 +110,12 @@ public class CreateAccountViewModel {
         //EditText publicKey = (EditText) v.findViewById(R.id.editTextTextPersonName);
 
         boolean success = createAccountModel.createWallet(this.getPassword());
-
         setFileName(createAccountModel.getFileName());
+
+
         //Log.d("yo123", "password?" + this.getPassword());
         //popup showing credentials and telling them to take note
+
+        return success;
     }
 }

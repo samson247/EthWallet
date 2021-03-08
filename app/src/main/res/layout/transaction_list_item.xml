@@ -1,17 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/item_layout">
+    android:id="@+id/item_layout"
+    android:clickable="true">
+
+    <ImageView
+        android:id="@+id/transactionIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="20dp"
+        app:srcCompat="@drawable/sent" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/transactionTextDate"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/transaction_text"
-        android:layout_centerHorizontal="true"
-        android:text="Placeholder"
-        android:textSize="30dp">
-    </TextView>
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/transactionIcon"
+        android:text="Date"
+        android:textSize="20sp"
+        android:paddingEnd="20dp"/>
+
+    <TextView
+        android:id="@+id/transactionTextType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/transactionTextDate"
+        android:text="Type"
+        android:textSize="20sp"
+        android:paddingEnd="20dp"/>
+
+    <TextView
+        android:id="@+id/transactionTextAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/transactionTextType"
+        android:text="Amount"
+        android:textSize="20sp" />
 
 </RelativeLayout>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp">
+
+    <ImageButton
+        android:id="@+id/sendEtherButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etherRecipientEditText"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/send" />
+
+    <EditText
+        android:id="@+id/etherRecipientEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="50dp"
+        android:hint="Name or Address"
+        android:maxWidth="150dp"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/amountEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="46dp"
+        android:layout_marginTop="50dp"
+        android:layout_toEndOf="@+id/etherRecipientEditText"
+        android:digits="0123456789."
+        android:ems="4"
+        android:hint="Amount"
+        android:inputType="numberDecimal" />
+
+    <Spinner
+        android:id="@+id/units"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="59dp"
+        android:drawSelectorOnTop="true"
+        android:entries="@array/unitOptions"
+        android:prompt="@string/selectUnit" />
+
+</RelativeLayout>

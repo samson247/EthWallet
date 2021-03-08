@@ -5,11 +5,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.braintreegateway.Result;
+import com.braintreegateway.Transaction;
+import com.braintreegateway.TransactionRequest;
+import com.braintreepayments.api.dropin.DropInActivity;
 import com.braintreepayments.api.dropin.DropInRequest;
+import com.braintreepayments.api.dropin.DropInResult;
+import com.braintreepayments.api.models.PaymentMethodNonce;
 import com.example.capstonewallet.Views.Fragments.AccountFragment;
 import com.example.capstonewallet.AddContactFragment;
 import com.example.capstonewallet.Views.Fragments.AddressBookFragment;
@@ -17,10 +24,13 @@ import com.example.capstonewallet.Views.Fragments.BottomNavigationFragment;
 import com.example.capstonewallet.Models.Clients.BraintreeClient;
 import com.example.capstonewallet.R;
 import com.example.capstonewallet.Views.Fragments.StockNewsFragment;
+import com.example.capstonewallet.Views.Fragments.TestFragment;
 import com.example.capstonewallet.Views.Fragments.TransactionFragment;
 import com.example.capstonewallet.Views.Fragments.TransactionListFragment;
 import com.example.capstonewallet.viewmodels.WalletViewModel;
 import com.example.capstonewallet.databinding.WalletBinding;
+
+import java.math.BigDecimal;
 
 public class WalletView extends AppCompatActivity {
     private WalletViewModel walletViewModel;
@@ -30,17 +40,24 @@ public class WalletView extends AppCompatActivity {
     private BottomNavigationFragment bottomNavigationFragment;
     TransactionFragment transactionFragment;
     BraintreeClient client;
+    private int result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wallet);
         // initialize walletviewmodel with intent
-        String password = getIntent().getExtras().getString("password");
-        String fileName = getIntent().getExtras().getString("fileName");
-
-        Log.d("yo123", "walletview" + password + " " + fileName);
-        walletViewModel = new WalletViewModel(getApplicationContext(), password, fileName);
+        String [] credentials = getIntent().getExtras().getStringArray("credentials");
+        if(credentials.length == 2) {
+            String password = credentials[0];
+            String fileName = credentials[1];
+            Log.d("yo123", "walletview" + password + " " + fileName);
+            walletViewModel = new WalletViewModel(getApplicationContext(), password, fileName);
+        }
+        else if(credentials.length == 1) {
+            String privateKey = credentials[0];
+            walletViewModel = new WalletViewModel(getApplicationContext(), privateKey);
+        }
 
         walletBinding = WalletBinding.inflate(getLayoutInflater());
 
@@ -58,26 +75,11 @@ public class WalletView extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putString("privateKey", walletViewModel.getPrivateKey());
         transactionFragment.setArguments(bundle);
-        //transactionFragment.setWalletView(this);
-        fragmentTransaction.add(walletBinding.containerTop.getId(), transactionFragment, null);
-        fragmentTransaction.commit();
-
+        transactionFragment.setWalletView(this);
+        fragmentTransaction.add(walletBinding.containerTop.getId(), transactionFragment, "transaction");
+        fragmentTransaction.addToBackStack("transaction").commit();
+        fragmentManager.executePendingTransactions();
     }
-
-    /*public void addListFragment() {
-        TransactionListFragment listFragment = new TransactionListFragment();
-
-        fragmentManager.beginTransaction().add(walletBinding.containerMiddle.getId(), listFragment, "").commitNow();
-        fragmentManager.beginTransaction().hide(bottomNavigationFragment).commitNow();
-        Log.d("yo123", "Added list fragment");
-
-    }*/
-
-    /*public void addAddContactFragment() {
-        AddContactFragment fragment = new AddContactFragment(getApplicationContext());
-        fragmentManager.beginTransaction().add(walletBinding.containerMiddle.getId(), fragment, "").commitNow();
-    }*/
-
 
     public void switchTopFragment(String fragmentStr) {
         Fragment fragment;
@@ -115,7 +117,7 @@ public class WalletView extends AppCompatActivity {
     }
 
 
-    /*public void startBraintree()  {
+    public int startBraintree()  {
         String token = walletViewModel.getToken();
         DropInRequest dropInRequest;
         if(token != null) {
@@ -136,17 +138,27 @@ public class WalletView extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        DropInRequest dropInRequest = new DropInRequest().clientToken(client.getClientToken());
+        dropInRequest = new DropInRequest().clientToken(client.getClientToken());
         Log.d("yo123", "dropin created");
         startActivityForResult(dropInRequest.getIntent(this), 400);
-    }*/
+
+        return result;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        this.result = resultCode;
+        Log.d("onactres", "here walletview");
+        Log.d("onactres", "request " + requestCode);
+        Log.d("onactres", "result " + resultCode);
         super.onActivityResult(requestCode, resultCode, data);
-
+        Log.d("onactres", "request " + requestCode);
+        Log.d("onactres", "result " + resultCode);
+        Log.d("onactres", "here walletview post super");
         String amount = transactionFragment.getEtherAmount();
         client.onActivityResult(requestCode, resultCode, data, amount);
+        //FIXME find a way to move client out of activity
+        //transactionFragment.onActivityResult(requestCode, resultCode, data, amount);
     }
 
     public WalletViewModel getWalletViewModel() {

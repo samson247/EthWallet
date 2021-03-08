@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.Provider;
 import java.security.Security;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class WalletModel {
@@ -34,7 +35,7 @@ public class WalletModel {
     private Credentials credentials2;
     private String clientToken;
     private String etherPrice;
-    private TransactionClient.TransactionData [] transactionData;
+    private ArrayList<TransactionClient.TransactionData> transactionData;
     private NewsClient.ArticleData [] articleData;
 
     public WalletModel(Context context) {
@@ -154,6 +155,12 @@ public class WalletModel {
         }
     }
 
+    public void loadExistingWallet(String privateKey) {
+        Credentials credentials = Credentials.create(privateKey);
+        setAddress(credentials.getAddress());
+        setPrivateKey(credentials.getEcKeyPair().getPrivateKey());
+    }
+
     public EthGetBalance getBalance(Web3j web3, EthGetBalance ethGetBalance, Credentials credentials)
     {
         try {
@@ -242,7 +249,7 @@ public class WalletModel {
         return this.articleData;
     }
 
-    public TransactionClient.TransactionData [] getTransactionData() {
+    public ArrayList<TransactionClient.TransactionData> getTransactionData() {
         return this.transactionData;
     }
 

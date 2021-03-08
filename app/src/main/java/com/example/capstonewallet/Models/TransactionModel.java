@@ -1,6 +1,7 @@
 package com.example.capstonewallet.Models;//import android.net.Credentials;
 import android.util.Log;
 
+import com.example.capstonewallet.AccountRepository;
 import com.example.capstonewallet.Models.Clients.EtherPriceClient;
 
 import org.web3j.crypto.RawTransaction;
@@ -28,6 +29,7 @@ public class TransactionModel {
     private Web3j web3;
     private Credentials credentials;
     private String privateKey;
+    AccountRepository repository;
 
     public TransactionModel(String privateKey) {
         connectToEthNetwork();
@@ -56,11 +58,17 @@ public class TransactionModel {
         }
     }
 
-    public void sendEther(String recipient_address, String amount)
+    public void sendEther(String recipient, String amount)
     {
-        if (credentials == null) {
-            credentials = Credentials.create("e2cdbadca25bf5a8a6e79a51ed0f2293a1b25bcba3985d9eebdb6d0f379830b7");
+        if(recipient.length() < 20) {
+            String name = recipient;
+            recipient = convertNameToAddress(name);
         }
+
+
+        /*if (credentials == null) {
+            credentials = Credentials.create("e2cdbadca25bf5a8a6e79a51ed0f2293a1b25bcba3985d9eebdb6d0f379830b7");
+        }*/
 
         //EthGetBalance ethGetBalance = web3.ethGetBalance(credentials.getAddress(), DefaultBlockParameterName.LATEST).sendAsync().get();
 
@@ -82,7 +90,7 @@ public class TransactionModel {
         String recipientAddress = "0x5934a20d487ab4c9e29032122e854b89a27fbae1";
         // Value to transfer (in wei)
         String amountToBeSent= "1";
-        BigInteger value = Convert.toWei(amountToBeSent, Convert.Unit.ETHER).toBigInteger(); // Gas Parameter
+        BigInteger value = Convert.toWei(amount, Convert.Unit.ETHER).toBigInteger(); // Gas Parameter
         BigInteger gasLimit = BigInteger.valueOf(21000);
         BigInteger gasPrice = Convert.toWei("20", Convert.Unit.GWEI).toBigInteger();
 
@@ -92,7 +100,7 @@ public class TransactionModel {
 
         Log.d("yo123", "addy");
         RawTransaction rawTransaction = RawTransaction.createEtherTransaction(nonce, gasPrice, gasLimit,
-                recipientAddress, value);
+                recipient, value);
         Log.d("yo123", "trans");
         byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, credentials);
         String hexValue = Numeric.toHexString(signedMessage);
@@ -152,7 +160,7 @@ public class TransactionModel {
 
     }
 
-    public void getBalance(String privateKey) {
+    public String getBalance() {
        // Web3j web3 = Web3j.build(new HttpService("https://rinkeby.infura.io/v3/8fa740a033224723a9a6bd808bc20e44"));
 
         // Have to use 16 not bigdecimalkey
@@ -160,8 +168,9 @@ public class TransactionModel {
         //81a8d3cd0d7467afc4b83022ef72a475ff8431ecdad14a164f9b386653712296
         //Credentials credentials = Credentials.create("81a8d3cd0d7467afc4b83022ef72a475ff8431ecdad14a164f9b386653712296");
         Log.d("addy", "addy " + credentials.getAddress());
+        EthGetBalance ethGetBalance = null;
         try {
-            EthGetBalance ethGetBalance = web3.ethGetBalance(credentials.getAddress(), DefaultBlockParameterName.LATEST).sendAsync().get();
+            ethGetBalance = web3.ethGetBalance(credentials.getAddress(), DefaultBlockParameterName.LATEST).sendAsync().get();
             //ethGetBalance.getBalance();
             Log.d("yo123", "address balance " + ethGetBalance.getBalance());
         } catch (InterruptedException e) {
@@ -169,5 +178,11 @@ public class TransactionModel {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        return ethGetBalance.getBalance().toString();
+    }
+
+    private String convertNameToAddress(String name) {
+        //error handling
+        return repository.getContactAddress(name);
     }
 }

@@ -114,11 +114,30 @@ public class BottomNavigationFragment extends Fragment implements View.OnClickLi
             //walletView.switchTopFragment("AccountFragment");
         }
 
-        walletView.switchTopFragment(fragmentClass);
+        //getActivity().getSupportFragmentManager().findFragmentByTag("transaction").getChildFragmentManager().beginTransaction().commit();
+        //Fragment fragment = getChildFragmentManager().findFragmentByTag("transaction");
+        //getChildFragmentManager().beginTransaction().add(R.id.container_top, fragment).commit();
 
-    }
+        if(fragmentClass.equals("TransactionFragment")) {
+            //Fragment fragment = getChildFragmentManager().findFragmentByTag("transaction");
+            Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("transaction");
+            if(fragment != null) {
+                Log.d("fragclass", "skipping dat");
+                //getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container_top, fragment).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container_top, fragment).commit();
+                //fragman.beginTransaction().remove(fragman.findFragmentById(R.id.fraglog)).commit();
+                //fragmentManager.beginTransaction().replace(walletBinding.containerTop.getId(), fragment).commit();
+            }
+        }
+        else {
+            Log.d("fragclass", fragmentClass);
+            walletView.switchTopFragment(fragmentClass);
+        }
 
-    public void onTabBarSelected(View v) {
+        //walletView.switchTopFragment(fragmentClass);
+
+        //walletView.switchTopFragment(fragmentClass);
+        //getActivity().getSupportFragmentManager().
 
     }
 }

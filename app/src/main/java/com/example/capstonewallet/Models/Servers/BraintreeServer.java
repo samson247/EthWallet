@@ -24,7 +24,7 @@ public class BraintreeServer {
                         );
                         String clientToken = gateway.clientToken().generate();
                         setClientToken(clientToken);
-                        Log.d("yo123", "clientTooken" + clientToken);
+                        Log.d("yo123", "clientTooken " + clientToken);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
