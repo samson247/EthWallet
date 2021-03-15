@@ -26,17 +26,26 @@ public class AddressBookViewModel {
         return names;
     }
 
-    public ContactEntity[] getContacts() {
+    public ArrayList<ContactEntity> getContacts() {
         ContactEntity[] contacts = repository.getContacts();
+        ArrayList<ContactEntity> contactList = new ArrayList<>();
         repository.closeDatabase();
         if(contacts.length > 0) {
-            int i = 0;
-            while(i < contacts.length) {
-                Log.d("yo123", contacts[i].getName() + " " + contacts[i].getAddress());
-                i++;
+            int index = 0;
+            while(index < contacts.length) {
+                if(!(contacts[index].getName() == null))
+                {
+                    contactList.add(contacts[index]);
+                    Log.d("yo123", contacts[index].getName() + " " + contacts[index].getAddress());
+                }
+                index++;
             }
         }
-        return contacts;
+        //ArrayList<ContactEntity> contactList = new ArrayList<>();
+        return contactList;
     }
 
+    public void editContact(String oldName, String oldAddress, String newName, String newAddress) {
+
+    }
 }

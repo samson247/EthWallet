@@ -7,37 +7,6 @@
     android:background="@color/grey"
     tools:context=".Views.Activities.LoginView">
 
-    <!--<EditText
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="172dp"
-        android:layout_height="39dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <EditText
-        android:id="@+id/editTextTextPersonName2"
-        android:layout_width="166dp"
-        android:layout_height="46dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />-->
-
-    <!--<androidx.fragment.app.FragmentContainerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/fragment_container_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.example.capstonewallet.Views.Fragments.CreateAccountFragment"
-        android:visibility="invisible"/>-->
-
     <LinearLayout
         android:id="@+id/container"
         android:layout_width="250dp"
@@ -46,16 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2">
-
-
-        <!--<androidx.fragment.app.FragmentContainerView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/fragment_container_view"
-            android:name="com.example.capstonewallet.Views.Fragments.CreateAccountFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible" />-->
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2"/>
 
     <ImageView
         android:id="@+id/imageView2"

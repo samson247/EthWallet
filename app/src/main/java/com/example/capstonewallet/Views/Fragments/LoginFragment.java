@@ -87,8 +87,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
                 Intent intent = new Intent(getActivity(), WalletView.class);
                 // pass credentials
-                intent.putExtra("password", loginViewModel.getPassword());
-                intent.putExtra("fileName", loginViewModel.getFileName());
+                intent.putExtra("credentials", new String[]{loginViewModel.getPassword(), loginViewModel.getFileName()});
+                //intent.putExtra("password", loginViewModel.getPassword());
+                //intent.putExtra("fileName", loginViewModel.getFileName());
                 startActivity(intent);
             }
             else {

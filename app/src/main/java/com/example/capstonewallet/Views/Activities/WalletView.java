@@ -40,7 +40,7 @@ public class WalletView extends AppCompatActivity {
     private BottomNavigationFragment bottomNavigationFragment;
     TransactionFragment transactionFragment;
     BraintreeClient client;
-    private int result;
+    private int result = -100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +76,7 @@ public class WalletView extends AppCompatActivity {
         bundle.putString("privateKey", walletViewModel.getPrivateKey());
         transactionFragment.setArguments(bundle);
         transactionFragment.setWalletView(this);
-        fragmentTransaction.add(walletBinding.containerTop.getId(), transactionFragment, "transaction");
+        fragmentTransaction.add(walletBinding.containerTop.getId(), transactionFragment, "TransactionFragment");
         fragmentTransaction.addToBackStack("transaction").commit();
         fragmentManager.executePendingTransactions();
     }
@@ -113,11 +113,11 @@ public class WalletView extends AppCompatActivity {
             fragmentManager.beginTransaction().remove(transactionFragment).commit();
         }
         //fragman.beginTransaction().remove(fragman.findFragmentById(R.id.fraglog)).commit();
-        fragmentManager.beginTransaction().replace(walletBinding.containerTop.getId(), fragment).commit();
+        fragmentManager.beginTransaction().replace(walletBinding.containerTop.getId(), fragment, fragmentStr).commit();
     }
 
 
-    public int startBraintree()  {
+    public void startBraintree()  {
         String token = walletViewModel.getToken();
         DropInRequest dropInRequest;
         if(token != null) {
@@ -141,8 +141,6 @@ public class WalletView extends AppCompatActivity {
         dropInRequest = new DropInRequest().clientToken(client.getClientToken());
         Log.d("yo123", "dropin created");
         startActivityForResult(dropInRequest.getIntent(this), 400);
-
-        return result;
     }
 
     @Override
@@ -156,12 +154,25 @@ public class WalletView extends AppCompatActivity {
         Log.d("onactres", "result " + resultCode);
         Log.d("onactres", "here walletview post super");
         String amount = transactionFragment.getEtherAmount();
-        client.onActivityResult(requestCode, resultCode, data, amount);
+        int result = client.onActivityResult(requestCode, resultCode, data, amount);
+        notifyGetFragment(result);
         //FIXME find a way to move client out of activity
         //transactionFragment.onActivityResult(requestCode, resultCode, data, amount);
     }
 
+    public int getResult() {
+        return this.result;
+    }
+
+    public void notifyGetFragment(int resultCode) {
+        transactionFragment.notifyGet(resultCode);
+    }
+
     public WalletViewModel getWalletViewModel() {
         return this.walletViewModel;
+    }
+
+    public BottomNavigationFragment getBottomNavigationFragment() {
+        return this.bottomNavigationFragment;
     }
 }

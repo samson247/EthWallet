@@ -3,6 +3,7 @@ package com.example.capstonewallet.Models;
 import android.content.Context;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.util.Base64;
 import android.util.Log;
 
 import com.example.capstonewallet.AccountRepository;
@@ -19,10 +20,20 @@ import org.web3j.protocol.core.methods.response.EthGetBalance;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 import java.security.Security;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 public class WalletModel {
     private static final String DIRECTORY_DOWNLOADS = Environment.DIRECTORY_DOWNLOADS;
@@ -217,9 +228,9 @@ public class WalletModel {
         CountDownTimer timer = new CountDownTimer(10000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                clientToken = service.getToken();
-                etherPrice = service.getEtherPrice();
-                transactionData = service.getTransactionData();
+                //clientToken = service.getToken();
+                //etherPrice = service.getEtherPrice();
+                //transactionData = service.getTransactionData();
                 articleData = service.getArticleData();
 
                 Log.d("yo123", "time" + millisUntilFinished);
@@ -227,10 +238,10 @@ public class WalletModel {
 
             @Override
             public void onFinish() {
-                Log.d("yo123", "client token" + getClientToken());
-                Log.d("yo123", "ether price" + getEtherPrice());
+                //Log.d("yo123", "client token" + getClientToken());
+                //Log.d("yo123", "ether price" + getEtherPrice());
                 Log.d("yo123", "articles" + getArticleData());
-                Log.d("yo123", "transactions" + getTransactionData());
+                //Log.d("yo123", "transactions" + getTransactionData());
 
             }
         };
@@ -260,6 +271,34 @@ public class WalletModel {
     }
 
     public String getPassword() {
-        return repository.getPassword(this.getAddress());
+        String encryptedPassword = repository.getPassword(this.getAddress());
+        PasswordModel passwordModel = new PasswordModel();
+        String initVector = repository.getInitVector(getAddress());
+        String password = null;
+        try {
+            password = passwordModel.loadPassword(getAddress(), Base64.decode(encryptedPassword, Base64.DEFAULT),
+                    Base64.decode(repository.getInitVector(address), Base64.DEFAULT));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (UnrecoverableEntryException e) {
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        }
+        return password;
     }
 }

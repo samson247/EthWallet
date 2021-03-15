@@ -9,6 +9,6 @@
     <string-array name="unitOptions">
         <item>Wei</item>
         <item>Gwei</item>
-        <item>Ether</item>
+        <item>ETH</item>
     </string-array>
 </resources>

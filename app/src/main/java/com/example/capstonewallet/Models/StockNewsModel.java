@@ -2,6 +2,9 @@ package com.example.capstonewallet.Models;
 
 import android.util.Log;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+
 /**
  * A class to model the StockNews entity and provide its functionality
  *
@@ -22,16 +25,29 @@ public class StockNewsModel {
     public String calculateUSDAmount(String etherAmount, String etherUnit) {
         Log.d("yo123", "value: " + usdValue);
         Double amount = Double.parseDouble(usdValue);
-        Integer value = Integer.parseInt(etherAmount);
+        Double value = Double.parseDouble(etherAmount);
+        BigDecimal convertedValue = null;
+        BigDecimal result;
+        if(etherUnit.equals("Wei")) {
 
-        if(etherUnit == "wei") {
-            //ethervalue = etherValue / 1000000000000000000;
+            convertedValue = BigDecimal.valueOf(value)
+                    .divide(BigDecimal.valueOf(Long.parseLong("1000000000000000000")));
+
+            result = convertedValue.multiply(BigDecimal.valueOf(amount));
         }
-        else if(etherUnit == "gwei") {
+        else if(etherUnit.equals("Gwei")) {
             //ethervalue = etherValue / 1000000000000000
-        }
+            convertedValue = BigDecimal.valueOf(value)
+                    .divide(BigDecimal.valueOf(Long.parseLong("1000000000000000")));
 
-        Double result = amount * value;
+            result = convertedValue.multiply(BigDecimal.valueOf(amount));
+        }
+        else {
+            result = BigDecimal.valueOf(value).multiply(BigDecimal.valueOf(amount));
+        }
+        MathContext mathContext = new MathContext(3);
+        result = result.round(mathContext);
+        result.setScale(2, BigDecimal.ROUND_HALF_DOWN);
         return result.toString();
     }
 }

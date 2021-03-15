@@ -274,4 +274,8 @@ public class TransactionFragment extends Fragment implements View.OnClickListene
 
         return value;
     }
+
+    public void notifyGet(int result) {
+        getFragment.notifyResult(result);
+    }
 }

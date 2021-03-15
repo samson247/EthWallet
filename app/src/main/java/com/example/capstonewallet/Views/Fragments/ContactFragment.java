@@ -24,6 +24,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     private String nameValue;
     private String addressValue;
     private ImageButton closeButton;
+    private ImageButton editButton;
 
     public ContactFragment(String name, String address) {
         nameValue = name;
@@ -38,6 +39,8 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         address = view.findViewById(R.id.addressContact);
         closeButton = view.findViewById(R.id.closeContactPopup);
         closeButton.setOnClickListener(this::onClick);
+        editButton = view.findViewById(R.id.editButton);
+        editButton.setOnClickListener(this::onClick);
         name.setText(nameValue);
         address.setText(addressValue);
 
@@ -53,7 +56,11 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Log.d("yo123", "exit clicked");
-        this.getParentFragment().getChildFragmentManager().popBackStack();
+        if(v.getId() == closeButton.getId()) {
+            this.getParentFragment().getChildFragmentManager().popBackStack();
+        }
+       else if(v.getId() == editButton.getId()) {
+            ((AddressBookFragment)getParentFragment()).editContact(name.getText().toString(), address.getText().toString());
+        }
     }
 }

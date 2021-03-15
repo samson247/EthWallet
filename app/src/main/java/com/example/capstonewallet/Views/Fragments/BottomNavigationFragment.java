@@ -118,21 +118,21 @@ public class BottomNavigationFragment extends Fragment implements View.OnClickLi
         //Fragment fragment = getChildFragmentManager().findFragmentByTag("transaction");
         //getChildFragmentManager().beginTransaction().add(R.id.container_top, fragment).commit();
 
-        if(fragmentClass.equals("TransactionFragment")) {
+        if(fragmentClass != null) {
             //Fragment fragment = getChildFragmentManager().findFragmentByTag("transaction");
-            Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("transaction");
+            Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag(fragmentClass);
             if(fragment != null) {
-                Log.d("fragclass", "skipping dat");
+                Log.d("fragclass", "skipping dat " + fragmentClass);
                 //getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container_top, fragment).commit();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container_top, fragment).commit();
                 //fragman.beginTransaction().remove(fragman.findFragmentById(R.id.fraglog)).commit();
                 //fragmentManager.beginTransaction().replace(walletBinding.containerTop.getId(), fragment).commit();
             }
         }
-        else {
-            Log.d("fragclass", fragmentClass);
-            walletView.switchTopFragment(fragmentClass);
-        }
+
+        Log.d("fragclass", fragmentClass);
+        walletView.switchTopFragment(fragmentClass);
+
 
         //walletView.switchTopFragment(fragmentClass);
 

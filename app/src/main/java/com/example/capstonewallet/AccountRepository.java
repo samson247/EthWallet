@@ -115,7 +115,7 @@ public class AccountRepository {
     }
 
 
-    void insertContact(ContactEntity entity) {
+    public void insertContact(ContactEntity entity) {
         Log.d("yo123", "in insert contact");
         Log.d("yo123", "address " + entity.getAddress());
         Log.d("yo123", "name " + entity.getName());
@@ -136,8 +136,14 @@ public class AccountRepository {
         insertContact(entity);
     }
 
-    void deleteContact(ContactEntity a) {
+    //TODO delete contact logic
+    public boolean deleteContact(String name, String address) {
+        //
+        return false;
+    }
 
+    public void deleteContact(ContactEntity a) {
+        //
     }
 
     private void getContact(String name) {

@@ -1,6 +1,7 @@
 package com.example.capstonewallet.Views.Fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -18,6 +20,7 @@ public class TransactionGetFragment extends Fragment implements View.OnClickList
     private EditText amount;
     private Button getEtherButton;
     private Spinner unitOptions;
+    private int result;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
@@ -48,15 +51,19 @@ public class TransactionGetFragment extends Fragment implements View.OnClickList
     public void onClick(View v) {
         if(v.getId() == getEtherButton.getId()) {
             //set loading bar
-            int result = ((WalletView)getActivity()).startBraintree();
-            String amountToSend = amount.getText().toString();
-            amount.setText(null);
+            Log.d("yo123", "goint to braintree...");
+            ((WalletView)getActivity()).startBraintree();
+        }
+    }
 
-            if(result == -1) {
-                // send ether to user of amount = what they paid
-                ((TransactionFragment)getParentFragment()).getViewModel().forwardSendEther("", amountToSend);
-            }
-
+    public void notifyResult(int result) {
+        String amountToSend = amount.getText().toString();
+        amount.setText(null);
+        Log.d("yo123", "result of braintree = " + result);
+        if(result == 1) {
+            // send ether to user of amount = what they paid
+            ((TransactionFragment)getParentFragment()).getViewModel().forwardGetEther(amountToSend);
+            Toast.makeText(getContext(), "Transaction sent", Toast.LENGTH_LONG);
         }
     }
 

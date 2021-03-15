@@ -13,8 +13,9 @@ import java.util.ArrayList;
 
 public class StockNewsViewModel {
     private NewsClient.ArticleData [] articles;
+    ArrayList<ArrayList<String>> articleData = new ArrayList<>();
     ArrayList<String> newsText = new ArrayList<>();
-    String urlToImage;
+    ArrayList<String> url = new ArrayList<>();
     ArrayList<ChartClient.ChartData> chartData = new ArrayList<>();
     ArrayList<String> prices = new ArrayList<>();;
     ArrayList<String> dates = new ArrayList<>();
@@ -26,28 +27,37 @@ public class StockNewsViewModel {
         apiService = new ApiServiceSync();
     }
 
-    public ArrayList<String> startNewsService() {
+    public ArrayList<ArrayList<String>> startNewsService() {
         //apiService = new ApiServiceSync();
         apiService.startNewsClient();
         articles = apiService.getArticles();
+        parseArticleData(articles);
+        return articleData;
+    }
 
+    public void parseArticleData(NewsClient.ArticleData [] articles) {
         String title;
         //String urlToImage;
         for (int i = 0; i < 19; i++) {
             title = articles[i].getTitle();
             newsText.add(title);
 
-            urlToImage = articles[i].getImageUrl();
+            url.add(articles[i].getImageUrl());
 
-            Log.d("yo123", "Url: " + urlToImage);
+            Log.d("yo123", "Url: " + url);
         }
-        return newsText;
+        articleData.add(newsText);
+        articleData.add(url);
     }
 
     public void startPriceService() {
         apiService.startPriceClient();
         price = apiService.getPrice();
         Log.d("yo123", "price " + price);
+    }
+
+    public ArrayList<ArrayList<String>> getArticleData() {
+        return this.articleData;
     }
 
     public String getPrice() {

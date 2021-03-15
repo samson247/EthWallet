@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/popupLayout"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:background="@drawable/border">
+    android:layout_height="180dp"
+    android:background="@drawable/border_4">
 
     <TextView
         android:id="@+id/nameContact"
@@ -14,7 +14,9 @@
         android:layout_height="wrap_content"
         android:text="Name"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/navy"/>
+        android:textColor="@color/grey"
+        android:textSize="25sp"
+        android:paddingTop="30dp"/>
 
     <TextView
         android:id="@+id/addressContact"
@@ -22,7 +24,9 @@
         android:layout_height="wrap_content"
         android:text="Address"
         android:layout_centerInParent="true"
-        android:textColor="@color/navy"/>
+        android:textColor="@color/grey"
+        android:textSize="25sp"
+        android:paddingTop="20dp"/>
 
     <ImageButton
         android:id="@+id/closeContactPopup"
@@ -30,4 +34,12 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/close"
         android:background="@color/grey"/>
+
+    <ImageButton
+        android:id="@+id/editButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/edit"
+        android:background="@color/navy"
+        android:layout_alignParentEnd="true"/>
 </RelativeLayout>

@@ -101,7 +101,7 @@ public class CreateAccountViewModel {
     }
 
     // Move some or all of this logic to LoginModel createAccount
-    public boolean onClick(Context context, boolean addExisting) {
+    public int onClick(Context context, boolean addExisting) {
         getInstance(context);
 
         //work on 2 way binding
@@ -109,7 +109,7 @@ public class CreateAccountViewModel {
         //EditText password = (EditText) v.findViewById(R.id.editTextTextPersonName2);
         //EditText publicKey = (EditText) v.findViewById(R.id.editTextTextPersonName);
 
-        boolean success = createAccountModel.createWallet(this.getPassword());
+        int success = createAccountModel.createWallet(this.getPassword(), this.getWalletName());
         setFileName(createAccountModel.getFileName());
 
 

@@ -25,7 +25,8 @@
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:imeOptions="actionDone"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addContactButton"
@@ -41,23 +42,23 @@
         app:layout_constraintVertical_bias="0.16"
         app:srcCompat="@drawable/add" />
 
-    <LinearLayout
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/containerAddContact"
-        android:layout_width="417dp"
-        android:layout_height="518dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addContactButton"
         app:layout_constraintVertical_bias="0.328"
         android:orientation="horizontal" >
-    </LinearLayout>
+    </androidx.fragment.app.FragmentContainerView>
 
     <LinearLayout
         android:id="@+id/popupContainer"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:layout_constraintBottom_toBottomOf="@+id/containerAddContact"
+        android:layout_height="180dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:orientation="horizontal" />
@@ -67,7 +68,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/back_arrow"
-        tools:layout_editor_absoluteX="237dp"
-        tools:layout_editor_absoluteY="13dp" />
+        android:background="@color/grey"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

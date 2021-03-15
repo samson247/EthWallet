@@ -25,16 +25,16 @@ import java.util.ArrayList;
 public class StockNewsAdapter extends RecyclerView.Adapter<StockNewsAdapter.StockNewsViewHolder>{
     private Context context;
     private ArrayList<String> newsText = new ArrayList<>();
-    private ArrayList<Bitmap> newsImage = new ArrayList<>();
+    private ArrayList<String> newsUrl = new ArrayList<>();
     private TransactionListItemBinding binding;
     private static final String TAG = "StockNewsAdapter";
     RecyclerView.RecycledViewPool viewPool;
 
 
-    public StockNewsAdapter(Context context, ArrayList<String> newsText, ArrayList<Bitmap> newsImage) {
+    public StockNewsAdapter(Context context, ArrayList<String> newsText, ArrayList<String> newsUrl) {
         this.context = context;
         this.newsText = newsText;
-        this.newsImage = newsImage;
+        this.newsUrl = newsUrl;
         //viewPool = new RecyclerView.RecycledViewPool();
     }
 
@@ -52,12 +52,13 @@ public class StockNewsAdapter extends RecyclerView.Adapter<StockNewsAdapter.Stoc
     @Override
     public void onBindViewHolder(@NonNull StockNewsAdapter.StockNewsViewHolder holder, int position) {
         holder.newsText.setText(this.newsText.get(position));
+        holder.url = this.newsUrl.get(position);
 
         //holder.newsImage.setImageBitmap(this.newsImage.get(position));
         holder.newsText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newsLinkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+                Intent newsLinkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(holder.url));
                 context.startActivity(newsLinkIntent);
             }
         });
@@ -72,14 +73,13 @@ public class StockNewsAdapter extends RecyclerView.Adapter<StockNewsAdapter.Stoc
     public class StockNewsViewHolder extends RecyclerView.ViewHolder {
         private RelativeLayout relativeLayout;
         private TextView newsText;
-        private ImageView newsImage;
+        private String url;
 
         public StockNewsViewHolder(@NonNull View itemView) {
             super(itemView);
             //itemView.setTag(TAG);
-            relativeLayout = (RelativeLayout) itemView.findViewById(R.id.news_layout);
-            newsText = (TextView) itemView.findViewById(R.id.news_text);
-            newsImage = (ImageView) itemView.findViewById(R.id.news_image);
+            relativeLayout = itemView.findViewById(R.id.news_layout);
+            newsText = itemView.findViewById(R.id.news_text);
         }
     }
 }

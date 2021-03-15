@@ -18,6 +18,9 @@ public interface ContactDao {
     @Query("SELECT address FROM contactentity WHERE name LIKE :name")
     String getContact(String name);
 
+    @Query("SELECT name FROM contactentity WHERE address LIKE :address")
+    boolean getName(String address);
+
     @Query("SELECT * FROM contactentity")
     ContactEntity[] getContacts();
 }

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
+    android:background="@drawable/border_4"
     android:id="@+id/news_layout">
 
     <ImageView
@@ -17,11 +18,11 @@
         android:layout_height="50dp"
         android:paddingLeft="30dp"
         android:id="@+id/news_text"
-        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/news_image"
         android:text="Placeholder"
         android:textSize="20dp"
-        android:textColor="@color/navy"
+        android:textColor="@color/grey"
         android:clickable="true"
         android:background="?attr/selectableItemBackground">
     </TextView>

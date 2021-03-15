@@ -1,5 +1,6 @@
 package com.example.capstonewallet.Models;//import android.net.Credentials;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.capstonewallet.AccountRepository;
 import com.example.capstonewallet.Models.Clients.EtherPriceClient;
@@ -120,6 +121,74 @@ public class TransactionModel {
         confirm_transaction(ethSendTransaction);
     }
 
+    public void getEther(String amount) {
+        // TODO Change this to APP wallet account
+        Credentials appCredentials = credentials;
+
+        EthGetTransactionCount ethGetTransactionCount = null;
+        try {
+            ethGetTransactionCount = web3
+                    .ethGetTransactionCount(appCredentials.getAddress(), DefaultBlockParameterName.LATEST).sendAsync().get();
+            Log.d("yo123", "tcount");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            Log.d("yo123", e.getMessage());
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            Log.d("yo123", e.getMessage());
+        }
+        BigInteger nonce = ethGetTransactionCount.getTransactionCount();
+
+        // Recipient address
+        String recipient = credentials.getAddress();
+        // Value to transfer (in wei)
+        BigInteger value = Convert.toWei(amount, Convert.Unit.ETHER).toBigInteger();
+        // Gas Parameters
+        BigInteger gasLimit = BigInteger.valueOf(21000);
+        BigInteger gasPrice = Convert.toWei("20", Convert.Unit.GWEI).toBigInteger();
+
+
+        Log.d("yo123", String.valueOf(gasLimit));
+        Log.d("yo123", String.valueOf(gasPrice));
+
+        Log.d("yo123", "addy");
+        RawTransaction rawTransaction = RawTransaction.createEtherTransaction(nonce, gasPrice, gasLimit,
+                recipient, value);
+        Log.d("yo123", "trans");
+        byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, appCredentials);
+        String hexValue = Numeric.toHexString(signedMessage);
+        Log.d("yo123", "signed");
+        EthSendTransaction ethSendTransaction = null;
+        try {
+            ethSendTransaction = web3.ethSendRawTransaction(hexValue).sendAsync().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            Log.d("yo123", e.getMessage());
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            Log.d("yo123", e.getMessage());
+        }
+
+        Log.d("yo123", "sent");
+        EthSendTransaction finalEthSendTransaction = ethSendTransaction;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                confirm_transaction(finalEthSendTransaction);
+            }
+        });
+        thread.run();
+    }
+
+
+    public void setGasParameters() {
+
+    }
+
+    public void signTransaction() {
+
+    }
+
     // Get transaction receipt
     public void confirm_transaction(EthSendTransaction ethSendTransaction)
     {
@@ -144,7 +213,7 @@ public class TransactionModel {
             }
             transactionReceipt = ethGetTransactionReceiptResp.getTransactionReceipt();
             try {
-                Thread.sleep(1); // Wait for 3 sec
+                Thread.sleep(3000); // Wait for 3 sec
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 Log.d("yo123", e.getMessage());
@@ -179,6 +248,14 @@ public class TransactionModel {
             e.printStackTrace();
         }
         return ethGetBalance.getBalance().toString();
+    }
+
+    public String getBalanceInEther() {
+        return convertToEther(getBalance());
+    }
+
+    public String convertToEther(String balance) {
+        return Convert.fromWei(balance, Convert.Unit.ETHER).toString();
     }
 
     private String convertNameToAddress(String name) {

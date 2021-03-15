@@ -7,6 +7,13 @@ import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
+/**
+ * The class modeling the account table in the account database. The table contains two fields:
+ * address, the primary key, and fileName.
+ *
+ * @author Sam Dodson
+ */
+
 @Entity
 public class AccountEntity implements Serializable {
     @PrimaryKey

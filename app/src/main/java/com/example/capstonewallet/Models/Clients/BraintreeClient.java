@@ -20,6 +20,7 @@ public class BraintreeClient {
     private String clientToken;
     private BraintreeGateway gateway;
     private String amount;
+    private int transactionResultCode = 0;
 
     public BraintreeClient() throws InterruptedException {
         server = new BraintreeServer();
@@ -31,13 +32,14 @@ public class BraintreeClient {
         return this.clientToken;
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data, String amount) {
+    public int onActivityResult(int requestCode, int resultCode, Intent data, String amount) {
         Log.d("onactres", "here client");
         Log.d("onactres", "request " + requestCode);
         Log.d("onactres", "result " + resultCode);
         Log.d("onactres", "amount " + amount);
-        //amount = "ten";
-        this.amount = amount;
+        //this.amount = "ten";
+        //this.amount = amount;
+        amount = "10";
         if(requestCode == 400) {
             if(resultCode == Activity.RESULT_OK)
             {
@@ -61,7 +63,7 @@ public class BraintreeClient {
                         public void run() {
                             try  {
                                 TransactionRequest request = new TransactionRequest()
-                                        .amount(new BigDecimal(amount))
+                                        .amount(new BigDecimal("10.00"))
                                         .paymentMethodNonce(strNonce)
                                         .options()
                                         .submitForSettlement(false)
@@ -73,6 +75,7 @@ public class BraintreeClient {
                                     Log.d("yo123", "success");
                                     Transaction transaction = result2.getTarget();
                                     Log.d("yo123", transaction.getStatus().toString());
+                                    transactionResultCode = 1;
                                 }
                                 else {
                                     Log.d("yo123", "fail");
@@ -85,6 +88,11 @@ public class BraintreeClient {
                     });
 
                     thread.start();
+                    try {
+                        thread.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
                 else {
                     Log.d("yo123", "invalid amount");
@@ -100,5 +108,6 @@ public class BraintreeClient {
                 Log.d("Err",error.toString());
             }
         }
+        return transactionResultCode;
     }
 }

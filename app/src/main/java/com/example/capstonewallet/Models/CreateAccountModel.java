@@ -5,6 +5,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.example.capstonewallet.AccountRepository;
+import com.example.capstonewallet.Database.ContactEntity;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.web3j.crypto.CipherException;
@@ -22,11 +23,18 @@ import java.security.Provider;
 import java.security.Security;
 import java.security.SignatureException;
 import java.security.UnrecoverableEntryException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+/**
+ * Model class for the create account fragment
+ *
+ * @author Sam Dodson
+ */
 public class CreateAccountModel {
     private AccountRepository repository;
     private String address;
@@ -35,52 +43,71 @@ public class CreateAccountModel {
     private String password;
     String privateKey;
     private static final String DIRECTORY_DOWNLOADS = Environment.DIRECTORY_DOWNLOADS;
+    int code = -1;
 
-
+    /**
+     * Constructor for the CreateAccountModel class
+     * @param context the context for the CreateAccount fragment, used to initialize DB repository
+     * @param name the name of the wallet
+     */
     public CreateAccountModel(Context context, String name) {
         repository = new AccountRepository(context);
         this.name = name;
     }
 
-    public boolean createWallet(String password)
+    /**
+     * Creates a new wallet file using password
+     * @param password the password used to encrypt wallet file
+     * @return true or false depending on if the wallet was created successfully
+     */
+    public int createWallet(String password, String name)
     {
-        this.setupBouncyCastle();
-        String path = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS).getPath();
-        try {
-            fileName = WalletUtils.generateLightNewWalletFile(password, new File(path));
-            Log.d("yo123", "Password " + password);
-            Log.d("yo123", "Filename " + fileName);
-            Log.d("yo123", "Path " + path);
-        } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
-            noSuchAlgorithmException.printStackTrace();
-            Log.d("yo123", noSuchAlgorithmException.getMessage());
-        } catch (NoSuchProviderException noSuchProviderException) {
-            noSuchProviderException.printStackTrace();
-            Log.d("yo123", noSuchProviderException.getMessage());
-        } catch (InvalidAlgorithmParameterException invalidAlgorithmParameterException) {
-            invalidAlgorithmParameterException.printStackTrace();
-            Log.d("yo123", invalidAlgorithmParameterException.getMessage());
-        } catch (CipherException cipherException) {
-            cipherException.printStackTrace();
-            Log.d("yo123", cipherException.getMessage());
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-            Log.d("yo123", ioException.getMessage());
-        }
+        // Wallet is created if password is of valid format otherwise return false
+        if(!checkUsername(name)) {
+            if (checkPassword(password)) {
+                this.setupSecurityProvider();
+                String path = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS).getPath();
+                try {
+                    fileName = WalletUtils.generateLightNewWalletFile(password, new File(path));
+                    Log.d("yo123", "Password " + password);
+                    Log.d("yo123", "Filename " + fileName);
+                    Log.d("yo123", "Path " + path);
+                } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
+                    noSuchAlgorithmException.printStackTrace();
+                    Log.d("yo123", noSuchAlgorithmException.getMessage());
+                } catch (NoSuchProviderException noSuchProviderException) {
+                    noSuchProviderException.printStackTrace();
+                    Log.d("yo123", noSuchProviderException.getMessage());
+                } catch (InvalidAlgorithmParameterException invalidAlgorithmParameterException) {
+                    invalidAlgorithmParameterException.printStackTrace();
+                    Log.d("yo123", invalidAlgorithmParameterException.getMessage());
+                } catch (CipherException cipherException) {
+                    cipherException.printStackTrace();
+                    Log.d("yo123", cipherException.getMessage());
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                    Log.d("yo123", ioException.getMessage());
+                }
 
-        if(fileName != null) {
-            setPassword(password);
-            setFileName(path + "/" + fileName);
-            insertAccount();
-            Log.d("yo123", "account inserted");
-            insertName();
-            Log.d("yo123", "name inserted");
-            insertPassword();
-            Log.d("yo123", "password inserted");
+                // If file is created successfully account, name, and password is added to database
+                if (fileName != null) {
+                    setPassword(password);
+                    setFileName(path + "/" + fileName);
+                    insertAccount();
+                    Log.d("yo123", "account inserted");
+                    insertName();
+                    Log.d("yo123", "name inserted");
+                    insertPassword();
+                    Log.d("yo123", "password inserted");
+                }
+            }
         }
-        return true;
+        return code;
     }
 
+    /**
+     * Account is inserted into database Account table
+     */
     public void insertAccount() {
         Credentials credentials = null;
         try {
@@ -99,6 +126,9 @@ public class CreateAccountModel {
         }
     }
 
+    /**
+     * Existing account is added to database
+     */
     public void addExistingAccount() {
         Credentials credentials = null;
         credentials = Credentials.create(privateKey);
@@ -107,10 +137,16 @@ public class CreateAccountModel {
         insertPassword();
     }
 
+    /**
+     * Wallet name is inserted into Contact table
+     */
     public void insertName() {
         repository.addContact(address, name);
     }
 
+    /**
+     * Password is added to Android Keystore and encrypted password is added to Password table
+     */
     public void insertPassword() {
         PasswordModel passwordModel = new PasswordModel();
         String [] passwordRecord = new String[3];
@@ -143,53 +179,119 @@ public class CreateAccountModel {
         repository.insertPassword(address, passwordRecord[0], passwordRecord[1]);
     }
 
+    /**
+     * Getter for the address of the newly created wallet account
+     * @return the address of the wallet account
+     */
     public String getAddress() {
         return address;
     }
 
+    /**
+     * Setter for the address value
+     * @param address the address of the wallet account
+     */
     public void setAddress(String address) {
         this.address = address;
     }
 
+    /**
+     * Getter for the name of the wallet account
+     * @return the name of the wallet account
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Setter for the name of the wallet account
+     * @param name the name of the wallet account
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Getter for the file name associated with wallet account
+     * @return the filename of the wallet file
+     */
     public String getFileName() {
         return fileName;
     }
 
+    /**
+     * Setter for the file name associated with wallet account
+     * @param fileName the name of the wallet file
+     */
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 
+    /**
+     * Getter for the password associated with wallet account
+     * @return the password for a wallet account
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Setter for the password associated with wallet account
+     * @param password the password for a wallet account
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public void setupBouncyCastle() {
-        final Provider provider = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME);
-        if (provider == null) {
-            // Web3j will set up the provider lazily when it's first used.
+    /**
+     * Sets up Java security provider with Bouncy Castle provider if not already set
+     */
+    public void setupSecurityProvider() {
+        final Provider securityProvider = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME);
+        if (securityProvider == null) {
             return;
         }
-        if (provider.getClass().equals(BouncyCastleProvider.class)) {
-            // BC with same package name, shouldn't happen in real life.
+        if (securityProvider.getClass().equals(BouncyCastleProvider.class)) {
             return;
         }
-        // Android registers its own BC provider. As it might be outdated and might not include
-        // all needed ciphers, we substitute it with a known BC bundled in the app.
-        // Android's BC has its package rewritten to "com.android.org.bouncycastle" and because
-        // of that it's possible to have another BC implementation loaded in VM.
         Security.removeProvider(BouncyCastleProvider.PROVIDER_NAME);
         Security.insertProviderAt(new BouncyCastleProvider(), 1);
+    }
+
+    /**
+     * Verifies password is in a valid format
+     * @param password the user entered password to verify
+     * @return true is password is valid and false otherwise
+     */
+    public boolean checkPassword(String password) {
+        Pattern p = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+=!*])(?=\\S+$).{8,}$");
+        Matcher m = p.matcher(password);
+        boolean isMatch = m.matches();
+        if(isMatch == false) {
+            code = 1;
+        }
+
+        return isMatch;
+    }
+
+    public boolean checkUsername(String name) {
+        if(name.length() > 20) {
+            code = 2;
+            return true;
+        }
+        ContactEntity[] contacts = repository.getContacts();
+        boolean exists = false;
+        for(int index = 0; index < contacts.length; index++) {
+            if(!(contacts[index].getName() == null)) {
+                if(contacts[index].getName().equals(name)) {
+                    Log.d("yo123", "exists");
+                    exists = true;
+                }
+            }
+        }
+        if(exists == false) {
+            code = 0;
+        }
+        return exists;
     }
 }

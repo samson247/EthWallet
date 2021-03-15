@@ -22,11 +22,11 @@ public class NewsClient {
     private final OkHttpClient client = new OkHttpClient();
     JSONObject obj1;
     String articles;
-    JSONArray obj2;
+    JSONArray articlesJson;
     String article;
-    JSONObject obj3;
+    JSONObject articleJson;
     String title;
-    String imageUrl;
+    String url;
     ArticleData [] articleData = new ArticleData[20];
 
     public void run() throws Exception {
@@ -67,14 +67,14 @@ public class NewsClient {
         Log.d("yo123", String.valueOf(totalResults));
 
         for(int i = 0; i < totalResults - 1; i++) {
-            obj2 = new JSONArray(articles);
-            article = obj2.get(i).toString();
-            obj3 = new JSONObject(article);
-            title = obj3.getString("title");
-            imageUrl = obj3.getString("urlToImage");
+            articlesJson = new JSONArray(articles);
+            article = articlesJson.get(i).toString();
+            articleJson = new JSONObject(article);
+            title = articleJson.getString("title");
+            url = articleJson.getString("url");
 
-            Log.d("yo123", title);
-            this.articleData[i] = new ArticleData(title, imageUrl);
+            Log.d("yo123", article);
+            this.articleData[i] = new ArticleData(title, url);
         }
 
     }
@@ -86,11 +86,11 @@ public class NewsClient {
 
     public class ArticleData {
         String title;
-        String imageUrl;
+        String url;
 
         ArticleData(String title, String imageUrl) {
             this.title = title;
-            this.imageUrl = imageUrl;
+            this.url = imageUrl;
         }
 
         public String getTitle() {
@@ -98,7 +98,7 @@ public class NewsClient {
         }
 
         public String getImageUrl() {
-            return this.imageUrl;
+            return this.url;
         }
     }
 }

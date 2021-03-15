@@ -3,12 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/contactLayout"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="60dp">
 
     <TextView
         android:id="@+id/contactName"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:text="Sample Text"
-        android:gravity="center_vertical"/>
+        android:textSize="25sp"
+        android:textColor="@color/navy"
+        android:paddingLeft="40dp"
+        android:paddingBottom="20dp"
+        android:gravity="center_vertical"
+        android:background="?attr/selectableItemBackground"/>
 </LinearLayout>

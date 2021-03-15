@@ -1,6 +1,7 @@
 package com.example.capstonewallet.Views.Fragments;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -75,23 +76,40 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
             Log.d("yo123", "piss?" + createAccountBinding.editTextNewPassword.getText().toString());
             createAccountViewModel.setPassword(password.getText().toString());
             createAccountViewModel.setWalletName(walletName.getText().toString());
-            createAccountViewModel.onClick(getContext(), addExistingChecked);
-            Log.d("yo123", "Stop: " + createAccountViewModel.getPassword());
-            Log.d("yo123", "Stop: " + createAccountViewModel.getFileName());
-            intent.putExtra("credentials", new String[]{createAccountViewModel.getPassword(),
-                                                            createAccountViewModel.getFileName()});
-            //intent.putExtra("password", createAccountViewModel.getPassword());
-            //intent.putExtra("fileName", createAccountViewModel.getFileName());
+            int proceed = createAccountViewModel.onClick(getContext(), addExistingChecked);
+            if(proceed == -1) {
+                Log.d("yo123", "Stop: " + createAccountViewModel.getPassword());
+                Log.d("yo123", "Stop: " + createAccountViewModel.getFileName());
+                intent.putExtra("credentials", new String[]{createAccountViewModel.getPassword(),
+                        createAccountViewModel.getFileName()});
+
+                startActivity(intent);
+            }
+            else if(proceed == 0 || proceed == 2) {
+                showInvalidName();
+            }
+            else {
+                showInvalidPassword();
+            }
         }
         else if(addExistingChecked) {
             createAccountViewModel.setPassword(password.getText().toString());
             createAccountViewModel.setWalletName(walletName.getText().toString());
-            createAccountViewModel.onClick(getContext(), addExistingChecked);
-            intent.putExtra("credentials", new String[]{privateKey.getText().toString()});
+            int proceed = createAccountViewModel.onClick(getContext(), addExistingChecked);
+            if(proceed == -1) {
+                intent.putExtra("credentials", new String[]{privateKey.getText().toString()});
+                startActivity(intent);
+            }
+            else if(proceed == 0 || proceed == 2){
+                showInvalidName();
+            }
+            else {
+                showInvalidPassword();
+            }
+            //intent.putExtra("credentials", new String[]{privateKey.getText().toString()});
             //add existing logic
             //put extras
         }
-        startActivity(intent);
     }
 
     @Override
@@ -102,5 +120,17 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
         else {
             addExistingChecked = false;
         }
+    }
+
+    public void showInvalidName() {
+        walletName.setText("");
+        walletName.setHint("Name already exists");
+        walletName.setHintTextColor(Color.RED);
+    }
+
+    public void showInvalidPassword() {
+        password.setText("");
+        password.setHint("Invalid password");
+        password.setHintTextColor(Color.RED);
     }
 }

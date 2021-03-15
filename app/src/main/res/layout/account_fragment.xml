@@ -10,17 +10,24 @@
     tools:context=".Views.Fragments.AccountFragment">
 
     <LinearLayout
+        android:id="@+id/topLayout"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/border">
 
         <TextView
             android:layout_width="200dp"
             android:layout_height="100dp"
             android:text="Account"
             android:textColor="@color/navy"
+            android:shadowColor="@color/navy"
+            android:shadowDx="1"
+            android:shadowDy="3"
+            android:shadowRadius="1"
+            android:fontFamily="@android:"
             android:textSize="40sp" />
 
         <ImageButton
@@ -40,7 +47,8 @@
             android:layout_height="match_parent"
             android:layout_marginTop="100dp">
 
-                <FrameLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/grey">
@@ -51,8 +59,14 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:text="Wallet Name"
-                            android:layout_marginTop="125dp"
-                            android:textSize="25sp"/>
+                            android:textSize="25sp"
+                            android:textColor="@color/navy"
+                            android:textStyle="bold|italic"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            android:paddingLeft="20dp"
+                            android:paddingTop="20dp"
+                            android:paddingBottom="20dp"/>
 
                         <TextView
                             android:id="@+id/walletNameTextView"
@@ -60,8 +74,12 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:text="Drako Wallet"
-                            android:layout_marginTop="160dp"
-                            android:textSize="25sp"/>
+                            android:textSize="25sp"
+                            android:textColor="@color/navy"
+                            app:layout_constraintTop_toBottomOf="@id/walletNameHeading"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            android:paddingLeft="40dp"
+                            android:paddingBottom="40dp"/>
 
                         <TextView
                             android:id="@+id/addressHeading"
@@ -69,8 +87,13 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:text="Address"
-                            android:layout_marginTop="300dp"
-                            android:textSize="25sp"/>
+                            android:textSize="25sp"
+                            android:textColor="@color/navy"
+                            android:textStyle="bold|italic"
+                            app:layout_constraintTop_toBottomOf="@id/passwordButton"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            android:paddingLeft="20dp"
+                            android:paddingBottom="20dp"/>
 
                         <TextView
                             android:id="@+id/addressTextView"
@@ -78,8 +101,45 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:text="Ox34jhj34k3j5k45hk34jk5"
-                            android:layout_marginTop="335dp"
-                            android:textSize="25sp"/>
+                            android:textSize="25sp"
+                            android:textColor="@color/navy"
+                            android:maxLength="100"
+                            app:layout_constraintTop_toBottomOf="@id/addressHeading"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            android:paddingLeft="40dp"
+                            android:paddingBottom="40dp"
+                            android:paddingRight="20dp"/>
+
+                    <TextView
+                        android:id="@+id/addressHeading2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="Address"
+                        android:textSize="25sp"
+                        android:textColor="@color/navy"
+                        android:textStyle="bold|italic"
+                        app:layout_constraintTop_toBottomOf="@id/passwordTextView"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:paddingLeft="20dp"
+                        android:paddingBottom="20dp"
+                        android:visibility="invisible"/>
+
+                    <TextView
+                        android:id="@+id/addressTextView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="Ox34jhj34k3j5k45hk34jk5"
+                        android:textSize="25sp"
+                        android:textColor="@color/navy"
+                        android:maxLength="100"
+                        app:layout_constraintTop_toBottomOf="@id/addressHeading2"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:paddingLeft="40dp"
+                        android:paddingBottom="40dp"
+                        android:paddingRight="20dp"
+                        android:visibility="invisible"/>
 
                        <!-- <TextView
                             android:id="@+id/publicKeyHeading"
@@ -101,48 +161,155 @@
                             android:textSize="50sp"/>-->
 
                         <TextView
+                            android:id="@+id/privateKeyButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:clickable="true"
+                            android:text="Show private key"
+                            android:drawablePadding="10dp"
+                            android:drawableRight="@drawable/show_credential"
+                            android:textSize="25sp"
+                            android:textColor="@color/navy"
+                            android:textStyle="bold|italic"
+                            android:maxLength="100"
+                            app:layout_constraintTop_toBottomOf="@id/addressTextView"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            android:paddingLeft="20dp"
+                            android:paddingBottom="40dp"/>
+
+                        <TextView
                             android:id="@+id/privateKeyHeading"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:text="Show private key"
-                            android:drawablePadding="10dp"
-                            android:drawableRight="@drawable/show_credential"
-                            android:layout_marginTop="365dp"
-                            android:textSize="25sp"/>
+                            android:text="Private Key"
+                            android:textSize="25sp"
+                            android:textColor="@color/navy"
+                            android:textStyle="bold|italic"
+                            android:clickable="true"
+                            app:layout_constraintTop_toBottomOf="@id/addressTextView"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            android:paddingLeft="20dp"
+                            android:paddingBottom="20dp"
+                            android:visibility="invisible"/>
+
+                    <TextView
+                        android:id="@+id/privateKeyButton2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:clickable="true"
+                        android:text="Show private key"
+                        android:drawablePadding="10dp"
+                        android:drawableRight="@drawable/show_credential"
+                        android:textSize="25sp"
+                        android:textColor="@color/navy"
+                        android:textStyle="bold|italic"
+                        android:maxLength="100"
+                        app:layout_constraintTop_toBottomOf="@id/addressTextView2"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:paddingLeft="20dp"
+                        android:paddingBottom="40dp"
+                        android:visibility="invisible"/>
+
+                    <TextView
+                        android:id="@+id/privateKeyHeading2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="Private Key"
+                        android:textSize="25sp"
+                        android:textColor="@color/navy"
+                        android:textStyle="bold|italic"
+                        android:clickable="true"
+                        app:layout_constraintTop_toBottomOf="@id/addressTextView2"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:paddingLeft="20dp"
+                        android:paddingBottom="20dp"
+                        android:visibility="invisible"/>
+
+                    <TextView
+                        android:id="@+id/privateKeyTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="e2cdbadca25bf5a8a6e79a51ed0f2293a1b25bcba3985d9eebdb6d0f379830b7"
+                        android:textSize="25sp"
+                        android:textColor="@color/navy"
+                        android:maxLength="100"
+                        app:layout_constraintTop_toBottomOf="@id/privateKeyHeading"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:paddingLeft="40dp"
+                        android:paddingBottom="40dp"
+                        android:paddingRight="20dp"
+                        android:visibility="invisible"/>
+
+                    <TextView
+                        android:id="@+id/privateKeyTextView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="e2cdbadca25bf5a8a6e79a51ed0f2293a1b25bcba3985d9eebdb6d0f379830b7"
+                        android:textSize="25sp"
+                        android:textColor="@color/navy"
+                        android:maxLength="100"
+                        app:layout_constraintTop_toBottomOf="@id/privateKeyHeading2"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:paddingLeft="40dp"
+                        android:paddingBottom="40dp"
+                        android:paddingRight="20dp"
+                        android:visibility="invisible"/>
 
                         <TextView
-                            android:id="@+id/privateKeyTextView"
+                            android:id="@+id/passwordButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:text="e2cdbadca25bf5a8a6e79a51ed0f2293a1b25bcba3985d9eebdb6d0f379830b7"
-                            android:inputType="textPassword"
-                            android:visibility="invisible"
-                            android:layout_marginTop="525dp"
-                            android:textSize="20sp"/>
+                            android:clickable="true"
+                            android:text="Show password"
+                            android:drawablePadding="10dp"
+                            android:drawableRight="@drawable/show_credential"
+                            android:textSize="25sp"
+                            android:textColor="@color/navy"
+                            android:textStyle="bold|italic"
+                            android:maxLength="100"
+                            app:layout_constraintTop_toBottomOf="@id/walletNameTextView"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            android:paddingLeft="20dp"
+                            android:paddingBottom="40dp"/>
 
                         <TextView
                             android:id="@+id/passwordHeading"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:text="Show password"
-                            android:drawablePadding="10dp"
-                            android:drawableRight="@drawable/show_credential"
-                            android:layout_marginTop="200dp"
-                            android:textSize="25sp"/>
+                            android:text="Password"
+                            android:textSize="25sp"
+                            android:textColor="@color/navy"
+                            android:textStyle="bold|italic"
+                            android:clickable="true"
+                            app:layout_constraintTop_toBottomOf="@id/walletNameTextView"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            android:paddingLeft="20dp"
+                            android:paddingBottom="20dp"
+                            android:visibility="invisible"/>
 
                         <TextView
                             android:id="@+id/passwordTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:text="TextView"
-                            android:inputType="textPassword"
-                            android:visibility="invisible"
-                            android:layout_marginTop="650dp"
-                            android:textSize="50sp"/>
+                            android:text="password"
+                            android:textSize="25sp"
+                            android:textColor="@color/navy"
+                            android:maxLength="100"
+                            app:layout_constraintTop_toBottomOf="@id/passwordHeading"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            android:paddingLeft="40dp"
+                            android:paddingBottom="40dp"
+                            android:paddingRight="20dp"
+                            android:visibility="invisible"/>
 
                        <!-- <ImageButton
                             android:id="@+id/nameButton"
@@ -199,7 +366,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Keep all visible"
-                            android:layout_marginTop="600dp"/>
-                </FrameLayout>
+                            android:layout_marginTop="600dp"
+                            android:visibility="invisible"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -37,12 +37,13 @@ public class WalletViewModel extends ViewModel {
         //transactionModel.getBalance();
 
         //Do something similar to this to set values: setPublicKey(walletModel.getPublicKey());
-        //walletModel.loadApiServices();
+        walletModel.loadApiServices();
     }
 
     public WalletViewModel(Context context, String privateKey) {
         walletModel = new WalletModel(context);
         walletModel.loadExistingWallet(privateKey);
+        walletModel.loadApiServices();
     }
 
     public String getToken() {
@@ -78,7 +79,6 @@ public class WalletViewModel extends ViewModel {
 
 
     public ArrayList<String> getCredentials() {
-        int ARRAY_SIZE = 4;
         ArrayList<String> credentials = new ArrayList<>();
         credentials.add(getWalletName());
         credentials.add(getAddress());

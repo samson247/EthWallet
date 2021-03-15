@@ -17,15 +17,15 @@ public class TransactionViewModel {
     public TransactionViewModel(String privateKey) {
         this.privateKey = privateKey;
         transactionModel = new TransactionModel(privateKey);
-        this.balance = transactionModel.getBalance();
+        this.balance = transactionModel.getBalanceInEther();
     }
 
     public void forwardSendEther(String address, String amount) {
         transactionModel.sendEther(address, amount);
     }
 
-    public void forwardGetEther() {
-        //transactionModel.getEther();
+    public void forwardGetEther(String amount) {
+        transactionModel.getEther(amount);
     }
 
     public void setPrivateKey(String privateKey) {

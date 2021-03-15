@@ -48,8 +48,8 @@ public class ChartClient {
             obj1 = new JSONObject(json);
             JSONObject data = obj1.getJSONObject("Time Series (Digital Currency Daily)");
             //Log.d("yo123", "data.keys()");
-            int index = 0;
-            while(index < 100) {
+            int index = 100;
+            while(index > 0) {
                 Log.d("yo123", data.names().get(index).toString());
                 String date = data.getString(data.names().get(index).toString());
                 JSONObject weekData = new JSONObject(date);
@@ -57,7 +57,7 @@ public class ChartClient {
                 Log.d("yo123", closingValue);
                 chartData.add(new ChartData(date, closingValue));
                 //data.keys().next();
-                index += 1;
+                index -= 1;
             }
         }
         return chartData;
