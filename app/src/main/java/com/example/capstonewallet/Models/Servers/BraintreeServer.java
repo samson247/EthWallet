@@ -1,14 +1,21 @@
 package com.example.capstonewallet.Models.Servers;
 
 import android.util.Log;
-
 import com.braintreegateway.BraintreeGateway;
 import com.braintreegateway.Environment;
 
+/**
+ * Server class for Braintree, retrieves token to complete transaction
+ */
 public class BraintreeServer {
     private BraintreeGateway gateway;
     private String clientToken;
 
+    /**
+     * Gets new client token
+     * @return the string representation of the token
+     * @throws InterruptedException if thread becomes interrupted
+     */
     public String getClientToken() throws InterruptedException {
         if(this.clientToken == null) {
             Thread thread = new Thread(new Runnable() {
@@ -37,10 +44,18 @@ public class BraintreeServer {
         return this.clientToken;
     }
 
+    /**
+     * Getter for Braintree gateway
+     * @return the Braintree gateway
+     */
     public BraintreeGateway getGateway() {
         return this.gateway;
     }
 
+    /**
+     * Setter for client token
+     * @param clientToken the token used to complete transaction
+     */
     private void setClientToken(String clientToken) {
         this.clientToken = clientToken;
     }

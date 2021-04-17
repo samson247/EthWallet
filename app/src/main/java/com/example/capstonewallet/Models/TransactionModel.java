@@ -1,130 +1,144 @@
-package com.example.capstonewallet.Models;//import android.net.Credentials;
-import android.util.Log;
-import android.widget.Toast;
+package com.example.capstonewallet.Models;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 import com.example.capstonewallet.AccountRepository;
-import com.example.capstonewallet.Models.Clients.EtherPriceClient;
+import com.example.capstonewallet.Views.Fragments.TransactionFragment;
 
 import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.TransactionEncoder;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
-import org.web3j.protocol.core.methods.response.Web3ClientVersion;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Numeric;
 import org.web3j.crypto.Credentials;
-
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.concurrent.ExecutionException;
-
 import java8.util.Optional;
 
+/**
+ * Model class for Transaction
+ *
+ * @author Sam Dodson
+ */
 public class TransactionModel {
     private Web3j web3;
     private Credentials credentials;
-    private String privateKey;
-    AccountRepository repository;
+    private BigInteger value;
+    private BigInteger gasLimit;
+    private BigInteger gasPrice;
+    private AccountRepository repository;
 
-    public TransactionModel(String privateKey) {
+    /**
+     * Constructor for this class
+     * @param privateKey the private key associated with this account
+     */
+    public TransactionModel(String privateKey, Context context, int gasLimit, int gasPrice) {
         connectToEthNetwork();
         credentials = Credentials.create(privateKey);
+        repository = new AccountRepository(context);
+        this.gasLimit = BigInteger.valueOf(gasLimit);
+        this.gasPrice = Convert.toWei(String.valueOf(gasPrice), Convert.Unit.GWEI).toBigInteger();;
     }
 
+    /**
+     * Setter for credentials used to complete transactions
+     * @param privateKey the private key associated with this account that is used to
+     * create credentials
+     */
     public void setCredentials(String privateKey) {
         credentials = Credentials.create(privateKey);
     }
 
+    /**
+     * Connects to Ethereum network (url can be changed to connect to different networks)
+     */
     public void connectToEthNetwork() {
+        //https://rinkeby.infura.io/v3/8fa740a033224723a9a6bd808bc20e44
         web3 = Web3j.build(new HttpService("https://rinkeby.infura.io/v3/8fa740a033224723a9a6bd808bc20e44"));
         //web3 = Web3j.build(new HttpService("HTTP://192.168.1.107:7545"));
-        try {
-            Web3ClientVersion clientVersion = web3.web3ClientVersion().sendAsync().get();
-            if(!clientVersion.hasError()){
-                //toastAsync("Connected!");
-                Log.d("yo123", "connected");
-            }
-            else {
-                //toastAsync(clientVersion.getError().getMessage());
-            }
-        } catch (Exception e) {
-            //toastAsync(e.getMessage());
-            Log.d("yo123", e.getMessage());
-        }
     }
 
-    public void sendEther(String recipient, String amount)
+    /**
+     * Sends ether to specified account
+     * @param recipient the account to send ether to
+     * @param amount the amount of ether to send
+     */
+    public EthSendTransaction sendEther(String recipient, String amount, String units)
     {
+        // Converts name to address if necessary
         if(recipient.length() < 20) {
             String name = recipient;
             recipient = convertNameToAddress(name);
         }
 
+        // Converts Wei or Gwei to Ether if necessary
+        if(units.equals("Wei")) {
+            amount = convertWeiToEther(amount);
+        }
+        else if(units.equals("Gwei")) {
+            amount = convertGweiToEther(amount);
+        }
 
-        /*if (credentials == null) {
-            credentials = Credentials.create("e2cdbadca25bf5a8a6e79a51ed0f2293a1b25bcba3985d9eebdb6d0f379830b7");
-        }*/
-
-        //EthGetBalance ethGetBalance = web3.ethGetBalance(credentials.getAddress(), DefaultBlockParameterName.LATEST).sendAsync().get();
-
-        EthGetTransactionCount ethGetTransactionCount = null;
+        EthGetTransactionCount transactionCount = null;
+        // Gets transaction count for ether account and calculates nonce
         try {
-            ethGetTransactionCount = web3
-                    .ethGetTransactionCount(credentials.getAddress(), DefaultBlockParameterName.LATEST).sendAsync().get();
-            Log.d("yo123", "tcount");
+            Log.d("yo123", "block number: " + DefaultBlockParameterName.LATEST);
+            transactionCount = web3
+                    .ethGetTransactionCount(credentials.getAddress(),
+                            DefaultBlockParameterName.LATEST).sendAsync().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
-            Log.d("yo123", e.getMessage());
         } catch (ExecutionException e) {
             e.printStackTrace();
-            Log.d("yo123", e.getMessage());
         }
-        BigInteger nonce = ethGetTransactionCount.getTransactionCount();
+        BigInteger nonce = transactionCount.getTransactionCount();
+        Log.d("yo123", "nonce " + nonce);
 
-        // Recipient address
-        String recipientAddress = "0x5934a20d487ab4c9e29032122e854b89a27fbae1";
-        // Value to transfer (in wei)
-        String amountToBeSent= "1";
-        BigInteger value = Convert.toWei(amount, Convert.Unit.ETHER).toBigInteger(); // Gas Parameter
-        BigInteger gasLimit = BigInteger.valueOf(21000);
-        BigInteger gasPrice = Convert.toWei("20", Convert.Unit.GWEI).toBigInteger();
+        // Sets gas parameters
+        setGasParameters(amount);
 
-
-        Log.d("yo123", String.valueOf(gasLimit));
-        Log.d("yo123", String.valueOf(gasPrice));
-
-        Log.d("yo123", "addy");
-        RawTransaction rawTransaction = RawTransaction.createEtherTransaction(nonce, gasPrice, gasLimit,
-                recipient, value);
-        Log.d("yo123", "trans");
-        byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, credentials);
-        String hexValue = Numeric.toHexString(signedMessage);
-        Log.d("yo123", "signed");
+        // Signs transaction
+        byte[] signedTransaction = signTransaction(nonce, recipient, credentials);
+        String value = Numeric.toHexString(signedTransaction);
         EthSendTransaction ethSendTransaction = null;
+
+        // Signed transaction is sent
         try {
-            ethSendTransaction = web3.ethSendRawTransaction(hexValue).sendAsync().get();
+            ethSendTransaction = web3.ethSendRawTransaction(value).sendAsync().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
-            Log.d("yo123", e.getMessage());
         } catch (ExecutionException e) {
             e.printStackTrace();
-            Log.d("yo123", e.getMessage());
         }
 
-        Log.d("yo123", "sent");
-        confirm_transaction(ethSendTransaction);
+        return ethSendTransaction;
     }
 
-    public void getEther(String amount) {
+    /**
+     *
+     * @param amount
+     */
+    public EthSendTransaction getEther(String amount, String units) {
         // TODO Change this to APP wallet account
-        Credentials appCredentials = credentials;
+        //Credentials appCredentials = Credentials.create("d31cc29a589e7eaa906b8c13920fa321b1d4ffbbc23ee4459eeba3e9e5495591"); //credentials;
+        if(units.equals("Wei")) {
+            amount = convertWeiToEther(amount);
+        }
+        else if(units.equals("Gwei")) {
+            amount = convertGweiToEther(amount);
+        }
 
+        Credentials appCredentials = Credentials.create("d31cc29a589e7eaa906b8c13920fa321b1d4ffbbc23ee4459eeba3e9e5495591"); //credentials;
         EthGetTransactionCount ethGetTransactionCount = null;
         try {
             ethGetTransactionCount = web3
@@ -142,21 +156,24 @@ public class TransactionModel {
         // Recipient address
         String recipient = credentials.getAddress();
         // Value to transfer (in wei)
-        BigInteger value = Convert.toWei(amount, Convert.Unit.ETHER).toBigInteger();
+        setGasParameters(amount);
+        byte[] signedTransaction = signTransaction(nonce, recipient, appCredentials);
+
+        /*BigInteger value = Convert.toWei(amount, Convert.Unit.ETHER).toBigInteger();
         // Gas Parameters
         BigInteger gasLimit = BigInteger.valueOf(21000);
-        BigInteger gasPrice = Convert.toWei("20", Convert.Unit.GWEI).toBigInteger();
+        BigInteger gasPrice = Convert.toWei("20", Convert.Unit.GWEI).toBigInteger();*/
 
 
-        Log.d("yo123", String.valueOf(gasLimit));
+        /*Log.d("yo123", String.valueOf(gasLimit));
         Log.d("yo123", String.valueOf(gasPrice));
 
         Log.d("yo123", "addy");
         RawTransaction rawTransaction = RawTransaction.createEtherTransaction(nonce, gasPrice, gasLimit,
                 recipient, value);
         Log.d("yo123", "trans");
-        byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, appCredentials);
-        String hexValue = Numeric.toHexString(signedMessage);
+        byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, appCredentials);*/
+        String hexValue = Numeric.toHexString(signedTransaction);
         Log.d("yo123", "signed");
         EthSendTransaction ethSendTransaction = null;
         try {
@@ -169,97 +186,133 @@ public class TransactionModel {
             Log.d("yo123", e.getMessage());
         }
 
-        Log.d("yo123", "sent");
-        EthSendTransaction finalEthSendTransaction = ethSendTransaction;
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                confirm_transaction(finalEthSendTransaction);
-            }
-        });
-        thread.run();
+        return ethSendTransaction;
     }
 
 
-    public void setGasParameters() {
-
+    /**
+     *
+     * @param amount
+     */
+    public void setGasParameters(String amount) {
+        value = Convert.toWei(amount, Convert.Unit.ETHER).toBigInteger();
+        Log.d("yo123", "gas: " + gasLimit + " " + gasPrice);
+        if(gasLimit == null) {
+            gasLimit = BigInteger.valueOf(21000);
+        }
+        if(gasPrice == null) {
+            gasPrice = Convert.toWei("20", Convert.Unit.GWEI).toBigInteger();
+        }
     }
 
-    public void signTransaction() {
-
+    /**
+     *
+     * @param nonce
+     * @param recipient
+     * @return
+     */
+    public byte[] signTransaction(BigInteger nonce, String recipient, Credentials credentials) {
+        RawTransaction rawTransaction = RawTransaction.createEtherTransaction(nonce, gasPrice, gasLimit,
+                recipient, value);
+        byte[] signedTransaction = TransactionEncoder.signMessage(rawTransaction, credentials);
+        return signedTransaction;
     }
 
-    // Get transaction receipt
-    public void confirm_transaction(EthSendTransaction ethSendTransaction)
+    /**
+     * Confirms transaction is successful by getting receipt once transaction is mined
+     * @param ethSendTransaction the signed transaction
+     * @return if the transaction has been mined and receipt is available
+     */
+    public boolean confirm_transaction(EthSendTransaction ethSendTransaction)
     {
-        //get TransactionHash
         String transactionHash = null;
         transactionHash = ethSendTransaction.getTransactionHash();
-        Log.d("yo123", transactionHash);
         Optional<TransactionReceipt> transactionReceipt = null;
-        do {
-            System.out.println("checking if transaction “ + transactionHash + “ is mined….");
-            EthGetTransactionReceipt ethGetTransactionReceiptResp = null;
-            try {
-                ethGetTransactionReceiptResp = web3.ethGetTransactionReceipt(transactionHash)
-                        .sendAsync().get();
-                Log.d("yo123", "waiting");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                Log.d("yo123", e.getMessage());
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-                Log.d("yo123", e.getMessage());
-            }
-            transactionReceipt = ethGetTransactionReceiptResp.getTransactionReceipt();
-            try {
-                Thread.sleep(3000); // Wait for 3 sec
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                Log.d("yo123", e.getMessage());
-            }
-        } while (!transactionReceipt.isPresent());
+        EthGetTransactionReceipt ethGetTransactionReceiptResp = null;
+        try {
+            ethGetTransactionReceiptResp = web3.ethGetTransactionReceipt(transactionHash)
+                    .sendAsync().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        transactionReceipt = ethGetTransactionReceiptResp.getTransactionReceipt();
 
-
-        Log.d("yo123", String.valueOf(transactionReceipt));
+        if(transactionReceipt.isPresent()) {
+            Log.i("receipt", transactionReceipt.toString());
+            return true;
+        }
+        else {
+            Log.i("receipt", "not yet");
+            return false;
+        }
     }
 
-    public void get_transactions()
-    {
-
-    }
-
+    /**
+     * Gets balance of an account
+     * @return the balance of an account
+     */
     public String getBalance() {
-       // Web3j web3 = Web3j.build(new HttpService("https://rinkeby.infura.io/v3/8fa740a033224723a9a6bd808bc20e44"));
-
-        // Have to use 16 not bigdecimalkey
-        //e2cdbadca25bf5a8a6e79a51ed0f2293a1b25bcba3985d9eebdb6d0f379830b7
-        //81a8d3cd0d7467afc4b83022ef72a475ff8431ecdad14a164f9b386653712296
-        //Credentials credentials = Credentials.create("81a8d3cd0d7467afc4b83022ef72a475ff8431ecdad14a164f9b386653712296");
-        Log.d("addy", "addy " + credentials.getAddress());
         EthGetBalance ethGetBalance = null;
         try {
             ethGetBalance = web3.ethGetBalance(credentials.getAddress(), DefaultBlockParameterName.LATEST).sendAsync().get();
-            //ethGetBalance.getBalance();
-            Log.d("yo123", "address balance " + ethGetBalance.getBalance());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        return ethGetBalance.getBalance().toString();
+
+
+        //BigDecimal balance = ethGetBalance.getBalance().doubleValue().setScale(2, RoundingMode.HALF_UP);
+        BigDecimal balance = BigDecimal.valueOf(ethGetBalance.getBalance().doubleValue());
+        balance = balance.setScale(2, RoundingMode.HALF_UP);
+        //ethGetBalance.getBalance().doubleValue();
+        //return ethGetBalance.getBalance().toString(10);
+        return balance.toString();
     }
 
+    /**
+     * Gets balance in ether
+     * @return the balance of an account in ether
+     */
     public String getBalanceInEther() {
-        return convertToEther(getBalance());
+        return convertWeiToEther(getBalance());
     }
 
-    public String convertToEther(String balance) {
-        return Convert.fromWei(balance, Convert.Unit.ETHER).toString();
+    /**
+     * Gets balance in Gwei
+     * @return the balance of account in Gwei
+     */
+    public String getBalanceInGwei() {
+        return Convert.fromWei(getBalance(), Convert.Unit.GWEI).toString();
     }
 
+    /**
+     * Converts wei amount to ether
+     * @param amount the amount of ether to convert
+     * @return the converted amount in ether
+     */
+    public String convertWeiToEther(String amount) {
+        return Convert.fromWei(amount, Convert.Unit.ETHER).toString();
+    }
+
+    /**
+     * Converts gwei amount to ether
+     * @param amount the amount of ether to convert
+     * @return the converted amount in ether
+     */
+    public String convertGweiToEther(String amount) {
+        String divisor = "1000000000";
+        BigDecimal value = BigDecimal.valueOf(Long.parseLong(amount)).divide(BigDecimal.valueOf(Long.parseLong(divisor)));
+        return value.toString();
+    }
+
+    /**
+     * Converts name to address
+     * @param name the contact name to lookup
+     * @return the address for the specified name
+     */
     private String convertNameToAddress(String name) {
-        //error handling
+        //TODO error handling
         return repository.getContactAddress(name);
     }
 }

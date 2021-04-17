@@ -1,6 +1,7 @@
 package com.example.capstonewallet.Views.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,23 +12,29 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.capstonewallet.AddContactFragment;
 import com.example.capstonewallet.Models.Clients.TransactionClient;
 import com.example.capstonewallet.R;
 import com.example.capstonewallet.Views.Fragments.ContactFragment;
+import com.example.capstonewallet.Views.Fragments.TransactionInfoFragment;
 import com.example.capstonewallet.databinding.TransactionListItemBinding;
 
 import java.util.ArrayList;
 
-public class TransactionListAdapter extends RecyclerView.Adapter<TransactionListAdapter.TransactionListViewHolder>{
+import jnr.ffi.annotations.In;
+
+public class TransactionListAdapter extends RecyclerView.Adapter<TransactionListAdapter.TransactionListViewHolder> {
     private Context context;
     private ArrayList<String[]> transactionText;
     ArrayList<TransactionClient.TransactionData> transactionData;
     private TransactionListItemBinding binding;
     private static final String TAG = "TransactionListAdapter";
+    private TransactionInfoFragment transactionInfoFragment;
     private FragmentManager fragmentManager;
 
 
@@ -38,6 +45,10 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
 
     public void setFragmentManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
+    }
+
+    public void setTransactionData(ArrayList<TransactionClient.TransactionData> transactionData) {
+        this.transactionData = transactionData;
     }
 
     @NonNull
@@ -56,20 +67,39 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
         holder.transactionDate.setText(transactionText.get(position)[0]);
         holder.transactionType.setText(transactionText.get(position)[1]);
         holder.transactionAMT.setText(transactionText.get(position)[2]);
-        holder.icon.setColorFilter(R.color.navy);
-        if((position % 2) == 0) {
+        holder.iconSent.setVisibility(View.VISIBLE);
+        holder.iconReceived.setVisibility(View.INVISIBLE);
+        //holder.icon.setColorFilter(R.color.navy);
+        if(holder.transactionType.getText().toString().contains("received")) {
+            //Drawable drawable = context.getResources().getDrawable(R.drawable.received, null);
+            //holder.icon.setImageDrawable(drawable);
+            holder.iconSent.setVisibility(View.INVISIBLE);
+            holder.iconReceived.setVisibility(View.VISIBLE);
+        }
+        /*else {
+           // Drawable drawable = context.getResources().getDrawable(R.drawable.sent, null);
+            //holder.icon.setImageDrawable(drawable);
+            holder.iconReceived.setVisibility(View.INVISIBLE);
+        }*/
+        /*if((position % 2) == 0) {
             holder.icon.setColorFilter(R.color.navy);
         }
         else {
             holder.icon.setColorFilter(R.color.bt_text_blue);
-        }
+        }*/
 
         if(position == 0) {
-            holder.icon.setVisibility(View.INVISIBLE);
+            holder.iconSent.setVisibility(View.INVISIBLE);
+            holder.iconReceived.setVisibility(View.INVISIBLE);
         }
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TransactionInfoFragment fragment = new TransactionInfoFragment(transactionData.get(position));
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.transactionPopup, fragment, null);
+                fragmentTransaction.addToBackStack("TransactionInfo");
+                fragmentTransaction.commit();
                 //holder.transactionText.setText("clicked");
                 //TODO create fragment class to display txn data and add back arrow to pop fragment
                 /*fragment = new ContactFragment(holder.getName(), "0x2323213");
@@ -92,7 +122,8 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
         private TextView transactionDate;
         private TextView transactionType;
         private TextView transactionAMT;
-        private ImageView icon;
+        private ImageView iconSent;
+        private ImageView iconReceived;
 
         public TransactionListViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -101,7 +132,12 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
             transactionDate = (TextView) itemView.findViewById(R.id.transactionTextDate);
             transactionType = (TextView) itemView.findViewById(R.id.transactionTextType);
             transactionAMT = itemView.findViewById(R.id.transactionTextAmount);
-            icon = itemView.findViewById(R.id.transactionIcon);
+            iconSent = itemView.findViewById(R.id.iconSent);
+            iconReceived = itemView.findViewById(R.id.iconReceived);
         }
     }
+
+    /*public void popFragment() {
+        transactionInfoFragment.popFragment();
+    }*/
 }

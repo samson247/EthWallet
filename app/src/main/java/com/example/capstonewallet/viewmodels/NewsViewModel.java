@@ -1,17 +1,15 @@
 package com.example.capstonewallet.viewmodels;
 
-import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.example.capstonewallet.Models.ApiServiceAsync;
 import com.example.capstonewallet.Models.ApiServiceSync;
 import com.example.capstonewallet.Models.Clients.ChartClient;
 import com.example.capstonewallet.Models.Clients.NewsClient;
-import com.example.capstonewallet.Models.StockNewsModel;
+import com.example.capstonewallet.Models.NewsModel;
 
 import java.util.ArrayList;
 
-public class StockNewsViewModel {
+public class NewsViewModel {
     private NewsClient.ArticleData [] articles;
     ArrayList<ArrayList<String>> articleData = new ArrayList<>();
     ArrayList<String> newsText = new ArrayList<>();
@@ -19,11 +17,11 @@ public class StockNewsViewModel {
     ArrayList<ChartClient.ChartData> chartData = new ArrayList<>();
     ArrayList<String> prices = new ArrayList<>();;
     ArrayList<String> dates = new ArrayList<>();
-    private StockNewsModel stockNewsModel;
+    private NewsModel newsModel;
     private ApiServiceSync apiService;
     private String price;
 
-    public StockNewsViewModel() {
+    public NewsViewModel() {
         apiService = new ApiServiceSync();
     }
 
@@ -64,6 +62,10 @@ public class StockNewsViewModel {
         return this.price;
     }
 
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
     public void getChartData() throws Exception {
         ChartClient chartClient = new ChartClient();
         chartData = chartClient.getChartData();
@@ -93,8 +95,8 @@ public class StockNewsViewModel {
     }
 
     public String convertToUsd(String etherAmount, String etherUnit) {
-        stockNewsModel = new StockNewsModel(price);
-        String convertedAmount = stockNewsModel.calculateUSDAmount(etherAmount, etherUnit);
+        newsModel = new NewsModel(price);
+        String convertedAmount = newsModel.calculateUSDAmount(etherAmount, etherUnit);
         return convertedAmount;
     }
 }

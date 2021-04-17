@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.capstonewallet.Models.WalletModel;
 
-public class CredentialsViewModel {
+public class GettingStartedViewModel {
     private WalletModel model;
     private String fileName;
 
     private String password;
 
-    public CredentialsViewModel(String password, String fileName) {
+    public GettingStartedViewModel(String password, String fileName) {
         //model = new WalletModel(credentials);
         //setPublicKey(model.getPublicKey());
         //setPrivateKey(model.getPrivateKey());

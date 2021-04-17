@@ -39,6 +39,7 @@ public class BraintreeClient {
         Log.d("onactres", "amount " + amount);
         //this.amount = "ten";
         //this.amount = amount;
+        //TODO change amount
         amount = "10";
         if(requestCode == 400) {
             if(resultCode == Activity.RESULT_OK)
@@ -48,17 +49,7 @@ public class BraintreeClient {
                 String strNonce = nonce.getNonce();
                 if(!amount.isEmpty())
                 {
-                    //amount=edit_amount.getText().toString();
-                    //paramsHash=new HashMap<>();
-                    //paramsHash.put("amount",amount);
-                    //paramsHash.put("nonce",strNounce);
-
-                    //sendPayments();
-                    Log.d("yo123", "send payments");
-                    //sendPayments();
-
                     Thread thread = new Thread(new Runnable() {
-
                         @Override
                         public void run() {
                             try  {

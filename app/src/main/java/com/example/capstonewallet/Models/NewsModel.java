@@ -10,10 +10,10 @@ import java.math.MathContext;
  *
  * @author Sam Dodson
  */
-public class StockNewsModel {
+public class NewsModel {
     private String usdValue = "1";
 
-    public StockNewsModel(String usdValue) {
+    public NewsModel(String usdValue) {
         this.usdValue = usdValue;
     }
 
@@ -45,9 +45,14 @@ public class StockNewsModel {
         else {
             result = BigDecimal.valueOf(value).multiply(BigDecimal.valueOf(amount));
         }
-        MathContext mathContext = new MathContext(3);
-        result = result.round(mathContext);
-        result.setScale(2, BigDecimal.ROUND_HALF_DOWN);
-        return result.toString();
+        //MathContext mathContext = new MathContext(3);
+        //result = result.round(mathContext);
+        result = result.setScale(2, BigDecimal.ROUND_HALF_DOWN);
+        if(result.compareTo(BigDecimal.ZERO) == 0) {
+            return "< 0.00";
+        }
+        else {
+            return result.toString();
+        }
     }
 }

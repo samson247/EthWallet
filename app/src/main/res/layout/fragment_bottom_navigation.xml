@@ -6,14 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="75dp"
     android:background="@color/navy"
+    android:weightSum="4"
     tools:context=".Views.Fragments.BottomNavigationFragment">
 
     <RelativeLayout
         android:id="@+id/transactionButton"
-        android:layout_width="102.5dp"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="75dp"
         android:clickable="true"
-        android:background="@color/navy">
+        android:background="@color/navy"
+        android:foreground="?attr/selectableItemBackground">
 
 
         <ImageView
@@ -21,14 +24,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:paddingTop="5dp"
-            app:srcCompat="@drawable/ethereum"/>
+            android:paddingTop="20dp"
+            app:srcCompat="@drawable/ether_logo"/>
 
         <TextView
             android:id="@+id/transactionTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="Transactions"
             android:textColor="@color/grey"
             android:layout_centerHorizontal="true"
@@ -39,10 +41,12 @@
 
     <RelativeLayout
         android:id="@+id/contactsButton"
-        android:layout_width="102.5dp"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="75dp"
         android:clickable="true"
-        android:background="@color/navy">
+        android:background="@color/navy"
+        android:foreground="?attr/selectableItemBackground">
 
 
         <ImageView
@@ -57,7 +61,6 @@
             android:id="@+id/contactsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="Contacts"
             android:textColor="@color/grey"
             android:layout_centerHorizontal="true"
@@ -68,10 +71,12 @@
 
     <RelativeLayout
         android:id="@+id/newsButton"
-        android:layout_width="102.5dp"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="75dp"
         android:clickable="true"
-        android:background="@color/navy">
+        android:background="@color/navy"
+        android:foreground="?attr/selectableItemBackground">
 
 
         <ImageView
@@ -79,14 +84,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:paddingTop="5dp"
-            app:srcCompat="@drawable/ethereum"/>
+            android:paddingTop="18dp"
+            app:srcCompat="@drawable/news"/>
 
         <TextView
             android:id="@+id/newsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="News"
             android:textColor="@color/grey"
             android:layout_centerHorizontal="true"
@@ -97,10 +101,12 @@
 
     <RelativeLayout
         android:id="@+id/accountButton"
-        android:layout_width="102.5dp"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="75dp"
         android:clickable="true"
-        android:background="@color/navy">
+        android:background="@color/navy"
+        android:foreground="?attr/selectableItemBackground">
 
 
         <ImageView
@@ -115,7 +121,6 @@
             android:id="@+id/accountTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="Account"
             android:textColor="@color/grey"
             android:layout_centerHorizontal="true"
@@ -123,6 +128,4 @@
             android:paddingBottom="5dp"/>
 
     </RelativeLayout>
-
-
 </LinearLayout>

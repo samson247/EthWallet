@@ -54,8 +54,8 @@ public class ChartClient {
                 String date = data.getString(data.names().get(index).toString());
                 JSONObject weekData = new JSONObject(date);
                 String closingValue = weekData.getString("4a. close (USD)");
-                Log.d("yo123", closingValue);
-                chartData.add(new ChartData(date, closingValue));
+                Log.d("date", closingValue + " " + data.names().get(index).toString());
+                chartData.add(new ChartData(data.names().get(index).toString(), closingValue));
                 //data.keys().next();
                 index -= 1;
             }

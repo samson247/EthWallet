@@ -4,9 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
+import com.example.capstonewallet.R;
+import com.example.capstonewallet.Views.Fragments.CreateAccountFragment;
 import com.example.capstonewallet.Views.Fragments.LoginFragment;
 import com.example.capstonewallet.databinding.LoginBinding;
 
@@ -16,10 +21,12 @@ import com.example.capstonewallet.databinding.LoginBinding;
  */
 public class LoginView extends AppCompatActivity  {
     private LoginBinding binding;
+    private LoginFragment loginFragment;
+    private CreateAccountFragment createAccountFragment;
 
     /**
-     *
-     * @param savedInstanceState
+     * Creates activity view and initializes components
+     * @param savedInstanceState an optional bundle to load saved instance state
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,15 +35,44 @@ public class LoginView extends AppCompatActivity  {
         View view = binding.getRoot();
         setContentView(view);
 
-        //loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-
-        //context = getApplicationContext();
-
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        LoginFragment fragment = new LoginFragment();
-        fragment.setFragmentManager(fragmentManager);
-        fragmentTransaction.add(binding.container.getId(), fragment, null);
+        createAccountFragment = new CreateAccountFragment();
+        loginFragment = new LoginFragment();
+        loginFragment.setFragmentManager(fragmentManager);
+        loginFragment.setArguments(bundle);
+        fragmentTransaction.add(binding.container.getId(), loginFragment, null);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        switchFragments();
+        return true;
+    }
+
+    public void switchFragments() {
+        if(loginFragment.isHidden()) {
+            getSupportFragmentManager().beginTransaction().hide(createAccountFragment).commit();
+            getSupportFragmentManager().beginTransaction().show(loginFragment).commit();
+        }
+        else {
+            if(!createAccountFragment.isAdded()) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportFragmentManager().beginTransaction().hide(loginFragment).commit();
+                getSupportFragmentManager().beginTransaction().add(binding.container.getId(),
+                        createAccountFragment, null).commit();
+            }
+            else {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportFragmentManager().beginTransaction().hide(loginFragment).commit();
+                getSupportFragmentManager().beginTransaction().show(createAccountFragment).commit();
+            }
+            //getSupportFragmentManager().beginTransaction().hide(loginFragment);
+            //getSupportFragmentManager().beginTransaction().show(createAccountFragment).commit();
+        }
     }
 }

@@ -7,6 +7,9 @@ import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
+/**
+ * Contact table in Room DB, contains address and name columns
+ */
 @Entity
 public class ContactEntity implements Serializable {
     @PrimaryKey

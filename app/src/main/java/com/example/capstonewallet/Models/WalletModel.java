@@ -7,6 +7,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.example.capstonewallet.AccountRepository;
+import com.example.capstonewallet.Database.ContactEntity;
 import com.example.capstonewallet.Models.Clients.NewsClient;
 import com.example.capstonewallet.Models.Clients.TransactionClient;
 
@@ -97,40 +98,6 @@ public class WalletModel {
         this.fileName = fileName;
     }
 
-    /*public boolean createWallet(String password)
-    {
-        this.setupBouncyCastle();
-        String path = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS).getPath();
-        try {
-            fileName = WalletUtils.generateLightNewWalletFile(password, new File(path));
-            Log.d("yo123", "Password " + password);
-            Log.d("yo123", "Filename " + fileName);
-            Log.d("yo123", "Path " + path);
-        } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
-            noSuchAlgorithmException.printStackTrace();
-            Log.d("yo123", noSuchAlgorithmException.getMessage());
-        } catch (NoSuchProviderException noSuchProviderException) {
-            noSuchProviderException.printStackTrace();
-            Log.d("yo123", noSuchProviderException.getMessage());
-        } catch (InvalidAlgorithmParameterException invalidAlgorithmParameterException) {
-            invalidAlgorithmParameterException.printStackTrace();
-            Log.d("yo123", invalidAlgorithmParameterException.getMessage());
-        } catch (CipherException cipherException) {
-            cipherException.printStackTrace();
-            Log.d("yo123", cipherException.getMessage());
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-            Log.d("yo123", ioException.getMessage());
-        }
-
-        if(fileName != null) {
-            Log.d("yo123", "filename wasnt null");
-            setFileName(path + "/" + fileName);
-            loadWalletFromFile(password, fileName, true);
-        }
-        return true;
-    }*/
-
     // Here or in login?
     public void loadWalletFromFile(String password, String walletFilePath, Boolean justCreated)
     {
@@ -189,47 +156,15 @@ public class WalletModel {
         return ethGetBalance;
     }
 
-    public void setupBouncyCastle() {
-        final Provider provider = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME);
-        if (provider == null) {
-            // Web3j will set up the provider lazily when it's first used.
-            return;
-        }
-        if (provider.getClass().equals(BouncyCastleProvider.class)) {
-            // BC with same package name, shouldn't happen in real life.
-            return;
-        }
-        // Android registers its own BC provider. As it might be outdated and might not include
-        // all needed ciphers, we substitute it with a known BC bundled in the app.
-        // Android's BC has its package rewritten to "com.android.org.bouncycastle" and because
-        // of that it's possible to have another BC implementation loaded in VM.
-        Security.removeProvider(BouncyCastleProvider.PROVIDER_NAME);
-        Security.insertProviderAt(new BouncyCastleProvider(), 1);
-    }
-
-    /*public void insertPassword(String address, String password, String initVector) {
-        //repository.insertPassword(String address, String password, String initVector);
-        repository.insertPassword(address, password, initVector);
-        //Log.d("yo123", "passwordrecord " + address + " " + password + " " + initVector);
-        Log.d("yo123", "address " + address);
-        Log.d("yo123", "password " + password);
-        Log.d("yo123", "init " + initVector);
-    }
-
-    public void getEncryptedRecord() {
-        Log.d("yo123", "wya: " + repository.getPassword(this.getAddress()));
-        Log.d("yo123", "wya: " + repository.getInitVector(this.getAddress()));
-    }*/
-
     public void loadApiServices() {
-        ApiServiceAsync service = new ApiServiceAsync();
+        ApiServiceAsync service = new ApiServiceAsync(address);
         service.startAll();
 
         CountDownTimer timer = new CountDownTimer(10000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 //clientToken = service.getToken();
-                //etherPrice = service.getEtherPrice();
+                etherPrice = service.getEtherPrice();
                 //transactionData = service.getTransactionData();
                 articleData = service.getArticleData();
 
@@ -265,8 +200,12 @@ public class WalletModel {
     }
 
     public String getWalletName() {
-        //return repository.getName(this.getAddress());
-        //FIXME add query to database
+        ContactEntity [] contacts = repository.getContacts();
+        for(ContactEntity contact: contacts) {
+            if(contact.getAddress().equals(address)) {
+                return contact.getName();
+            }
+        }
         return "Temp Name";
     }
 
@@ -275,30 +214,10 @@ public class WalletModel {
         PasswordModel passwordModel = new PasswordModel();
         String initVector = repository.getInitVector(getAddress());
         String password = null;
-        try {
-            password = passwordModel.loadPassword(getAddress(), Base64.decode(encryptedPassword, Base64.DEFAULT),
-                    Base64.decode(repository.getInitVector(address), Base64.DEFAULT));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (UnrecoverableEntryException e) {
-            e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        }
+
+        password = passwordModel.loadPassword(getAddress(), Base64.decode(encryptedPassword, Base64.DEFAULT),
+                    Base64.decode(initVector, Base64.DEFAULT));
+
         return password;
     }
 }

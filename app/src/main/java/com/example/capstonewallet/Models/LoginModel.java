@@ -105,45 +105,17 @@ public class LoginModel {
     private boolean checkPassword() {
         boolean proceed = true;
 
-        repository.getPassword(address);
-        repository.getInitVector(address);
         PasswordModel passwordModel = new PasswordModel();
         String decryptedPassword = null;
 
-        try {
-            decryptedPassword = passwordModel.loadPassword(address,
+        decryptedPassword = passwordModel.loadPassword(address,
                     Base64.decode(repository.getPassword(address), Base64.DEFAULT),
                     Base64.decode(repository.getInitVector(address), Base64.DEFAULT));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (UnrecoverableEntryException e) {
-            e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        }
 
-        Log.d("yo123", "fpass: " + password);
-        Log.d("yo123", "dpass: " + decryptedPassword);
-        if(password.equals(decryptedPassword)) {
-            Log.d("yo123", "LoginSuccess " + password);
-        }
-        else {
+        if(!password.equals(decryptedPassword)) {
             proceed = false;
         }
+
         closeDatabase();
 
         return proceed;

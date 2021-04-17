@@ -1,23 +1,22 @@
 package com.example.capstonewallet;
 
 import android.content.Context;
-//import android.os.AsyncTask;
 import android.util.Log;
-
 import androidx.room.Room;
-
 import com.example.capstonewallet.Database.AccountDatabase;
 import com.example.capstonewallet.Database.AccountEntity;
 import com.example.capstonewallet.Database.ContactEntity;
 import com.example.capstonewallet.Database.PasswordEntity;
-
 import java.io.File;
 
+/**
+ * Implements the logic for interacting with Account DB tables
+ */
 public class AccountRepository {
 
     private String DB_NAME = "account";
 
-    private AccountDatabase accountDatabase;
+    private final AccountDatabase accountDatabase;
 
     private String accountFile = "";
     private Boolean accountExists = false;
@@ -27,24 +26,22 @@ public class AccountRepository {
     private String initVector = "";
     private ContactEntity[] contacts;
 
+    /**
+     * Constructor for AccountRepository class
+     * @param context the application context of the class using the DB
+     */
     public AccountRepository(Context context) {
         Log.d("yo123", "in repo constructor");
         File dbFile = context.getDatabasePath(DB_NAME);
-        if (!dbFile.exists()) {
-            accountDatabase = Room.databaseBuilder(context, AccountDatabase.class, DB_NAME)
-                    .fallbackToDestructiveMigration()
-                    .build();
-            Log.d("yo123", "db not already created");
-        }
-        else {
-            accountDatabase = Room.databaseBuilder(context, AccountDatabase.class, DB_NAME)
-                    .fallbackToDestructiveMigration()
-                    .build();
-            Log.d("yo123", "db already created");
-        }
-        //accountDatabase = Room.databaseBuilder(context, AccountDatabase.class, DB_NAME).build();
+        // Creates singleton instance of database
+        accountDatabase = Room.databaseBuilder(context, AccountDatabase.class, DB_NAME)
+                .fallbackToDestructiveMigration()
+                .build();
     }
 
+    /**
+     * Clears database of all data
+     */
     public void clearDatabase() {
         Thread t = new Thread()
         {
@@ -60,20 +57,32 @@ public class AccountRepository {
         }
     }
 
+    /**
+     * Closes database
+     */
     public void closeDatabase() {
         if(accountDatabase.isOpen()) {
             accountDatabase.close();
         }
     }
 
-    public void insertAccount(String publicKey, String accountFile) {
+    /**
+     * Inserts a new account into database
+     * @param address the address of a new Ethereum account
+     * @param accountFile the wallet file associated with the account
+     */
+    public void insertAccount(String address, String accountFile) {
         AccountEntity entity = new AccountEntity();
-        entity.setAddress(publicKey);
+        entity.setAddress(address);
         entity.setFileName(accountFile);
         insertAccount(entity);
     }
 
-    public void insertAccount(AccountEntity entity) {
+    /**
+     * Called by public method to insert account in new thread
+     * @param entity the account entity to insert
+     */
+    private void insertAccount(AccountEntity entity) {
         Thread t = new Thread(() -> accountDatabase.accountDao().insertAccount(entity));
         t.start();
         try {
@@ -83,17 +92,25 @@ public class AccountRepository {
         }
     }
 
+    /**
+     * Deletes an account from the database
+     * @param entity the entity to delete from the account
+     */
     public void deleteAccount(AccountEntity entity) {
         Thread t = new Thread(() -> accountDatabase.accountDao().deleteAccount(entity));
         t.start();
     }
 
-    private void getAccount(String key) {
+    /**
+     * Retrieves an account from the DB in a separate thread
+     * @param address the address to retrieve an account for
+     */
+    private void getAccount(String address) {
         Thread t = new Thread()
         {
             public void run() {
-                Log.d("yo123", "repo " + key);
-                accountFile = accountDatabase.accountDao().getAccount(key);
+                Log.d("yo123", "repo " + address);
+                accountFile = accountDatabase.accountDao().getAccount(address);
                 Log.d("yo123", "repo " + accountFile);
             }
         };
@@ -105,16 +122,25 @@ public class AccountRepository {
         }
     }
 
-    public String getAccountFile(String key) {
+    /**
+     * Retrieves an account file
+     * @param address the address to retrieve an account for
+     * @return the account file path
+     */
+    public String getAccountFile(String address) {
 
-        getAccount(key);
-        Log.d("yo123", "repo key " + key);
+        getAccount(address);
+        Log.d("yo123", "repo key " + address);
         Log.d("yo123", "repo file" + accountFile);
 
         return accountFile;
     }
 
 
+    /**
+     * Inserts contact into Contact table in new thread
+     * @param entity the contact entity to insert
+     */
     public void insertContact(ContactEntity entity) {
         Log.d("yo123", "in insert contact");
         Log.d("yo123", "address " + entity.getAddress());
@@ -129,6 +155,11 @@ public class AccountRepository {
         }
     }
 
+    /**
+     * Adds contact to Contact table
+     * @param address the address to insert into new contact record
+     * @param name the name to insert into new contact record
+     */
     public void addContact(String address, String name) {
         ContactEntity entity = new ContactEntity();
         entity.setAddress(address);
@@ -136,16 +167,29 @@ public class AccountRepository {
         insertContact(entity);
     }
 
-    //TODO delete contact logic
-    public boolean deleteContact(String name, String address) {
-        //
-        return false;
+    /**
+     * Deletes contact from Contact table in DB
+     * @param contactEntity the contact to delete
+     */
+    public void deleteContact(ContactEntity contactEntity) {
+        Thread t = new Thread()
+        {
+            public void run() {
+                accountDatabase.contactDao().deleteContact(contactEntity);
+            }
+        };
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e){
+            Log.d("yo123", "error " + String.valueOf(e));
+        }
     }
 
-    public void deleteContact(ContactEntity a) {
-        //
-    }
-
+    /**
+     * Retrieves contact address based on name in new thread
+     * @param name the name to retrieve address for
+     */
     private void getContact(String name) {
         Thread t = new Thread()
         {
@@ -162,11 +206,19 @@ public class AccountRepository {
         }
     }
 
+    /**
+     * Retrieves contact address based on name
+     * @param name the name to retrieve address for
+     * @return address associated with contact address
+     */
     public String getContactAddress(String name) {
         getContact(name);
         return address;
     }
 
+    /**
+     * Retrieves contacts in new thread
+     */
     public void getContactsHelper() {
         Thread t = new Thread()
         {
@@ -182,11 +234,21 @@ public class AccountRepository {
             Log.d("yo123", "error " + String.valueOf(e));
         }
     }
+
+    /**
+     * Retrieves list of all contacts
+     * @return the lists of all contacts in table
+     */
     public ContactEntity[] getContacts() {
         getContactsHelper();
         return contacts;
     }
 
+    /**
+     * Checks to see if address already exists in DB
+     * @param address the address to check
+     * @return true or false depending on if address belongs to record already
+     */
     Boolean checkAddress(String address) {
         Log.d("yo123", "checking");
         boolean exists = false;
@@ -197,12 +259,12 @@ public class AccountRepository {
         return exists;
     }
 
-    //public Boolean checkKey(String key) {
-
-    // }
-
-    //public Boolean getAccountExists(String key)
-
+    /**
+     * Inserts password into Password table
+     * @param address the address associated with password record
+     * @param password the password associated with password record
+     * @param initVector the initVector associated with password record
+     */
     public void insertPassword(String address, String password, String initVector) {
         PasswordEntity entity = new PasswordEntity();
         entity.setAddress(address);
@@ -215,6 +277,10 @@ public class AccountRepository {
         insertPassword(entity);
     }
 
+    /**
+     * Inserts password entity into password table
+     * @param entity the password entity to insert
+     */
     private void insertPassword(PasswordEntity entity) {
         Thread t = new Thread(() -> accountDatabase.passwordDao().insertPassword(entity));
         t.start();
@@ -226,13 +292,12 @@ public class AccountRepository {
         Log.d("yo123", "password inserted i think");
     }
 
-    void deletePassword(PasswordEntity a) {
-
-    }
-
-    //@Query("SELECT * FROM passwordentity WHERE address LIKE :address")
+    /**
+     * Retrieves encrypted password based on address
+     * @param address the address to retrieve password for
+     * @return the encrypted password stored in password table
+     */
     public String getPassword(String address) {
-        //this.address = address;
         Thread t = new Thread()
         {
             public void run() {
@@ -249,6 +314,11 @@ public class AccountRepository {
         return password;
     }
 
+    /**
+     * Retrieves init vector based on address
+     * @param address the address to retrieve init vector for
+     * @return the initVector of a password
+     */
     public String getInitVector(String address) {
         Thread t = new Thread()
         {

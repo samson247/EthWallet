@@ -12,24 +12,35 @@ public class SettingsModel {
 
     public SettingsModel(SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
-        editor = sharedPreferences.edit();
     }
 
     public void addPreferences() {
+        editor = sharedPreferences.edit();
         if(!sharedPreferences.contains("gasPrice")) {
-            editor.putInt("gasPrice", 4);
+            editor.putInt("gasPrice", 20);
         }
         if(!sharedPreferences.contains("gasLimit")) {
-            editor.putInt("gasPrice", 21000);
+            editor.putInt("gasLimit", 21000);
         }
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                editor.commit();
+            }
+        });
+        thread.run();
+    }
+
+    public void editGasPrice(int value) {
+        editor = sharedPreferences.edit();
+        editor.putInt("gasPrice", value);
         editor.apply();
     }
 
-    public void editGasPrice() {
-
-    }
-
-    public void editGasLimit() {
-
+    public void editGasLimit(int value) {
+        editor = sharedPreferences.edit();
+        editor.putInt("gasLimit", value);
+        editor.apply();
     }
 }

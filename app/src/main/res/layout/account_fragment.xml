@@ -9,64 +9,69 @@
     android:background="@color/grey"
     tools:context=".Views.Fragments.AccountFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/topLayout"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/border">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:layout_width="200dp"
             android:layout_height="100dp"
-            android:text="Account"
+            android:text="Wallet Info"
             android:textColor="@color/navy"
             android:shadowColor="@color/navy"
             android:shadowDx="1"
             android:shadowDy="3"
             android:shadowRadius="1"
-            android:fontFamily="@android:"
-            android:textSize="40sp" />
+            android:textSize="30sp"
+            android:paddingTop="10dp"
+            android:layout_centerVertical="true"/>
 
         <ImageButton
-            android:id="@+id/imageView"
-            android:layout_width="54dp"
-            android:layout_height="44dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="150dp"
-            android:layout_marginTop="20dp"
+            android:id="@+id/settingsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
             android:background="@color/grey"
-            app:srcCompat="@drawable/settings" />
+            app:srcCompat="@drawable/settings"
+            android:foreground="?attr/selectableItemBackground"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
         <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="100dp">
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="75dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/grey">
+                    android:background="@color/grey"
+                    android:paddingTop="10dp">
 
                         <TextView
                             android:id="@+id/walletNameHeading"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:background="@color/navy"
                             android:text="Wallet Name"
                             android:textSize="25sp"
-                            android:textColor="@color/navy"
+                            android:textColor="@color/grey"
                             android:textStyle="bold|italic"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintLeft_toLeftOf="parent"
                             android:paddingLeft="20dp"
-                            android:paddingTop="20dp"
-                            android:paddingBottom="20dp"/>
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"/>
 
                         <TextView
                             android:id="@+id/walletNameTextView"
@@ -79,21 +84,25 @@
                             app:layout_constraintTop_toBottomOf="@id/walletNameHeading"
                             app:layout_constraintLeft_toLeftOf="parent"
                             android:paddingLeft="40dp"
-                            android:paddingBottom="40dp"/>
+                            android:paddingTop="10dp"
+                            android:paddingBottom="30dp"/>
 
                         <TextView
                             android:id="@+id/addressHeading"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:background="@color/navy"
+                            android:layout_marginTop="40dp"
                             android:text="Address"
                             android:textSize="25sp"
-                            android:textColor="@color/navy"
+                            android:textColor="@color/grey"
                             android:textStyle="bold|italic"
                             app:layout_constraintTop_toBottomOf="@id/passwordButton"
                             app:layout_constraintLeft_toLeftOf="parent"
                             android:paddingLeft="20dp"
-                            android:paddingBottom="20dp"/>
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"/>
 
                         <TextView
                             android:id="@+id/addressTextView"
@@ -112,17 +121,19 @@
 
                     <TextView
                         android:id="@+id/addressHeading2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
+                        android:background="@color/navy"
                         android:text="Address"
                         android:textSize="25sp"
-                        android:textColor="@color/navy"
+                        android:textColor="@color/grey"
                         android:textStyle="bold|italic"
                         app:layout_constraintTop_toBottomOf="@id/passwordTextView"
                         app:layout_constraintLeft_toLeftOf="parent"
                         android:paddingLeft="20dp"
-                        android:paddingBottom="20dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
                         android:visibility="invisible"/>
 
                     <TextView
@@ -141,93 +152,90 @@
                         android:paddingRight="20dp"
                         android:visibility="invisible"/>
 
-                       <!-- <TextView
-                            android:id="@+id/publicKeyHeading"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:text="Public Key"
-                            android:layout_marginTop="375dp"
-                            android:textSize="25sp"/>
-
-                        <TextView
-                            android:id="@+id/publicKeyTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:text="Account"
-                            android:inputType="textPassword"
-                            android:layout_marginTop="400dp"
-                            android:textSize="50sp"/>-->
-
                         <TextView
                             android:id="@+id/privateKeyButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:background="@drawable/border_2"
+                            android:paddingEnd="20dp"
+                            android:paddingStart="20dp"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
                             android:clickable="true"
                             android:text="Show private key"
                             android:drawablePadding="10dp"
                             android:drawableRight="@drawable/show_credential"
-                            android:textSize="25sp"
-                            android:textColor="@color/navy"
+                            android:textSize="15sp"
+                            android:textColor="@color/grey"
                             android:textStyle="bold|italic"
                             android:maxLength="100"
                             app:layout_constraintTop_toBottomOf="@id/addressTextView"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            android:paddingLeft="20dp"
-                            android:paddingBottom="40dp"/>
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:foreground="?attr/selectableItemBackground"/>
 
                         <TextView
                             android:id="@+id/privateKeyHeading"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:text="Private Key"
                             android:textSize="25sp"
-                            android:textColor="@color/navy"
+                            android:textColor="@color/grey"
+                            android:background="@color/navy"
                             android:textStyle="bold|italic"
                             android:clickable="true"
                             app:layout_constraintTop_toBottomOf="@id/addressTextView"
                             app:layout_constraintLeft_toLeftOf="parent"
                             android:paddingLeft="20dp"
-                            android:paddingBottom="20dp"
-                            android:visibility="invisible"/>
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
+                            android:visibility="invisible"
+                            android:foreground="?attr/selectableItemBackground"/>
 
                     <TextView
                         android:id="@+id/privateKeyButton2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        android:background="@drawable/border_2"
                         android:clickable="true"
                         android:text="Show private key"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
                         android:drawablePadding="10dp"
                         android:drawableRight="@drawable/show_credential"
-                        android:textSize="25sp"
-                        android:textColor="@color/navy"
+                        android:textSize="15sp"
+                        android:textColor="@color/grey"
                         android:textStyle="bold|italic"
                         android:maxLength="100"
                         app:layout_constraintTop_toBottomOf="@id/addressTextView2"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        android:paddingLeft="20dp"
-                        android:paddingBottom="40dp"
-                        android:visibility="invisible"/>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:visibility="invisible"
+                        android:foreground="?attr/selectableItemBackground"/>
 
                     <TextView
                         android:id="@+id/privateKeyHeading2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
+                        android:background="@color/navy"
                         android:text="Private Key"
                         android:textSize="25sp"
-                        android:textColor="@color/navy"
+                        android:textColor="@color/grey"
                         android:textStyle="bold|italic"
                         android:clickable="true"
                         app:layout_constraintTop_toBottomOf="@id/addressTextView2"
                         app:layout_constraintLeft_toLeftOf="parent"
                         android:paddingLeft="20dp"
-                        android:paddingBottom="20dp"
-                        android:visibility="invisible"/>
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:visibility="invisible"
+                        android:foreground="?attr/selectableItemBackground"/>
 
                     <TextView
                         android:id="@+id/privateKeyTextView"
@@ -265,35 +273,43 @@
                             android:id="@+id/passwordButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
                             android:clickable="true"
+                            android:background="@drawable/border_2"
+                            android:paddingEnd="20dp"
+                            android:paddingStart="20dp"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
                             android:text="Show password"
                             android:drawablePadding="10dp"
                             android:drawableRight="@drawable/show_credential"
-                            android:textSize="25sp"
-                            android:textColor="@color/navy"
+                            android:textSize="15sp"
+                            android:textColor="@color/grey"
                             android:textStyle="bold|italic"
                             android:maxLength="100"
                             app:layout_constraintTop_toBottomOf="@id/walletNameTextView"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            android:paddingLeft="20dp"
-                            android:paddingBottom="40dp"/>
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:foreground="?attr/selectableItemBackground"/>
 
                         <TextView
                             android:id="@+id/passwordHeading"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:background="@color/navy"
                             android:text="Password"
                             android:textSize="25sp"
-                            android:textColor="@color/navy"
+                            android:textColor="@color/grey"
                             android:textStyle="bold|italic"
                             android:clickable="true"
                             app:layout_constraintTop_toBottomOf="@id/walletNameTextView"
                             app:layout_constraintLeft_toLeftOf="parent"
                             android:paddingLeft="20dp"
-                            android:paddingBottom="20dp"
-                            android:visibility="invisible"/>
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:visibility="invisible"
+                            android:foreground="?attr/selectableItemBackground"/>
 
                         <TextView
                             android:id="@+id/passwordTextView"
@@ -310,64 +326,10 @@
                             android:paddingBottom="40dp"
                             android:paddingRight="20dp"
                             android:visibility="invisible"/>
-
-                       <!-- <ImageButton
-                            android:id="@+id/nameButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="300dp"
-                            android:layout_marginTop="170dp"
-                            android:background="@color/grey"
-                            android:text="Show"
-                            app:srcCompat="@drawable/show_credential" />
-
-                        <ImageButton
-                            android:id="@+id/addressButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Show"
-                            android:layout_marginLeft="300dp"
-                            android:layout_marginTop="295dp"
-                            android:background="@color/grey"
-                            app:srcCompat="@drawable/show_credential"/>
-
-                        <ImageButton
-                            android:id="@+id/publicKeyButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Show"
-                            android:layout_marginLeft="300dp"
-                            android:layout_marginTop="420dp"
-                            android:background="@color/grey"
-                            app:srcCompat="@drawable/show_credential"/>
-
-                        <ImageButton
-                            android:id="@+id/privateKeyButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Show"
-                            android:layout_marginLeft="300dp"
-                            android:layout_marginTop="545dp"
-                            android:background="@color/grey"
-                            app:srcCompat="@drawable/show_credential"/>
-
-                        <ImageButton
-                            android:id="@+id/passwordButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Show"
-                            android:layout_marginLeft="300dp"
-                            android:layout_marginTop="670dp"
-                            android:background="@color/grey"
-                            app:srcCompat="@drawable/show_credential"/>-->
-
-                        <Switch
-                            android:id="@+id/switch1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Keep all visible"
-                            android:layout_marginTop="600dp"
-                            android:visibility="invisible"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/settingsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

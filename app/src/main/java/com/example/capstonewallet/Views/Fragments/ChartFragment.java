@@ -1,15 +1,13 @@
 package com.example.capstonewallet.Views.Fragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import androidx.fragment.app.Fragment;
-
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
@@ -18,12 +16,7 @@ import com.anychart.charts.Cartesian;
 import com.anychart.core.cartesian.series.Line;
 import com.anychart.data.Mapping;
 import com.anychart.data.Set;
-import com.anychart.enums.TooltipPositionMode;
-import com.anychart.graphics.vector.Stroke;
-import com.example.capstonewallet.Models.Clients.EtherPriceClient;
 import com.example.capstonewallet.R;
-import com.example.capstonewallet.viewmodels.StockNewsViewModel;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,9 +25,11 @@ import java.util.List;
  *
  * @author Sam Dodson
  */
-public class ChartFragment extends Fragment {
+public class ChartFragment extends Fragment implements View.OnClickListener {
     private ArrayList<String> prices;
     private ArrayList<String> dates;
+    private ProgressBar progressBar;
+    private ImageButton closeButton;
 
     /**
      * The argumented constructor for the ChartFragment class
@@ -51,39 +46,57 @@ public class ChartFragment extends Fragment {
      * @param inflater the layout inflater for chart_fragment.xml
      * @param container the parent view of ChartFragment
      * @param args null bundle
-     * @return
+     * @return the view for this fragment class
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
         View view = inflater.inflate(R.layout.chart_fragment, container, false);
 
         AnyChartView anyChartView = view.findViewById(R.id.chartContainer);
-        //anyChartView.setProgressBar(findViewById(R.id.progress_bar));
+        progressBar = view.findViewById(R.id.chartProgressBar);
+        closeButton = view.findViewById(R.id.closeChartButton);
+        closeButton.setOnClickListener(this);
 
+        // Sets chart layout and initializes headings and axes
         Cartesian cartesian = AnyChart.line();
-        //(getResources().getDrawable(R.color.navy, null)
         cartesian.background().fill("#E7E6F1");
         cartesian.background().stroke("5 #15165D");
         cartesian.xAxis(0).labels().enabled(false);
         cartesian.title("Ether Value in USD");
-        cartesian.xAxis(0).title("10/12/20 - 3/12/21");
+        String title = dates.get(0) + " -- " + dates.get(dates.size() - 1);
+        cartesian.xAxis(0).title(title);
         cartesian.yAxis(0).title("$ Value");
-        //cartesian.tooltip();
-
         List<DataEntry> seriesData = new ArrayList<>();
 
+        // Data is added to chart
         for(int index = 0; index < dates.size(); index++) {
             seriesData.add(new ValueDataEntry(dates.get(index), Double.parseDouble(prices.get(index))));
         }
 
         Set set = Set.instantiate();
         set.data(seriesData);
-        Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
-        Line series1 = cartesian.line(series1Mapping);
+        Mapping mapping = set.mapAs("{ x: 'x', value: 'value' }");
+        cartesian.tooltip().titleFormat("{%x}");
+        cartesian.tooltip().format("${%value}");
+        Line series1 = cartesian.line(mapping);
         anyChartView.setChart(cartesian);
-        //anyChartView.setBackground(getResources().getDrawable(R.drawable.border_5, null));
-        //anyChartView.getBackground().setColorFilter();
 
+        // Once chart is rendered progress bar becomes invisible
+        anyChartView.setOnRenderedListener(new AnyChartView.OnRenderedListener() {
+            @Override
+            public void onRendered() {
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+        });
         return view;
+    }
+
+    /**
+     * Removes chart when close button is pushed
+     * @param v the view for this fragment class
+     */
+    @Override
+    public void onClick(View v) {
+        ((NewsFragment)getParentFragment()).popChartFragment();
     }
 }

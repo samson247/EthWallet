@@ -1,54 +1,58 @@
 package com.example.capstonewallet.Views.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.capstonewallet.AddContactFragment;
 import com.example.capstonewallet.Database.ContactEntity;
-import com.example.capstonewallet.Models.Clients.TransactionClient;
 import com.example.capstonewallet.R;
-import com.example.capstonewallet.Views.Fragments.AddressBookFragment;
 import com.example.capstonewallet.Views.Fragments.ContactFragment;
-import com.example.capstonewallet.databinding.TransactionListItemBinding;
-
 import java.util.ArrayList;
 
-public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ContactsViewHolder> implements SearchView.OnQueryTextListener {
+/**
+ * Adapter class for contacts recycler view
+ *
+ * @author Sam Dodson
+ */
+public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ContactsViewHolder> {
     private Context context;
-    private ArrayList<String> names;
-    private ArrayList<String> addresses;
     private ArrayList<ContactEntity> contacts;
-    //private ArrayList<ContactsData> transactionData;
-    private TransactionListItemBinding binding;
     private static final String TAG = "TransactionListAdapter";
     private FragmentManager fragmentManager;
     private ContactFragment fragment;
 
-
+    /**
+     * Setter for fragment manager to control on click fragments for each contact item
+     * @param fragmentManager the fragment manager for this view
+     */
     public void setFragmentManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
 
+    /**
+     * Constructor for this class
+     * @param context the context of the class
+     * @param contacts the list of contacts to initialize recycler view with
+     */
     public ContactsAdapter(Context context, ArrayList<ContactEntity> contacts) {
         this.context = context;
         this.contacts = contacts;
-        //this.fragment = fragment;
     }
 
+    /**
+     * Initializes view holder of recycler view
+     * @param parent the parent view group
+     * @param viewType the recycler view's view type
+     * @return view holder for contacts adapter
+     */
     @NonNull
     @Override
     public ContactsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -57,36 +61,42 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
         return viewHolder;
     }
 
+    /**
+     * Method called on each change to recycler view to initialize each element
+     * @param holder the view holder
+     * @param position the position of the recycler view to update
+     */
     @Override
     public void onBindViewHolder(@NonNull ContactsViewHolder holder, int position) {
-
-        // icon send or receive + timeStamp to date + received or sent + amount
-        //holder.contactName.setText(transactionText.get(position));
-        //Log.d("yo123", names.get(position) + " " + addresses.get(position));
         holder.contactName.setText(contacts.get(position).getName());
         holder.address = contacts.get(position).getAddress();
-        Log.d("yo123", position + " " + holder.contactName.getText().toString() + " " + holder.address);
+        holder.getLayout().setBackground(null);
+        holder.getLayout().setPadding(0,0,0,0);
+
+        // Initializes the letter elements for the address book that have no address
+        // Sets background and layout for each element
         if(holder.getAddress().equals("")) {
             holder.getLayout().setBackgroundColor(context.getColor(R.color.navy));
             holder.getLayout().setPadding(20,0,0,0);
-            ViewGroup.LayoutParams params = holder.getLayout().getLayoutParams();
-            int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, context.getResources().getDisplayMetrics());
-            params.height = height;
-            params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            holder.getLayout().setLayoutParams(params);
-            //holder.getLayout().setBackground(null);
+            //TODO further fix height changes
+            //ViewGroup.LayoutParams params = holder.getLayout().getLayoutParams();
+            //int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, context.getResources().getDisplayMetrics());
+            //params.height = height;
+            //params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            //holder.getLayout().setLayoutParams(params);
             holder.contactName.setTextColor(context.getColor(R.color.grey));
         }
         else {
-            holder.getLayout().setBackground(context.getDrawable(R.drawable.border_5));
-            //holder.contactName.setText(contacts.get(position).getName());
+            // Initializes all contact elements an sets background
+            holder.getLayout().setBackgroundColor(context.getColor(R.color.grey));
             holder.contactName.setTextColor(context.getColor(R.color.navy));
         }
+
+        // When contact is clicked the popup with info is displayed
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //holder.contactName.setText("clicked");
-                Log.d("yo123", "fragment: " + fragment);
+                // New popup fragment is created
                 if (fragment == null) {
                     if(!holder.getAddress().equals("")) {
                         fragment = new ContactFragment(holder.getName(), holder.getAddress());
@@ -97,6 +107,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                     }
                 }
                 else if(!fragment.isVisible() && holder.getAddress() != "") {
+                    // Popup already exists but isn't currently visible
                     Log.d("yo123", "is in layout");
                     fragment = new ContactFragment(holder.getName(), holder.getAddress());
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -105,72 +116,64 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                     fragmentTransaction.commit();
                 }
                 else if(holder.getAddress() != ""){
+                    // Switch contact when popup already exists
                     Log.d("yo123", "is in switch name");
                     fragment.setName(holder.getName());
                     fragment.setAddress(holder.getAddress());
                 }
-                //fragment.setName(holder.contactName.toString());
-                //fragment.setAddress("0x3483498394323");
             }
         });
     }
 
+    /**
+     * Returns number of contacts in recycler view
+     * @return the number of contacts
+     */
     @Override
     public int getItemCount() {
         return contacts.size();
     }
 
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        filterSearch(query);
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        filterSearch(newText);
-        return false;
-    }
-
-    public void filterSearch(String text) {
-        Log.d("yo123", text);
-        ArrayList<String> namesOriginal = names;
-        //names.clear();
-        if(text.isEmpty()){
-            //names.addAll(namesOriginal);
-        } else{
-            text = text.toLowerCase();
-            int index = 0;
-            while(index < names.size()){
-                if(!names.get(index).toLowerCase().contains(text)){
-                    names.remove(index);
-                    Log.d("yo123", "adding filtered name " + names.get(index));
-                }
-            }
-        }
-        notifyDataSetChanged();
-    }
-
+    /**
+     * View holder class for contacts
+     *
+     * @author Sam Dodson
+     */
     public class ContactsViewHolder extends RecyclerView.ViewHolder {
         private LinearLayout linearLayout;
         private TextView contactName;
         private String address;
 
+        /**
+         * Constructor for this class
+         * @param itemView the view context for this class
+         */
         public ContactsViewHolder(@NonNull View itemView) {
             super(itemView);
-            //itemView.setTag(TAG);
             linearLayout = itemView.findViewById(R.id.contactLayout);
             contactName = itemView.findViewById(R.id.contactName);
         }
 
+        /**
+         * Getter for name of contact
+         * @return name of contact
+         */
         public String getName() {
             return this.contactName.getText().toString();
         }
 
+        /**
+         * Getter for address of contact
+         * @return address of contact
+         */
         public String getAddress() {
             return this.address;
         }
 
+        /**
+         * Getter for layout of contact item
+         * @return layout of contact item
+         */
         public LinearLayout getLayout() {
             return this.linearLayout;
         }

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Views.Activities.GettingStartedView"
+    android:background="@color/grey">
+
+    <TextView
+        android:id="@+id/intro_heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="Getting Started with Ethereum"
+        android:drawableLeft="@drawable/ether_logo_alt"
+        android:drawableRight="@drawable/ether_logo_alt"
+        android:drawablePadding="10dp"
+        android:textSize="25sp"
+        android:textColor="@color/navy"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/border_5"/>
+
+    <TextView
+        android:id="@+id/ether_explanation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/intro_heading"
+        android:textColor="@color/navy"
+        android:paddingTop="50dp"
+        android:paddingBottom="10dp"
+        android:paddingStart="5dp"
+        android:text="Ether is a cryptocurrency that is built on top of the decentralized Ethereum blockchain. Ethereum accounts allow for the transfer of Ether between parties. Each Ethereum account has an unique address associated with it as well as a private key for verifying all transactions. Each transaction on the Ethereum blockchain results in a fee being assessed to the account performing the transaction. This fee is known as the gas price. An account also specifies a gas limit denoting the amount of gas they are willing to spend. This gas system is necessary to incentivize the work being done by Ethereum miners who verify all the transactions that are added to the blockchain."/>
+
+    <TextView
+        android:id="@+id/learn_more_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/learn_more_about_ethereum"
+        android:textColor="@color/bt_text_blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ether_explanation"
+        android:clickable="true"/>
+
+    <TextView
+        android:id="@+id/wallet_basics_heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/learn_more_link"
+        android:text="Wallet Basics"
+        android:drawableLeft="@drawable/wallet"
+        android:drawableRight="@drawable/wallet"
+        android:drawablePadding="10dp"
+        android:textSize="25sp"
+        android:textColor="@color/navy"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/border_5"/>
+
+    <TextView
+        android:id="@+id/wallet_explanation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/wallet_basics_heading"
+        android:textColor="@color/navy"
+        android:paddingTop="50dp"
+        android:paddingBottom="10dp"
+        android:paddingStart="5dp"
+        android:text="An Ether wallet allows you to manage an Ethereum account and perform a number of transaction types. This wallet supports the transfer of Ether to and from accounts as well as the purchase of Ether from a global application account. Your Ether account will start with a balance of 0 unless you are loading an existing account into a new wallet account."/>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Continue to Wallet"
+        android:textColor="@color/grey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wallet_explanation" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CapstoneWallet"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Views.Activities.CredentialsView"></activity>
+        <activity android:name=".Views.Activities.GettingStartedView"></activity>
         <activity android:name=".Views.Activities.WalletView"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity android:name=".Views.Activities.LoginView">

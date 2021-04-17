@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/receiptHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Transaction Receipt"
+        android:textSize="30sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/timeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/receiptHeading"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Date" />
+    <TextView
+        android:id="@+id/hashText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/timeText"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Date" />
+    <TextView
+        android:id="@+id/senderText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/hashText"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Type"/>
+    <TextView
+        android:id="@+id/receiverText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/senderText"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Type"/>
+    <TextView
+        android:id="@+id/amountText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/receiverText"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Type"/>
+    <TextView
+        android:id="@+id/gasPriceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/amountText"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Type"/>
+    <TextView
+        android:id="@+id/gasLimitText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/gasPriceText"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Type"/>
+    <TextView
+        android:id="@+id/gasUsedText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/gasLimitText"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Type"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

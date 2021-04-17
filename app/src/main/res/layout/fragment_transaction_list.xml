@@ -13,20 +13,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/close"
-        android:background="@color/grey"/>
+        android:background="@color/grey"
+        android:layout_gravity="end"
+        android:layout_marginEnd="20dp"/>
+
+    <ImageButton
+        android:id="@+id/refreshList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/refresh"
+        android:background="@color/grey"
+        android:layout_gravity="end"
+        android:layout_marginEnd="60dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="150dp"
         android:id="@+id/transaction_list"
-        android:layout_marginTop="100dp"/>
+        android:layout_marginTop="50dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="Transaction History"
         android:textStyle="bold"
-        android:textSize="20sp"
-        android:layout_marginTop="50dp"/>
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Date            Type        Amount"
+        android:layout_marginTop="30dp"/>
 
 </FrameLayout>

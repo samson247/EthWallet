@@ -53,6 +53,7 @@ public class BottomNavigationFragment extends Fragment implements View.OnClickLi
 
         transactionButton = (RelativeLayout) view.findViewById(R.id.transactionButton);
         transactionButton.setOnClickListener(this::onClick);
+        transactionButton.setBackgroundColor(getResources().getColor(R.color.navytint, null));
 
         contactsButton = (RelativeLayout) view.findViewById(R.id.contactsButton);
         contactsButton.setOnClickListener(this::onClick);
@@ -94,7 +95,9 @@ public class BottomNavigationFragment extends Fragment implements View.OnClickLi
 
         if(v.getId() == binding.transactionButton.getId()) {
             //TransactionFragment fragment = new TransactionFragment();
-            transactionButton.getBackground().setColorFilter(new LightingColorFilter(0xFFFFFFFF, 0xFFAA0000));
+            ((WalletView)getActivity()).hideTopFragment();
+            ((WalletView)getActivity()).showLoadingScreen();
+            transactionButton.setBackgroundColor(getResources().getColor(R.color.navytint, null));
             fragmentClass = "TransactionFragment";
             //walletView.switchTopFragment("TransactionFragment");
         }
@@ -104,6 +107,8 @@ public class BottomNavigationFragment extends Fragment implements View.OnClickLi
             //walletView.switchTopFragment("");
         }
         else if(v.getId() == binding.newsButton.getId()) {
+            ((WalletView)getActivity()).hideTopFragment();
+            ((WalletView)getActivity()).showLoadingScreen();
             fragmentClass = "StockNewsFragment";
             newsButton.setBackgroundColor(getResources().getColor(R.color.navytint, null));
         }
@@ -118,7 +123,7 @@ public class BottomNavigationFragment extends Fragment implements View.OnClickLi
         //Fragment fragment = getChildFragmentManager().findFragmentByTag("transaction");
         //getChildFragmentManager().beginTransaction().add(R.id.container_top, fragment).commit();
 
-        if(fragmentClass != null) {
+        /*if(fragmentClass.equals("TransactionFragment")) {
             //Fragment fragment = getChildFragmentManager().findFragmentByTag("transaction");
             Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag(fragmentClass);
             if(fragment != null) {
@@ -128,7 +133,7 @@ public class BottomNavigationFragment extends Fragment implements View.OnClickLi
                 //fragman.beginTransaction().remove(fragman.findFragmentById(R.id.fraglog)).commit();
                 //fragmentManager.beginTransaction().replace(walletBinding.containerTop.getId(), fragment).commit();
             }
-        }
+        }*/
 
         Log.d("fragclass", fragmentClass);
         walletView.switchTopFragment(fragmentClass);

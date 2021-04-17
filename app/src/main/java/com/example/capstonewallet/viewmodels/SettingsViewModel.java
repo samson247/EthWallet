@@ -23,6 +23,7 @@ public class SettingsViewModel {
     public SettingsViewModel(SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
         settingsModel = new SettingsModel(sharedPreferences);
+        settingsModel.addPreferences();
         //gasPrice = settingsModel.getGasPrice();
         //gasLimit = settingsModel.getGasLimit();
     }
@@ -41,6 +42,7 @@ public class SettingsViewModel {
      */
     public void setGasPrice(String gasPrice) {
         this.gasPrice = gasPrice;
+        settingsModel.editGasPrice(Integer.valueOf(gasPrice));
     }
 
     /**
@@ -57,5 +59,6 @@ public class SettingsViewModel {
      */
     public void setGasLimit(String gasLimit) {
         this.gasLimit = gasLimit;
+        settingsModel.editGasLimit(Integer.valueOf(gasLimit));
     }
 }

@@ -1,33 +1,57 @@
 package com.example.capstonewallet.viewmodels;
 
 import android.content.Context;
-import android.util.Log;
+import com.example.capstonewallet.Models.AddContactModel;
 
-import com.example.capstonewallet.AccountRepository;
-import com.example.capstonewallet.Database.ContactEntity;
-
+/**
+ * View model class for add contact
+ *
+ * @author Sam Dodson
+ */
 public class AddContactViewModel {
-    //private AddContactModel addContactModel;
-    private AccountRepository repository;
+    private AddContactModel addContactModel;
 
+    /**
+     * Constructor for this class
+     * @param context context of this class's fragment
+     */
     public AddContactViewModel(Context context) {
-        this.repository = new AccountRepository(context);
+        addContactModel = new AddContactModel(context);
     }
 
-    public boolean onClick(String name, String address) {
+    /**
+     * Calls model class to add contact to DB
+     * @param name name of contact to add
+     * @param address address of contact to add
+     * @return whether contact was added successfully
+     */
+    public boolean addContact(String name, String address) {
         if(name.length() > 1 && name.length() < 20) {
-            ContactEntity contactEntity = new ContactEntity();
-            contactEntity.setName(name);
-            contactEntity.setAddress(address);
-            repository.insertContact(contactEntity);
-            Log.d("yo123", "first contact" + repository.getContactAddress("Test"));
-
+            addContactModel.addContact(name, address);
             return true;
         }
         return false;
     }
 
+    /**
+     * Calls model class to delete stale contact
+     * @param name name of stale contact
+     * @param address address of stale contact
+     */
     public void deleteEditedContact(String name, String address) {
-        //repository.deleteContact(address);
+        addContactModel.deleteContact(name, address);
+    }
+
+    /**
+     * Edits contact and removes stale version of contact
+     * @param oldName stale contact name
+     * @param oldAddress stale contact address
+     * @param newName updated contact name
+     * @param newAddress updated contact address
+     * @return whether contact was successfully added
+     */
+    public boolean editContact(String oldName, String oldAddress, String newName, String newAddress) {
+        deleteEditedContact(oldName, oldAddress);
+        return addContact(newName, newAddress);
     }
 }

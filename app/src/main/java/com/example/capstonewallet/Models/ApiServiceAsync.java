@@ -21,9 +21,9 @@ public class ApiServiceAsync implements ApiService {
     private String token;
     private String etherPrice;
 
-    public ApiServiceAsync() {
+    public ApiServiceAsync(String address) {
         executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
-        transactionClient = new TransactionClient();
+        transactionClient = new TransactionClient(address);
         braintreeServer = new BraintreeServer();
         etherPriceClient = new EtherPriceClient();
         newsClient = new NewsClient();

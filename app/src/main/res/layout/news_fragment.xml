@@ -24,9 +24,9 @@
             android:textColor="@color/navy"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:paddingStart="15dp"
+            android:paddingStart="10dp"
             android:textSize="20sp"
-            android:text="Ether Amount: " />
+            android:text="Amount: " />
 
         <HorizontalScrollView
             android:id="@+id/scrollView"
@@ -48,7 +48,9 @@
             app:backgroundTint="@color/navy"
             android:inputType="numberDecimal"
             android:scrollHorizontally="true"
-            android:maxWidth="75dp"/>
+            android:textAlignment="viewEnd"
+            android:ems="5"
+            android:imeOptions="actionDone"/>
 
         </HorizontalScrollView>
 
@@ -58,8 +60,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/etherAmount"
             android:paddingBottom="20dp"
-            android:paddingStart="15dp"
-            android:text="USD value: "
+            android:paddingStart="10dp"
+            android:text="Value: $"
             android:textSize="20sp"
             android:textColor="@color/navy"/>
 
@@ -70,31 +72,38 @@
             android:layout_below="@+id/scrollView"
             android:layout_toEndOf="@+id/usdValue"
             android:layout_alignBottom="@+id/usdValue"
-            android:layout_alignStart="@id/scrollView"
+            android:layout_alignEnd="@id/scrollView"
             android:text="50"
             android:textSize="20sp"
-            android:textColor="@color/navy"/>
+            android:textColor="@color/navy"
+            android:textAlignment="viewEnd"/>
 
         <Spinner
             android:id="@+id/units"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/scrollView"
-            android:paddingTop="10dp"
             android:drawSelectorOnTop="true"
             android:entries="@array/unitOptions"
-            android:spinnerMode="dropdown"/>
+            android:spinnerMode="dropdown"
+            android:dropDownWidth="wrap_content"
+            android:textAlignment="textStart"
+            android:paddingBottom="5dp"
+            android:background="@drawable/border_4"
+            android:dropDownVerticalOffset="10dp"/>
 
         <TextView
             android:id="@+id/chartIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="10dp"
             android:clickable="true"
             android:drawableTop="@drawable/chart"
             android:text="Show Chart"
-            android:textColor="@color/navy" />
+            android:textColor="@color/navy"
+            android:background="@drawable/border_5"
+            android:foreground="?attr/selectableItemBackground"/>
 
 
 
@@ -107,6 +116,7 @@
         android:layout_height="match_parent"
         android:nestedScrollingEnabled="false"
         android:layout_marginTop="175dp"
+        android:layout_marginBottom="75dp"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -120,15 +130,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
-
-    <ProgressBar
-        android:id="@+id/chartProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="175dp"
-        app:layout_constraintTop_toTopOf="@id/chartContainer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:visibility="invisible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

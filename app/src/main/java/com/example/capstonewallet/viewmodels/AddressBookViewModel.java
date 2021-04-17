@@ -1,51 +1,72 @@
 package com.example.capstonewallet.viewmodels;
 
 import android.content.Context;
-import android.util.Log;
-
-import androidx.collection.SparseArrayCompat;
-
-import com.example.capstonewallet.AccountRepository;
 import com.example.capstonewallet.Database.ContactEntity;
-
+import com.example.capstonewallet.Models.AddressBookModel;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
+/**
+ * View model class for address book
+ *
+ * @author Sam Dodson
+ */
 public class AddressBookViewModel {
-    private ArrayList<String> names;
-    private ContactEntity[] contacts;
-    private AccountRepository repository;
+    private AddressBookModel addressBookModel;
 
+    /**
+     * Constructor for this class
+     * @param context context of current state
+     */
     public AddressBookViewModel(Context context) {
-        repository = new AccountRepository(context);
+        addressBookModel = new AddressBookModel(context);
+
     }
 
-    public ArrayList<String> search(String query) {
-        if(names.contains(query)) {
-
-        }
-        return names;
-    }
-
+    /**
+     * Gets contacts from model class
+     * @return list of contacts
+     */
     public ArrayList<ContactEntity> getContacts() {
-        ContactEntity[] contacts = repository.getContacts();
-        ArrayList<ContactEntity> contactList = new ArrayList<>();
-        repository.closeDatabase();
-        if(contacts.length > 0) {
-            int index = 0;
-            while(index < contacts.length) {
-                if(!(contacts[index].getName() == null))
-                {
-                    contactList.add(contacts[index]);
-                    Log.d("yo123", contacts[index].getName() + " " + contacts[index].getAddress());
-                }
-                index++;
-            }
-        }
-        //ArrayList<ContactEntity> contactList = new ArrayList<>();
-        return contactList;
+        return addressBookModel.getContacts();
     }
 
-    public void editContact(String oldName, String oldAddress, String newName, String newAddress) {
+    /**
+     * Deletes selected contact from DB
+     * @param name name of contact
+     * @param address address of contact
+     */
+    public void deleteContact(String name, String address) {
+        addressBookModel.deleteContact(name, address);
+    }
 
+    /**
+     * Sorts contacts based on name
+     */
+    public void sortContacts(ArrayList<ContactEntity> contactEntities) {
+        Collections.sort(contactEntities, new Comparator<ContactEntity>() {
+            @Override
+            public int compare(ContactEntity contact1, ContactEntity contact2) {
+                return contact1.getName().compareTo(contact2.getName());
+            }
+        });
+    }
+
+    /**
+     * Creates sorted list of contacts to add to recycler view
+     * @param substring the search query
+     * @return list of sorted contacts
+     */
+    public ArrayList<ContactEntity> setContacts(ArrayList<ContactEntity> contactEntities, String substring) {
+        int index = 0;
+        ArrayList<ContactEntity> sortedContacts = new ArrayList<>();
+        while(index < contactEntities.size()) {
+            if(contactEntities.get(index).getName().toLowerCase().contains(substring) || contactEntities.get(index).getName().length() == 1) {
+                sortedContacts.add(contactEntities.get(index));
+            }
+            index++;
+        }
+        return sortedContacts;
     }
 }

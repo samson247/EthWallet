@@ -1,34 +1,29 @@
 package com.example.capstonewallet.Views.Fragments;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
-import android.widget.Switch;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
-
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.capstonewallet.R;
 import com.example.capstonewallet.viewmodels.AccountViewModel;
-import com.example.capstonewallet.viewmodels.CredentialsViewModel;
-import com.example.capstonewallet.Views.Activities.WalletView;
-import com.example.capstonewallet.viewmodels.WalletViewModel;
-
 import java.util.ArrayList;
 
-// Last button in navigation bar will load this fragment
-public class AccountFragment extends Fragment implements View.OnClickListener, View.OnTouchListener {
+/**
+ * Class that displays credentials for account and account settings
+ *
+ * @author Sam Dodson
+ */
+public class AccountFragment extends Fragment implements View.OnClickListener {
     private TextView walletName;
     private TextView addressHeading;
     private TextView addressText;
@@ -43,8 +38,11 @@ public class AccountFragment extends Fragment implements View.OnClickListener, V
     private TextView privateKeyText2;
     private TextView passwordHeading;
     private TextView passwordText;
-    private ConstraintLayout constraintLayout;
+    private ImageButton settingsButton;
+    private RelativeLayout topLayout;
+    private ScrollView scrollView;
     private AccountViewModel accountViewModel;
+    private Animation increaseWidth;
 
     /**
      * Creates the view for the AccountFragment
@@ -57,39 +55,44 @@ public class AccountFragment extends Fragment implements View.OnClickListener, V
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
         View view = inflater.inflate(R.layout.account_fragment, container, false);
 
-        Log.d("yo123", "oncreateview AccountFragment");
-
-        //Switch showHideSwitch = view.findViewById(R.id.switch1);
-        //showHideSwitch.setOnCheckedChangeListener(this::onCheckChanged);
-
         privateKeyButton = view.findViewById(R.id.privateKeyButton);
-        privateKeyButton.setOnClickListener(this::onClick);
+        privateKeyButton.setOnClickListener(this);
         privateKeyButton2 = view.findViewById(R.id.privateKeyButton2);
-        privateKeyButton2.setOnClickListener(this::onClick);
-
+        privateKeyButton2.setOnClickListener(this);
         passwordButton = view.findViewById(R.id.passwordButton);
-        passwordButton.setOnClickListener(this::onClick);
-
+        passwordButton.setOnClickListener(this);
         walletName = view.findViewById(R.id.walletNameTextView);
         addressText = view.findViewById(R.id.addressTextView);
         privateKeyHeading = view.findViewById(R.id.privateKeyHeading);
-        privateKeyHeading.setOnClickListener(this::onClick);
+        privateKeyHeading.setOnClickListener(this);
         privateKeyHeading2 = view.findViewById(R.id.privateKeyHeading2);
-        privateKeyHeading2.setOnClickListener(this::onClick);
+        privateKeyHeading2.setOnClickListener(this);
         privateKeyText = view.findViewById(R.id.privateKeyTextView);
         privateKeyText2 = view.findViewById(R.id.privateKeyTextView2);
-
         passwordHeading = view.findViewById(R.id.passwordHeading);
-        passwordHeading.setOnTouchListener(this::onTouch);
-        passwordHeading.setOnClickListener(this::onClick);
+        passwordHeading.setOnClickListener(this);
         passwordText = view.findViewById(R.id.passwordTextView);
-
         addressHeading = view.findViewById(R.id.addressHeading);
         addressHeading2 = view.findViewById(R.id.addressHeading2);
         addressText2 = view.findViewById(R.id.addressTextView2);
+        settingsButton = view.findViewById(R.id.settingsButton);
+        settingsButton.setOnClickListener(this);
+        topLayout = view.findViewById(R.id.topLayout);
+        scrollView = view.findViewById(R.id.scrollView);
 
+        /*increaseWidth = AnimationUtils.loadAnimation(getActivity().getBaseContext(), R.anim.increase_width);
+        increaseWidth.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) { }
 
-        constraintLayout = view.findViewById(R.id.constraintLayout);
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                privateKeyButton.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) { }
+        });*/
 
         Bundle bundle = getArguments();
 
@@ -106,6 +109,11 @@ public class AccountFragment extends Fragment implements View.OnClickListener, V
         return view;
     }
 
+    /**
+     * Handles all click events associated with this fragment and swaps appropriate headings to
+     * display credentials
+     * @param v view of this fragment
+     */
     @Override
     public void onClick(View v) {
         if(v.getId() == privateKeyButton.getId()) {
@@ -131,10 +139,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener, V
             privateKeyButton2.setVisibility(View.VISIBLE);
         }
         else if(v.getId() == passwordButton.getId()) {
-            /*ConstraintSet constraintSet = new ConstraintSet();
-            constraintSet.clone(constraintLayout);
-            constraintSet.connect(passwordText.getId(), ConstraintSet.BOTTOM, address.getId(), ConstraintSet.TOP,20);
-            constraintSet.applyTo(constraintLayout);*/
             if(privateKeyButton.getVisibility() == View.VISIBLE) {
                 privateKeyButton.setVisibility(View.INVISIBLE);
                 privateKeyButton2.setVisibility(View.VISIBLE);
@@ -173,90 +177,40 @@ public class AccountFragment extends Fragment implements View.OnClickListener, V
             passwordText.setVisibility(View.INVISIBLE);
             passwordButton.setVisibility(View.VISIBLE);
         }
-
-    }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        if(v.getId() == privateKeyButton.getId()) {
-            if(event.getAction() == MotionEvent.ACTION_BUTTON_PRESS) {
-                privateKeyButton.setBackgroundColor(Color.BLUE);
-            }
+        else if(v.getId() == settingsButton.getId()) {
+            hideFragments();
+            SettingsFragment fragment = new SettingsFragment();
+            FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+            fragmentTransaction.add(R.id.settingsContainer, fragment, null);
+            fragmentTransaction.addToBackStack("SettingsFragment");
+            fragmentTransaction.commit();
         }
-        return false;
     }
 
     /**
-     *
-     * @param view
-     * @param motionEvent
-     * @return
+     * Other fragments are hidden when settings fragment is shown
      */
-    /*
-    public boolean onTouch(View view, MotionEvent motionEvent) {
-        TextView credential = null;
-
-        if(view.getId() == nameButton.getId()) {
-            credential = walletName;
-        }
-        else if(view.getId() == addressButton.getId()) {
-            credential = address;
-        }
-        else if(view.getId() == publicKeyButton.getId()) {
-            credential = publicKey;
-        }
-        else if(view.getId() == privateKeyButton.getId()) {
-            credential = privateKey;
-        }
-        else if(view.getId() == passwordButton.getId()) {
-            credential = password;
-        }
-
-        if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-            credential.setTransformationMethod(null);
-        }
-        else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
-            credential.setTransformationMethod(new PasswordTransformationMethod());
-        }
-        return false;
-    }*/
-
+    public void hideFragments() {
+        topLayout.setVisibility(View.INVISIBLE);
+        scrollView.setVisibility(View.INVISIBLE);
+    }
 
     /**
-     *
-     * @param showHideSwitch
-     * @param state
+     * Other fragments are shown when settings fragment is popped
      */
-    /*
-    private void onCheckChanged(CompoundButton showHideSwitch, boolean state) {
-        if (state == true) {
-            //password.setInputType(InputType.TYPE_CLASS_TEXT);
-            privateKey.setTransformationMethod(null);
-            password.setTransformationMethod(null);
-            publicKey.setTransformationMethod(null);
-        } else if (state == false) {
-            Log.d("yo123", "doing it");
-            //password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            privateKey.setTransformationMethod(new PasswordTransformationMethod());
-            password.setTransformationMethod(new PasswordTransformationMethod());
-            publicKey.setTransformationMethod(new PasswordTransformationMethod());
-        }
-    }*/
-
-
+    public void showFragments() {
+        topLayout.setVisibility(View.VISIBLE);
+        scrollView.setVisibility(View.VISIBLE);
+    }
 
     /**
-     *
+     * Settings fragment is popped from back stack
      */
-    private class TouchButton extends AppCompatButton {
-        public TouchButton(Context context) {
-            super(context);
-        }
+    public void popSettingsFragment() {
+        showFragments();
 
-        @Override
-        public boolean performClick() {
-            // do what you want
-            return true;
+        if(!getChildFragmentManager().isStateSaved()) {
+            this.getChildFragmentManager().popBackStackImmediate();
         }
     }
 }

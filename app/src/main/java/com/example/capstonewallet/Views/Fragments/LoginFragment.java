@@ -2,24 +2,23 @@ package com.example.capstonewallet.Views.Fragments;
 
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.capstonewallet.Views.Activities.LoginView;
 import com.example.capstonewallet.viewmodels.LoginViewModel;
 import com.example.capstonewallet.R;
 import com.example.capstonewallet.Views.Activities.WalletView;
@@ -28,6 +27,8 @@ import com.example.capstonewallet.databinding.LoginFragmentBinding;
 
 /**
  * Fragment class that allows user to login
+ *
+ * @author Sam Dodson
  */
 public class LoginFragment extends Fragment implements View.OnClickListener {
     private LoginViewModel loginViewModel;
@@ -38,10 +39,21 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private ProgressBar progressBar;
     private Button loginButton;
 
+    /**
+     * Initializes fragment manager of class
+     * @param fragmentManager the WalletView activity fragment manager
+     */
     public void setFragmentManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
 
+    /**
+     * Initializes values and creates view for fragment
+     * @param inflater inflates layout of fragment
+     * @param container parent view group of fragment
+     * @param args empty bundle of arguments
+     * @return view of fragment class
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
         View view = inflater.inflate(R.layout.login_fragment, container, false);
@@ -56,23 +68,22 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         progressBar = view.findViewById(fragmentBinding.progressBar.getId());
 
-        password = (EditText) view.findViewById(R.id.editTextTextPersonName2);
-        address = (EditText) view.findViewById(R.id.editTextTextPersonName);
+        password = (EditText) view.findViewById(R.id.editTextPassword);
+        address = (EditText) view.findViewById(R.id.editTextWalletName);
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.spinner2);
-// Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
-                R.array.settingsItems, android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
+        Bundle bundle = this.getArguments();
+        if(bundle != null) {
+            ((LoginView)getActivity()).switchFragments();
+        }
 
-
-        Log.d("yo123", "oncreateview");
         return view;
     }
 
+    /**
+     * Responds to click of login button, either starting next activity with account loaded
+     * or informing user of invalid login credentials
+     * @param v the view of the fragment
+     */
     @Override
     public void onClick(View v) {
         Log.d("yo123", "inonclick");
@@ -84,12 +95,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             if(proceed) {
                 loginButton.setVisibility(View.INVISIBLE);
                 progressBar.setVisibility(View.VISIBLE);
+                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
                 Intent intent = new Intent(getActivity(), WalletView.class);
-                // pass credentials
+                // pass credentials to next activity
                 intent.putExtra("credentials", new String[]{loginViewModel.getPassword(), loginViewModel.getFileName()});
-                //intent.putExtra("password", loginViewModel.getPassword());
-                //intent.putExtra("fileName", loginViewModel.getFileName());
                 startActivity(intent);
             }
             else {
@@ -100,12 +111,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             }
         }
         else if (v.getId() == fragmentBinding.createOrAddTextView.getId()){
-            if(fragmentManager.findFragmentById(R.id.login_fragment) != null) {
-                fragmentManager.beginTransaction().remove(fragmentManager.findFragmentById(R.id.login_fragment)).commit();
-            }
-
-            CreateAccountFragment fragment = new CreateAccountFragment();
-            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+            ((LoginView)getActivity()).switchFragments();
         }
     }
 }

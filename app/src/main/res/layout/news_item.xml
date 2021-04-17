@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:background="@drawable/border_4"
+    android:foreground="?attr/selectableItemBackground"
     android:id="@+id/news_layout">
 
     <ImageView
@@ -24,7 +25,7 @@
         android:textSize="20dp"
         android:textColor="@color/grey"
         android:clickable="true"
-        android:background="?attr/selectableItemBackground">
+        android:foreground="?attr/selectableItemBackground">
     </TextView>
 
 </RelativeLayout>

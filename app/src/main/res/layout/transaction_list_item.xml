@@ -8,18 +8,26 @@
     android:clickable="true">
 
     <ImageView
-        android:id="@+id/transactionIcon"
+        android:id="@+id/iconSent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingEnd="20dp"
         app:srcCompat="@drawable/sent" />
+
+    <ImageView
+        android:id="@+id/iconReceived"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="20dp"
+        app:srcCompat="@drawable/received"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/transactionTextDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/transactionIcon"
+        android:layout_toEndOf="@+id/iconSent"
         android:text="Date"
         android:textSize="20sp"
         android:paddingEnd="20dp"/>

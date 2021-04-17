@@ -10,8 +10,7 @@
             type="com.example.capstonewallet.viewmodels.LoginViewModel"/>
     </data>
 
-
-<FrameLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/login_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,73 +18,73 @@
     tools:context=".Views.Fragments.LoginFragment">
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="175dp"
-        android:layout_height="50dp"
+        android:id="@+id/editTextWalletName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="50dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Cappy"
-        android:layout_marginStart="37.5dp" />
+        android:hint="@string/wallet_name"/>
 
     <EditText
-        android:id="@+id/editTextTextPersonName2"
-        android:layout_width="175dp"
-        android:layout_height="50dp"
+        android:id="@+id/editTextPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextWalletName"
         android:ems="10"
         android:inputType="textPassword"
-        android:hint="password"
-        android:layout_marginStart="37.5dp"
-        android:layout_marginTop="70dp"/>
+        android:hint="@string/password"
+        android:paddingTop="30dp"/>
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="140dp"
-        android:layout_marginStart="75dp"
-        android:text="Login" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextPassword"
+        android:text="@string/login"
+        android:layout_marginTop="30dp"/>
 
     <TextView
         android:id="@+id/newUserTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="250dp"
-        android:layout_marginStart="50dp"
-        android:text="New to CapstoneWallet?" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/loginButton"
+        android:text="@string/new_to_capstonewallet"
+        android:paddingTop="30dp"/>
 
     <TextView
         android:id="@+id/createOrAddTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="270dp"
-        android:layout_marginStart="50dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/newUserTextView"
         android:background="?attr/selectableItemBackground"
         android:textColor="@color/bt_text_blue"
-        android:text="Create or add an account" />
-
-    <Spinner
-        android:id="@+id/spinner2"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginLeft="200dp"
-        android:entries="@array/settingsItems"
-        android:drawSelectorOnTop="true"
-        android:prompt="@string/selectLanguage"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="@string/create_or_add_an_account"
+        android:paddingTop="5dp"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="140dp"
-        android:layout_marginStart="90dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextPassword"
         android:indeterminate="true"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        android:paddingTop="30dp"/>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

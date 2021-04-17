@@ -9,6 +9,9 @@ import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
+/**
+ * Password table in Account DB, contains columns for address, password, and init vector
+ */
 @Entity
 public class PasswordEntity implements Serializable {
     @PrimaryKey

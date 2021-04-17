@@ -1,15 +1,11 @@
 package com.example.capstonewallet.viewmodels;
 
 import android.content.Context;
-
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.capstonewallet.Models.Clients.NewsClient;
 import com.example.capstonewallet.Models.Clients.TransactionClient;
 import com.example.capstonewallet.Models.TransactionModel;
 import com.example.capstonewallet.Models.WalletModel;
-
 import java.util.ArrayList;
 
 public class WalletViewModel extends ViewModel {
@@ -17,6 +13,9 @@ public class WalletViewModel extends ViewModel {
     private TransactionModel transactionModel;
     private String fileName;
     private String password;
+    private ArrayList<ArrayList<String>> articleData;
+    private ArrayList<ArrayList<String>> chartData;
+    private String price;
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
@@ -31,12 +30,6 @@ public class WalletViewModel extends ViewModel {
         setPassword(password);
         setFileName(fileName);
         walletModel.loadWalletFromFile(password, fileName, false);
-
-        //String key = walletModel.getPrivateKey();
-        //transactionModel = new TransactionModel(key);
-        //transactionModel.getBalance();
-
-        //Do something similar to this to set values: setPublicKey(walletModel.getPublicKey());
         walletModel.loadApiServices();
     }
 
@@ -60,6 +53,30 @@ public class WalletViewModel extends ViewModel {
 
     public NewsClient.ArticleData [] getArticleData() {
         return walletModel.getArticleData();
+    }
+
+    public ArrayList<ArrayList<String>> getArticles() {
+        return articleData;
+    }
+
+    public void setArticles(ArrayList<ArrayList<String>> articleData) {
+        this.articleData = articleData;
+    }
+
+    public ArrayList<ArrayList<String>> getChartData() {
+        return chartData;
+    }
+
+    public void setChartData(ArrayList<ArrayList<String>> chartData) {
+        this.chartData = chartData;
+    }
+
+    public String getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 
     public String getPrivateKey() {

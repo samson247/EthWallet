@@ -4,14 +4,22 @@ import android.util.Log;
 
 import com.example.capstonewallet.Models.Clients.TransactionClient;
 
+import org.web3j.crypto.Wallet;
+
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class TransactionListViewModel {
     ArrayList<TransactionClient.TransactionData> transactionData;
     ArrayList<String[]> transactionText = new ArrayList<>();
+    private String address;
+
+    public TransactionListViewModel(String address) {
+        this.address = address;
+    }
 
     public ArrayList<TransactionClient.TransactionData> getTransactionText() throws Exception {
-        TransactionClient client = new TransactionClient();
+        TransactionClient client = new TransactionClient(address);
         transactionData = new ArrayList<>();
 
         Thread thread = new Thread()
@@ -39,14 +47,14 @@ public class TransactionListViewModel {
             Log.d("yo123", "sender" + sender);
 
             textToDisplay = transactionData.get(i).getTransactionText();
-            // date = getDate
-            // type = getType
-
-            //FIXME pass address and determine if sent or received
-            //if(transactionData.get(i).getSender() == )
-
             transactionText.add(textToDisplay);
         }
+        Collections.reverse(transactionText);
+        Collections.reverse(transactionData);
         return transactionText;
+    }
+
+    public ArrayList<TransactionClient.TransactionData> getTransactionData() {
+        return transactionData;
     }
 }

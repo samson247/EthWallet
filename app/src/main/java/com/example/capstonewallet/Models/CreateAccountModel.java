@@ -43,7 +43,7 @@ public class CreateAccountModel {
     private String password;
     String privateKey;
     private static final String DIRECTORY_DOWNLOADS = Environment.DIRECTORY_DOWNLOADS;
-    int code = -1;
+    int code;
 
     /**
      * Constructor for the CreateAccountModel class
@@ -63,7 +63,8 @@ public class CreateAccountModel {
     public int createWallet(String password, String name)
     {
         // Wallet is created if password is of valid format otherwise return false
-        if(!checkUsername(name)) {
+        code = -1;
+        if (!checkUsername(name)) {
             if (checkPassword(password)) {
                 this.setupSecurityProvider();
                 String path = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS).getPath();
@@ -150,31 +151,8 @@ public class CreateAccountModel {
     public void insertPassword() {
         PasswordModel passwordModel = new PasswordModel();
         String [] passwordRecord = new String[3];
-        try {
-            passwordRecord = passwordModel.storePassword(password, address);
-        } catch (UnrecoverableEntryException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-        } catch (SignatureException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        }
+
+        passwordRecord = passwordModel.storePassword(password, address);
 
         repository.insertPassword(address, passwordRecord[0], passwordRecord[1]);
     }
@@ -274,6 +252,11 @@ public class CreateAccountModel {
         return isMatch;
     }
 
+    /**
+     * Checks that wallet name is unique and less than 20 characters
+     * @param name the name to check
+     * @return the code specifying whether the name is valid or not
+     */
     public boolean checkUsername(String name) {
         if(name.length() > 20) {
             code = 2;
@@ -289,7 +272,7 @@ public class CreateAccountModel {
                 }
             }
         }
-        if(exists == false) {
+        if(exists == true) {
             code = 0;
         }
         return exists;
