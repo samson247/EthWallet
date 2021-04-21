@@ -6,6 +6,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -77,7 +79,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
         // Sets background and layout for each element
         if(holder.getAddress().equals("")) {
             holder.getLayout().setBackgroundColor(context.getColor(R.color.navy));
-            holder.getLayout().setPadding(20,0,0,0);
+            holder.getLayout().setPadding(20,10,0,0);
             //TODO further fix height changes
             //ViewGroup.LayoutParams params = holder.getLayout().getLayoutParams();
             //int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, context.getResources().getDisplayMetrics());
@@ -101,21 +103,23 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                     if(!holder.getAddress().equals("")) {
                         fragment = new ContactFragment(holder.getName(), holder.getAddress());
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.fade_out);
                         fragmentTransaction.add(R.id.popupContainer, fragment, null);
                         fragmentTransaction.addToBackStack("ContactPopup");
                         fragmentTransaction.commit();
                     }
                 }
-                else if(!fragment.isVisible() && holder.getAddress() != "") {
+                else if(!fragment.isVisible() && !holder.getAddress().equals("")) {
                     // Popup already exists but isn't currently visible
                     Log.d("yo123", "is in layout");
                     fragment = new ContactFragment(holder.getName(), holder.getAddress());
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.fade_out);
                     fragmentTransaction.add(R.id.popupContainer, fragment, null);
                     fragmentTransaction.addToBackStack("ContactPopup");
                     fragmentTransaction.commit();
                 }
-                else if(holder.getAddress() != ""){
+                else if(!holder.getAddress().equals("")){
                     // Switch contact when popup already exists
                     Log.d("yo123", "is in switch name");
                     fragment.setName(holder.getName());
@@ -132,6 +136,10 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     @Override
     public int getItemCount() {
         return contacts.size();
+    }
+
+    public ContactFragment getFragment() {
+        return this.fragment;
     }
 
     /**

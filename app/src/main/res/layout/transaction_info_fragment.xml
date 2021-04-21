@@ -4,71 +4,143 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/grey">
 
     <TextView
-        android:id="@+id/receiptHeading"
+        android:id="@+id/heading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Transaction Receipt"
-        android:textSize="30sp"
+        android:textAlignment="center"
+        android:textSize="25sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:gravity="center"/>
+        android:textColor="@color/navy"/>
+
     <TextView
-        android:id="@+id/timeText"
+        android:id="@+id/hashTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/receiptHeading"
+        app:layout_constraintTop_toBottomOf="@id/heading"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Date" />
+        android:text="Hash: "
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        android:paddingEnd="25dp"
+        android:textColor="@color/navy"/>
+
     <TextView
         android:id="@+id/hashText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/timeText"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="Date" />
+        app:layout_constraintTop_toBottomOf="@id/heading"
+        app:layout_constraintStart_toEndOf="@id/hashTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Date"
+        android:textSize="16sp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:textColor="@color/navy"/>
+
     <TextView
-        android:id="@+id/senderText"
+        android:id="@+id/senderTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/hashText"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Type"/>
+        android:text="From: "
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        android:paddingEnd="25dp"
+        android:textColor="@color/navy"/>
+
     <TextView
-        android:id="@+id/receiverText"
+        android:id="@+id/senderText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:text="Ty"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/senderTitle"
+        app:layout_constraintTop_toBottomOf="@id/hashText"
+        android:textColor="@color/navy"/>
+
+    <TextView
+        android:id="@+id/receiverTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/senderText"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Type"/>
+        android:text="To:      "
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        android:paddingEnd="25dp"
+        android:textColor="@color/navy"/>
+
+    <TextView
+        android:id="@+id/receiverText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/senderText"
+        app:layout_constraintStart_toEndOf="@id/receiverTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Type"
+        android:textSize="16sp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:textColor="@color/navy"/>
+
+    <TextView
+        android:id="@+id/timeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/receiverText"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Date"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/navy"/>
     <TextView
         android:id="@+id/amountText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/receiverText"
+        app:layout_constraintTop_toBottomOf="@id/timeText"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Type"/>
+        android:text="Type"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/navy"/>
     <TextView
         android:id="@+id/gasPriceText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/amountText"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Type"/>
+        android:text="Type"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/navy"/>
     <TextView
         android:id="@+id/gasLimitText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/gasPriceText"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Type"/>
+        android:text="Type"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/navy"/>
     <TextView
         android:id="@+id/gasUsedText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/gasLimitText"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Type"/>
+        android:text="Type"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/navy"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

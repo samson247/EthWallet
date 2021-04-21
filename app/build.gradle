@@ -2,6 +2,10 @@ plugins {
     id 'com.android.application'
 }
 
+def apikeyPropertiesFile = rootProject.file("apikey.properties")
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -15,7 +19,15 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "API_KEY", API_KEY)
+        buildConfigField("String", "INFURA_URL", apikeyProperties['INFURA_URL'])
+        buildConfigField("String", "APP_PRIVATE_KEY", apikeyProperties['APP_PRIVATE_KEY'])
+        buildConfigField("String", "CHART_API_KEY", apikeyProperties['CHART_API_KEY'])
+        buildConfigField("String", "PRICE_API_KEY", apikeyProperties['PRICE_API_KEY'])
+        buildConfigField("String", "NEWS_API_KEY", apikeyProperties['NEWS_API_KEY'])
+        buildConfigField("String", "TX_API_KEY", apikeyProperties['TX_API_KEY'])
+        buildConfigField("String", "BT_MERCHANT", apikeyProperties['BT_MERCHANT'])
+        buildConfigField("String", "BT_PUBLIC", apikeyProperties['BT_PUBLIC'])
+        buildConfigField("String", "BT_PRIVATE", apikeyProperties['BT_PRIVATE'])
     }
 
     buildTypes {

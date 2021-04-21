@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,7 @@ public class NewsFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
         View view = inflater.inflate(R.layout.news_fragment, container, false);
         newsViewModel = new NewsViewModel();
+        ((WalletView)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         // Retrieves article data for recycler view
         if(recyclerView == null) {
@@ -63,26 +65,6 @@ public class NewsFragment extends Fragment implements View.OnClickListener {
         }
 
         usdValue = (TextView) view.findViewById(R.id.amountUSD);
-        /*// Gets price of ether
-        EtherPriceClient client = new EtherPriceClient();
-        try {
-            Thread thread = new Thread() {
-                public void run() {
-                    try {
-                        usdValue = (TextView) view.findViewById(R.id.amountUSD);
-                        newsViewModel.startPriceService();
-                        usdValue.setText(newsViewModel.getPrice());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-            thread.start();
-            thread.join();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
         chartButton = view.findViewById(R.id.chartIcon);
         chartButton.setOnClickListener(this);
         chartContainer = view.findViewById(R.id.chartContainer);
@@ -121,8 +103,14 @@ public class NewsFragment extends Fragment implements View.OnClickListener {
                 if(s.length() == 0) {
                     usdValue.setText("");
                 }
-                else if(s.length() > 0 && s.length() < 10 && !ethAmount.getText().toString().equals(".")) {
+                else if(s.length() > 0 && s.length() < 16 && !ethAmount.getText().toString().equals(".")) {
                     String amount = ethAmount.getText().toString();
+                    if(amount.length() <= 9) {
+                        ethAmount.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f);
+                    }
+                    else if(amount.length() > 9) {
+                        ethAmount.setText("");
+                    }
                     if(amount.charAt(0) == '.') {
                         String zero = "0";
                         amount = zero.concat(amount);
@@ -134,6 +122,18 @@ public class NewsFragment extends Fragment implements View.OnClickListener {
                     }
                     String result = newsViewModel.convertToUsd(amount, unitOptions.getSelectedItem().toString());
                     usdValue.setText(result);
+                    if(result.length() <= 9) {
+                        usdValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f);
+                        usdValue.setPadding(0, 0, 0, 0);
+                    }
+                    else if(result.length() > 9 && result.length() < 16) {
+                        usdValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f);
+                        usdValue.setPadding(0, 5, 0, 0);
+                    }
+                    else {
+                        usdValue.setText("Error");
+                        usdValue.setTextColor(Color.RED);
+                    }
                 }
                 else {
                     usdValue.setText("Error");

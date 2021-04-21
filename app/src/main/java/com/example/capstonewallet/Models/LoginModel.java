@@ -51,9 +51,6 @@ public class LoginModel {
      */
     public boolean loginAccount() {
         boolean loginSuccess = true;
-        Log.d("yo123", "address: " + address);
-        Log.d("yo123", "password: " + password);
-
         int MAX_CONTACT_LENGTH = 20;
         if(this.address.length() < MAX_CONTACT_LENGTH) {
             loginSuccess = translateNameToAddress();
@@ -87,10 +84,7 @@ public class LoginModel {
      */
     private boolean checkAddress() {
         boolean proceed = false;
-        Log.d("yo123", "chk: " + address);
-        //boolean proceed = repository.checkAddress("0x2a101ff0d72e2624530bc542c64ca80b902ed55d");
         String file = repository.getAccountFile(address);
-        Log.d("yo123", "chk: " + file);
         if(file != null) {
             proceed = true;
             fileName = file;

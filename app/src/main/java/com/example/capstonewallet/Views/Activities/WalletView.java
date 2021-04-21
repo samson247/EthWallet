@@ -131,19 +131,12 @@ public class WalletView extends AppCompatActivity {
             fragment = new Fragment();
         }
 
-        /*if(fragmentManager.findFragmentById(walletBinding.containerTop.getId()) != null) {
-            fragmentManager.beginTransaction().remove(transactionFragment).commit();
-        }*/
-
         fragmentManager.beginTransaction().replace(walletBinding.containerTop.getId(),
                     fragment, fragmentStr).commit();
 
         walletBinding.containerTop.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * TODO fix this
-     */
     public void startBraintree()  {
         String token = walletViewModel.getToken();
         DropInRequest dropInRequest;

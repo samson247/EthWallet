@@ -17,6 +17,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
+
 import com.example.capstonewallet.R;
 import com.example.capstonewallet.Views.Activities.LoginView;
 import com.example.capstonewallet.viewmodels.CreateAccountViewModel;
@@ -40,6 +42,7 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
     private ImageButton infoButton;
     private Button createAccountButton;
     private boolean addExistingChecked = false;
+    private ProgressBar progressBar;
 
     /**
      * Initializes values and creates view for fragment
@@ -69,6 +72,7 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
         checkBoxExisting2.setOnCheckedChangeListener(this::onCheckedChanged);
         infoButton = view.findViewById(R.id.infoButton);
         infoButton.setOnClickListener(this::onClick);
+        progressBar = view.findViewById(R.id.progressBar2);
 
         return view;
     }
@@ -91,20 +95,18 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
     public void onClick(View v) {
         // Displays valid password criteria
         if(v.getId() == infoButton.getId()) {
-            new AlertDialog.Builder(getContext(), R.style.AlertDialog).setMessage("Password must be at least 7 characters long and contain a number...").show();
+            new AlertDialog.Builder(getContext(), R.style.AlertDialog).setMessage("Password must be at least 7 characters long and contain a number.").show();
         }
         else {
+            progressBar.setVisibility(View.VISIBLE);
+            createAccountButton.setVisibility(View.INVISIBLE);
             Intent intent = new Intent(getActivity(), GettingStartedView.class);
             // Adds new wallet account and creates Ethereum account
             if(!addExistingChecked) {
-                Log.d("yo123", "piss?" + password.getText().toString());
-                Log.d("yo123", "piss?" + createAccountBinding.editTextNewPassword.getText().toString());
                 createAccountViewModel.setPassword(password.getText().toString());
                 createAccountViewModel.setWalletName(walletName.getText().toString());
                 int proceed = createAccountViewModel.onClick(getContext(), addExistingChecked);
                 if(proceed == -1) {
-                    Log.d("yo123", "Stop: " + createAccountViewModel.getPassword());
-                    Log.d("yo123", "Stop: " + createAccountViewModel.getFileName());
                     intent.putExtra("credentials", new String[]{createAccountViewModel.getPassword(),
                             createAccountViewModel.getFileName()});
 
@@ -132,9 +134,6 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
                 else {
                     showInvalidPassword();
                 }
-                //intent.putExtra("credentials", new String[]{privateKey.getText().toString()});
-                //add existing logic
-                //put extras
             }
         }
     }

@@ -3,6 +3,7 @@ package com.example.capstonewallet.Models.Servers;
 import android.util.Log;
 import com.braintreegateway.BraintreeGateway;
 import com.braintreegateway.Environment;
+import com.example.capstonewallet.BuildConfig;
 
 /**
  * Server class for Braintree, retrieves token to complete transaction
@@ -25,13 +26,12 @@ public class BraintreeServer {
                     try  {
                         gateway = new BraintreeGateway(
                                 String.valueOf(Environment.SANDBOX),
-                                "x456g3sz4n8wfbjf",
-                                "rmsmpv5fk4v6y6gb",
-                                "d366d726a3469196bb09a74be9a2cfb0"
+                                BuildConfig.BT_MERCHANT,
+                                BuildConfig.BT_PUBLIC,
+                                BuildConfig.BT_PRIVATE
                         );
                         String clientToken = gateway.clientToken().generate();
                         setClientToken(clientToken);
-                        Log.d("yo123", "clientTooken " + clientToken);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

@@ -4,6 +4,8 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.SurfaceControl;
 
+import com.example.capstonewallet.BuildConfig;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,38 +46,31 @@ public class TransactionClient {
     }
 
     public void run() throws Exception {
-        // https://api-rinkeby.etherscan.io/api?module=account&action=txlist&address=0xddbd2b932c763ba5b1b7ae3b362eac3e8d40121a&startblock=0&endblock=99999999&sort=asc&apikey=PK7JGX1HN3H4WS4R4SIMERA75GH9I9F926
-
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
                 .host("api-rinkeby.etherscan.io")
                 .addPathSegment("api")
                 .addQueryParameter("module", "account")
                 .addQueryParameter("action", "txlist")
-                .addQueryParameter("address", "0x41752a78cf3823dfc5b0969f6545edc1479fd3bb")
+                .addQueryParameter("address", address)
                 .addQueryParameter("startblock", "0")
                 .addQueryParameter("endblock", "99999999")
-                .addQueryParameter("sort", "asc")
-                .addQueryParameter("apikey", "PK7JGX1HN3H4WS4R4SIMERA75GH9I9F926")
+                .addQueryParameter("sort", "desc")
+                .addQueryParameter("apikey", BuildConfig.TX_API_KEY)
                 .build();
 
-        Log.d("yo123", url.toString());
         Request request = new Request.Builder()
                 .url(url)
                 .build();
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) throw new IOException(String.valueOf(response));
 
-            Log.d("yo123", "gist");
-            Log.d("yo123", response.peekBody(2048).string());
             String json = response.body().string();
 
             transactionResults = new JSONObject(json);
             transactions = transactionResults.get("result").toString();
 
-
             int totalResults = 20;
-            Log.d("yo123", String.valueOf(totalResults));
             getTransactionData();
         }
     }
@@ -103,13 +98,10 @@ public class TransactionClient {
             //Log.d("yo123", sender);
             this.transactionData.add(new TransactionClient.TransactionData(sender, receiver, time,
                     gas, gasPrice, gasUsed, value, hash));
-            Log.d("yo123", "Ck" + this.transactionData.get(i).getSender());
-            Log.d("yo123", "Ck" + this.transactionData.get(i).getReceiver());
         }
 
     }
     public ArrayList<TransactionData> getTransactions() throws Exception {
-        Log.d("yo123", "Boutta run");
         this.run();
         return transactionData;
     }

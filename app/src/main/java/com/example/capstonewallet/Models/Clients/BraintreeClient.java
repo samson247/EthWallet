@@ -37,10 +37,7 @@ public class BraintreeClient {
         Log.d("onactres", "request " + requestCode);
         Log.d("onactres", "result " + resultCode);
         Log.d("onactres", "amount " + amount);
-        //this.amount = "ten";
-        //this.amount = amount;
-        //TODO change amount
-        amount = "10";
+        this.amount = amount;
         if(requestCode == 400) {
             if(resultCode == Activity.RESULT_OK)
             {
@@ -54,7 +51,7 @@ public class BraintreeClient {
                         public void run() {
                             try  {
                                 TransactionRequest request = new TransactionRequest()
-                                        .amount(new BigDecimal("10.00"))
+                                        .amount(new BigDecimal(amount))
                                         .paymentMethodNonce(strNonce)
                                         .options()
                                         .submitForSettlement(false)

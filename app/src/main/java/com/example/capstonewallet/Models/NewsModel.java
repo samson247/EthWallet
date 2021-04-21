@@ -23,7 +23,6 @@ public class NewsModel {
      * @return the resulting value of ether for the specified USD amount
      */
     public String calculateUSDAmount(String etherAmount, String etherUnit) {
-        Log.d("yo123", "value: " + usdValue);
         Double amount = Double.parseDouble(usdValue);
         Double value = Double.parseDouble(etherAmount);
         BigDecimal convertedValue = null;
@@ -36,7 +35,6 @@ public class NewsModel {
             result = convertedValue.multiply(BigDecimal.valueOf(amount));
         }
         else if(etherUnit.equals("Gwei")) {
-            //ethervalue = etherValue / 1000000000000000
             convertedValue = BigDecimal.valueOf(value)
                     .divide(BigDecimal.valueOf(Long.parseLong("1000000000000000")));
 
@@ -45,8 +43,6 @@ public class NewsModel {
         else {
             result = BigDecimal.valueOf(value).multiply(BigDecimal.valueOf(amount));
         }
-        //MathContext mathContext = new MathContext(3);
-        //result = result.round(mathContext);
         result = result.setScale(2, BigDecimal.ROUND_HALF_DOWN);
         if(result.compareTo(BigDecimal.ZERO) == 0) {
             return "< 0.00";

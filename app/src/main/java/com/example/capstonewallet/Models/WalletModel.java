@@ -41,22 +41,18 @@ public class WalletModel {
     private String address;
     private BigInteger publicKey;
     private BigInteger privateKey;
-    private int balance;
+    private String clientToken;
+    private ArrayList<TransactionClient.TransactionData> transactionData;
     private String fileName;
     private AccountRepository repository;
-    private Credentials credentials2;
-    private String clientToken;
     private String etherPrice;
-    private ArrayList<TransactionClient.TransactionData> transactionData;
     private NewsClient.ArticleData [] articleData;
 
     public WalletModel(Context context) {
         repository = new AccountRepository(context);
     }
 
-    public WalletModel(Credentials credentials) {
-
-    }
+    public WalletModel(Credentials credentials) {}
 
     public WalletModel(String [] credentials) {
         Log.d("yo123", "model" + credentials[0]);
@@ -98,7 +94,6 @@ public class WalletModel {
         this.fileName = fileName;
     }
 
-    // Here or in login?
     public void loadWalletFromFile(String password, String walletFilePath, Boolean justCreated)
     {
         Credentials credentials = null;
@@ -160,24 +155,16 @@ public class WalletModel {
         ApiServiceAsync service = new ApiServiceAsync(address);
         service.startAll();
 
-        CountDownTimer timer = new CountDownTimer(10000, 1000) {
+        CountDownTimer timer = new CountDownTimer(5000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                //clientToken = service.getToken();
                 etherPrice = service.getEtherPrice();
-                //transactionData = service.getTransactionData();
                 articleData = service.getArticleData();
-
-                Log.d("yo123", "time" + millisUntilFinished);
             }
 
             @Override
             public void onFinish() {
-                //Log.d("yo123", "client token" + getClientToken());
-                //Log.d("yo123", "ether price" + getEtherPrice());
                 Log.d("yo123", "articles" + getArticleData());
-                //Log.d("yo123", "transactions" + getTransactionData());
-
             }
         };
         timer.start();

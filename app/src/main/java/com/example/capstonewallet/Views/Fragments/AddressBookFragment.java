@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.capstonewallet.AddContactFragment;
 import com.example.capstonewallet.Database.ContactEntity;
 import com.example.capstonewallet.R;
+import com.example.capstonewallet.Views.Activities.WalletView;
 import com.example.capstonewallet.Views.Adapters.ContactsAdapter;
 import com.example.capstonewallet.viewmodels.AddressBookViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -33,6 +36,7 @@ public class AddressBookFragment extends Fragment implements View.OnClickListene
     private AddressBookViewModel addressBookViewModel;
     private ArrayList<ContactEntity> contactEntities;
     private EditText searchBar;
+    private LinearLayout popupContainer;
 
     /**
      * Initializes values and creates view for fragment
@@ -45,6 +49,7 @@ public class AddressBookFragment extends Fragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
         View view = inflater.inflate(R.layout.address_book_fragment, container, false);
 
+        ((WalletView)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         addContactButton = view.findViewById(R.id.addContactButton);
         addContactButton.setOnClickListener(this::onClick);
         backArrow = view.findViewById(R.id.backArrow);
@@ -58,8 +63,12 @@ public class AddressBookFragment extends Fragment implements View.OnClickListene
              // Sorts contacts when text of search bar is changed
              @Override
              public void onTextChanged(CharSequence s, int start, int before, int count) {
+                 Fragment fragment = adapter.getFragment();
                  adapter = null;
                  if(s.length() != 0) {
+                     if(fragment != null) {
+                         getChildFragmentManager().beginTransaction().remove(fragment).commit();
+                     }
                      ArrayList<ContactEntity> sortedContactData = addressBookViewModel.setContacts(contactEntities, s.toString());
                      adapter = new ContactsAdapter(getContext(), sortedContactData);
                  }
@@ -85,6 +94,7 @@ public class AddressBookFragment extends Fragment implements View.OnClickListene
         adapter.setFragmentManager(getChildFragmentManager());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        popupContainer = view.findViewById(R.id.popupContainer);
         return view;
     }
 
@@ -95,6 +105,10 @@ public class AddressBookFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if(v.getId() == addContactButton.getId()) {
+            Fragment fragment = adapter.getFragment();
+            if(fragment != null) {
+                getChildFragmentManager().beginTransaction().remove(fragment).commit();
+            }
             addAddContactFragment("add", null, null);
         }
         else if(v.getId() == backArrow.getId()) {
@@ -122,6 +136,7 @@ public class AddressBookFragment extends Fragment implements View.OnClickListene
             fragmentTransaction.add(R.id.containerAddContact, editContactFragment, null);
             fragmentTransaction.addToBackStack("EditContact");
         }
+        //fragmentTransaction.setCustomAnimations(R.anim.slide_over, R.anim.fade_out);
         fragmentTransaction.commit();
         addContactButton.setVisibility(View.INVISIBLE);
     }

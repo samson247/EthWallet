@@ -21,7 +21,6 @@
         android:drawablePadding="10dp"
         android:textSize="25sp"
         android:textColor="@color/navy"
-        android:layout_marginTop="30dp"
         android:background="@drawable/border_5"/>
 
     <TextView
@@ -32,7 +31,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/intro_heading"
         android:textColor="@color/navy"
-        android:paddingTop="50dp"
+        android:paddingTop="30dp"
         android:paddingBottom="10dp"
         android:paddingStart="5dp"
         android:text="Ether is a cryptocurrency that is built on top of the decentralized Ethereum blockchain. Ethereum accounts allow for the transfer of Ether between parties. Each Ethereum account has an unique address associated with it as well as a private key for verifying all transactions. Each transaction on the Ethereum blockchain results in a fee being assessed to the account performing the transaction. This fee is known as the gas price. An account also specifies a gas limit denoting the amount of gas they are willing to spend. This gas system is necessary to incentivize the work being done by Ethereum miners who verify all the transactions that are added to the blockchain."/>
@@ -73,7 +72,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/wallet_basics_heading"
         android:textColor="@color/navy"
-        android:paddingTop="50dp"
+        android:paddingTop="30dp"
         android:paddingBottom="10dp"
         android:paddingStart="5dp"
         android:text="An Ether wallet allows you to manage an Ethereum account and perform a number of transaction types. This wallet supports the transfer of Ether to and from accounts as well as the purchase of Ether from a global application account. Your Ether account will start with a balance of 0 unless you are loading an existing account into a new wallet account."/>

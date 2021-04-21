@@ -41,16 +41,12 @@ public class TransactionListViewModel {
     public ArrayList<String[]> setTransactionText() {
         String sender;
         String [] textToDisplay;
-        Log.d("translength", String.valueOf(transactionData.size()));
         for(int i = 0; i < transactionData.size(); i++) {
-            sender = "sender" + transactionData.get(i).getSender();
-            Log.d("yo123", "sender" + sender);
-
             textToDisplay = transactionData.get(i).getTransactionText();
             transactionText.add(textToDisplay);
         }
-        Collections.reverse(transactionText);
-        Collections.reverse(transactionData);
+        //Collections.reverse(transactionText);
+        //Collections.reverse(transactionData);
         return transactionText;
     }
 

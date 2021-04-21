@@ -8,9 +8,12 @@ import androidx.fragment.app.Fragment;
 import com.braintreepayments.api.dropin.DropInRequest;
 import com.example.capstonewallet.Models.Clients.BraintreeClient;
 import com.example.capstonewallet.Models.TransactionModel;
+import com.example.capstonewallet.Views.Fragments.TransactionFragment;
 import com.example.capstonewallet.Views.Fragments.TransactionGetFragment;
 import com.example.capstonewallet.Views.Fragments.TransactionSendFragment;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
+
+import java.math.BigDecimal;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -24,6 +27,7 @@ public class TransactionViewModel {
     private String balance;
     private BraintreeClient client;
     private final static int FIVE_SECONDS = 5000;
+    private boolean transactionInProgress = false;
 
     /**
      * Constructor for this class
@@ -44,7 +48,12 @@ public class TransactionViewModel {
      */
     public void forwardSendEther(String address, String amount, String units, Fragment fragment) {
         Timer timer = new Timer();
+        transactionInProgress = true;
         EthSendTransaction ethSendTransaction = transactionModel.sendEther(address, amount, units);
+        if(ethSendTransaction == null) {
+            ((TransactionSendFragment)fragment).toastOnUIThread("Invalid recipient or amount");
+            return;
+        }
         Log.d("yo123", "hash: " + ethSendTransaction.getTransactionHash());
         // Checks every five seconds if transaction is complete
         TimerTask task = new TimerTask() {
@@ -52,7 +61,8 @@ public class TransactionViewModel {
             public void run() {
                 if(transactionModel.confirm_transaction(ethSendTransaction)) {
                     timer.cancel();
-                    ((TransactionSendFragment)fragment).toastOnUIThread();
+                    ((TransactionSendFragment)fragment).toastOnUIThread("Transaction successful");
+                    transactionInProgress = false;
                 }
             }
         };
@@ -67,6 +77,7 @@ public class TransactionViewModel {
      */
     public void forwardGetEther(String amount, String units, Fragment fragment) {
         Timer timer = new Timer();
+        transactionInProgress = true;
         EthSendTransaction ethSendTransaction = transactionModel.getEther(amount, units);
         Log.d("yo123", "hash: " + ethSendTransaction.getTransactionHash());
         // Checks every five seconds if transaction is complete
@@ -76,6 +87,7 @@ public class TransactionViewModel {
                 if(transactionModel.confirm_transaction(ethSendTransaction)) {
                     timer.cancel();
                     ((TransactionGetFragment)fragment).toastOnUIThread("Transaction Successful");
+                    transactionInProgress = false;
                 }
             }
         };
@@ -102,7 +114,16 @@ public class TransactionViewModel {
         }
     }
 
-    public boolean getAppBalance() {
-        return false;
+    public boolean compareAppBalance(String amount) {
+        if(transactionModel.getAppBalance().compareTo(BigDecimal.valueOf(Double.parseDouble(amount))) > 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean getTxInProgress() {
+        return transactionInProgress;
     }
 }

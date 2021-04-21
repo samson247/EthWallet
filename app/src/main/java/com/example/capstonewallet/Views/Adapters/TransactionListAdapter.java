@@ -63,7 +63,6 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
     public void onBindViewHolder(@NonNull TransactionListViewHolder holder, int position) {
 
         // icon send or receive + timeStamp to date + received or sent + amount
-        Log.d("yo123", transactionText.get(position)[0]);
         holder.transactionDate.setText(transactionText.get(position)[0]);
         holder.transactionType.setText(transactionText.get(position)[1]);
         holder.transactionAMT.setText(transactionText.get(position)[2]);
@@ -76,40 +75,23 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
             holder.iconSent.setVisibility(View.INVISIBLE);
             holder.iconReceived.setVisibility(View.VISIBLE);
         }
-        /*else {
-           // Drawable drawable = context.getResources().getDrawable(R.drawable.sent, null);
-            //holder.icon.setImageDrawable(drawable);
-            holder.iconReceived.setVisibility(View.INVISIBLE);
-        }*/
-        /*if((position % 2) == 0) {
-            holder.icon.setColorFilter(R.color.navy);
-        }
-        else {
-            holder.icon.setColorFilter(R.color.bt_text_blue);
-        }*/
-
         if(position == 0) {
             holder.iconSent.setVisibility(View.INVISIBLE);
             holder.iconReceived.setVisibility(View.INVISIBLE);
+            holder.relativeLayout.setClickable(false);
         }
-        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TransactionInfoFragment fragment = new TransactionInfoFragment(transactionData.get(position));
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.transactionPopup, fragment, null);
-                fragmentTransaction.addToBackStack("TransactionInfo");
-                fragmentTransaction.commit();
-                //holder.transactionText.setText("clicked");
-                //TODO create fragment class to display txn data and add back arrow to pop fragment
-                /*fragment = new ContactFragment(holder.getName(), "0x2323213");
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.popupContainer, fragment, null);
-                fragmentTransaction.addToBackStack("ContactPopup");
-                fragmentTransaction.commit();*/
-
-            }
-        });
+        else {
+            holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TransactionInfoFragment fragment = new TransactionInfoFragment(transactionData.get(position));
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.add(R.id.transactionPopup, fragment, null);
+                    fragmentTransaction.addToBackStack("TransactionInfo");
+                    fragmentTransaction.commit();
+                }
+            });
+        }
     }
 
     @Override
@@ -127,7 +109,6 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
 
         public TransactionListViewHolder(@NonNull View itemView) {
             super(itemView);
-            //itemView.setTag(TAG);
             relativeLayout = (RelativeLayout) itemView.findViewById(R.id.item_layout);
             transactionDate = (TextView) itemView.findViewById(R.id.transactionTextDate);
             transactionType = (TextView) itemView.findViewById(R.id.transactionTextType);
@@ -136,8 +117,4 @@ public class TransactionListAdapter extends RecyclerView.Adapter<TransactionList
             iconReceived = itemView.findViewById(R.id.iconReceived);
         }
     }
-
-    /*public void popFragment() {
-        transactionInfoFragment.popFragment();
-    }*/
 }

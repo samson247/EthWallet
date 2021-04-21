@@ -47,14 +47,14 @@ public class TransactionSendFragment extends Fragment implements View.OnClickLis
         unitOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                //TODO convert balance to correct unit
                 String balance = ((TransactionFragment)getParentFragment()).getViewModel()
                         .convertBalance(unitOptions.getSelectedItem().toString()) + " " + unitOptions.getSelectedItem();
 
                 ((TransactionFragment)getParentFragment()).setBalance(balance);
-
-
+                DropdownFragment fragment = ((TransactionFragment)getParentFragment()).getDropdownFragment();
+                if(fragment != null) {
+                    fragment.setBalanceText();
+                }
             }
 
             @Override
@@ -73,33 +73,47 @@ public class TransactionSendFragment extends Fragment implements View.OnClickLis
     @Override
     public void onClick(View v) {
         if(v.getId() == sendEtherButton.getId()) {
-            toastSent();
-            ((TransactionFragment)getParentFragment()).getViewModel()
-                    .forwardSendEther(recipient.getText().toString(), amount.getText().toString(),
-                            unitOptions.getSelectedItem().toString(),this);
-            amount.setText("");
-            amount.setCursorVisible(false);
-            amount.setFocusable(false);
+            try {
+                if (amount.getText().toString().length() == 0 && recipient.getText().toString().length() == 0) {
+                    toastOnUIThread("Invalid recipient and amount");
+                } else if (amount.getText().toString().length() == 0) {
+                    toastOnUIThread("Invalid amount");
+                } else if (recipient.getText().toString().length() == 0) {
+                    toastOnUIThread("Invalid recipient");
+                } else if (((TransactionFragment) getParentFragment()).getViewModel().getTxInProgress()) {
+                    toastOnUIThread("Transaction already in progress");
+                } else {
+                    toastOnUIThread("Transaction Sent");
+                    ((TransactionFragment) getParentFragment()).getViewModel()
+                            .forwardSendEther(recipient.getText().toString(), amount.getText().toString(),
+                                    unitOptions.getSelectedItem().toString(), this);
+                    amount.setText("");
+                    recipient.setText("");
+                }
+            }
+            catch (Exception e) {}
         }
+    }
+
+    public void setAmountEditable() {
+        amount.setText("");
+        amount.setCursorVisible(true);
+        amount.setFocusable(true);
     }
 
     /**
      * Alerts user when transaction has been mined
      */
-    public void toastOnUIThread() {
+    public void toastOnUIThread(String message) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getActivity(), "Transaction Successful", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    public void toastSent() {
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(getActivity(), "Transaction Sent", Toast.LENGTH_LONG).show();
+                try {
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.capstonewallet.R;
+import com.example.capstonewallet.Views.Activities.WalletView;
 import com.example.capstonewallet.viewmodels.AccountViewModel;
 import java.util.ArrayList;
 
@@ -54,6 +55,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
         View view = inflater.inflate(R.layout.account_fragment, container, false);
+        ((WalletView)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         privateKeyButton = view.findViewById(R.id.privateKeyButton);
         privateKeyButton.setOnClickListener(this);
@@ -79,20 +81,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         settingsButton.setOnClickListener(this);
         topLayout = view.findViewById(R.id.topLayout);
         scrollView = view.findViewById(R.id.scrollView);
-
-        /*increaseWidth = AnimationUtils.loadAnimation(getActivity().getBaseContext(), R.anim.increase_width);
-        increaseWidth.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) { }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                privateKeyButton.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) { }
-        });*/
 
         Bundle bundle = getArguments();
 
@@ -126,7 +114,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
             privateKeyButton2.setVisibility(View.INVISIBLE);
             privateKeyHeading2.setVisibility(View.VISIBLE);
             privateKeyText2.setVisibility(View.VISIBLE);
-            privateKeyText.setText(accountViewModel.getPrivateKey());
+            privateKeyText2.setText(accountViewModel.getPrivateKey());
         }
         else if(v.getId() == privateKeyHeading.getId()) {
             privateKeyHeading.setVisibility(View.INVISIBLE);
@@ -148,6 +136,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 privateKeyHeading2.setVisibility(View.VISIBLE);
                 privateKeyText.setVisibility(View.INVISIBLE);
                 privateKeyText2.setVisibility(View.VISIBLE);
+                privateKeyText2.setText(accountViewModel.getPrivateKey());
             }
             addressText.setVisibility(View.INVISIBLE);
             addressHeading.setVisibility(View.INVISIBLE);
@@ -157,6 +146,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
             passwordHeading.setVisibility(View.VISIBLE);
             passwordText.setVisibility(View.VISIBLE);
             passwordText.setText(accountViewModel.getPassword());
+            privateKeyText.setText(accountViewModel.getPrivateKey());
         }
         else if(v.getId() == passwordHeading.getId()) {
             if(privateKeyButton.getVisibility() == View.INVISIBLE && privateKeyButton2.getVisibility() == View.VISIBLE) {

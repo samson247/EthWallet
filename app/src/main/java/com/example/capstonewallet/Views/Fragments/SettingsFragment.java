@@ -82,16 +82,21 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         updateSpeedColor();
 
+        gasLimit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                saveButton.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
         return view;
     }
-
-    /*public SettingsFragment() {
-        //sharedPreferences = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
-        //appPreferences = new AppSharedPreferences(sharedpreferences);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        //sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        settingsViewModel = new SettingsViewModel(sharedPreferences);
-    }*/
 
     /**
      * Handles click events for this fragment
@@ -128,7 +133,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         }
         else if(Integer.parseInt(gasPrice.getText().toString()) >= 100) {
            //speedIndicator.setBackgroundColor(getResources().getColor(R.color.teal_700, null));
-           speedIndicator.setText("Avg");
+           speedIndicator.setText("Avg ");
            speedIndicator.setBackgroundResource(R.drawable.border_7);
         }
         else {

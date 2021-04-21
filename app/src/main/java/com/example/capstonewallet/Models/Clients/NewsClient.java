@@ -2,6 +2,7 @@ package com.example.capstonewallet.Models.Clients;
 
 import android.util.Log;
 
+import com.example.capstonewallet.BuildConfig;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
@@ -37,19 +38,14 @@ public class NewsClient {
                 .addPathSegment("everything")
                 .addQueryParameter("q", "ethereum")
                 .addQueryParameter("sortBy", "publishedAt")
-                .addQueryParameter("apiKey", "a5aa0832af24421db46873860ab12062")
+                .addQueryParameter("apiKey", BuildConfig.NEWS_API_KEY)
                 .build();
 
-        Log.d("yo123", url.toString());
         Request request = new Request.Builder()
                 .url(url)
                 .build();
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) throw new IOException(String.valueOf(response));
-
-            Log.d("yo123", "gist");
-
-            //Gson gson = new Gson();
             String json = response.body().string();
 
             obj1 = new JSONObject(json);
@@ -57,14 +53,12 @@ public class NewsClient {
 
 
             int totalResults = 20;
-            Log.d("yo123", String.valueOf(totalResults));
             getArticleData();
         }
     }
 
     public void getArticleData() throws JSONException {
         int totalResults = 20;
-        Log.d("yo123", String.valueOf(totalResults));
 
         for(int i = 0; i < totalResults - 1; i++) {
             articlesJson = new JSONArray(articles);
@@ -72,14 +66,11 @@ public class NewsClient {
             articleJson = new JSONObject(article);
             title = articleJson.getString("title");
             url = articleJson.getString("url");
-
-            Log.d("yo123", article);
             this.articleData[i] = new ArticleData(title, url);
         }
 
     }
     public ArticleData [] getArticles() throws Exception {
-        Log.d("yo123", "Boutta run");
         this.run();
         return articleData;
     }

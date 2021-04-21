@@ -40,7 +40,6 @@ public class TransactionListFragment extends Fragment implements View.OnClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
         View view = inflater.inflate(R.layout.fragment_transaction_list, container, false);
-        Log.d("yo123", "oncreateview");
 
         transactionListViewModel = new TransactionListViewModel(((WalletView)getActivity()).getWalletViewModel().getAddress());
         closeButton = view.findViewById(R.id.closeList);
@@ -119,57 +118,4 @@ public class TransactionListFragment extends Fragment implements View.OnClickLis
             }
         }
     }
-
-    /*public void popFragment() {
-        adapter.popFragment();
-    }*/
-
-
-    // Move to client
-    /*public void getTransactionText() throws Exception {
-        /*transactionText.add("Sent 5 ether");
-        transactionText.add("Received 5 ether");
-        transactionText.add("Sent 7 ether");
-        transactionText.add("Sent 20 ether");
-        transactionText.add("Received 12 ether");
-        transactionText.add("Sent 5 ether");
-        transactionText.add("Received 5 ether");
-        transactionText.add("Sent 7 ether");
-        transactionText.add("Sent 20 ether");
-        transactionText.add("Received 12 ether");
-        transactionText.add("Sent 5 ether");
-        transactionText.add("Received 5 ether");
-        transactionText.add("Sent 7 ether");
-        transactionText.add("Sent 20 ether");
-        transactionText.add("Received 12 ether");
-
-        TransactionClient client = new TransactionClient();
-        transactionData = new ArrayList<>();
-
-        Thread thread = new Thread()
-        {
-            public void run() {
-                try {
-                    transactionData = client.getTransactions();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        thread.start();
-        thread.join();
-    }
-
-    public void setTransactionText() {
-        String sender;
-        Log.d("translength", String.valueOf(transactionData.size()));
-        for(int i = 0; i < transactionData.size(); i++) {
-            sender = "sender" + transactionData.get(i).getSender();
-            Log.d("yo123", "sender" + sender);
-            //FIXME pass address and determine if sent or received
-            //if(transactionData.get(i).getSender() == )
-
-            transactionText.add(sender);
-        }
-    }*/
 }

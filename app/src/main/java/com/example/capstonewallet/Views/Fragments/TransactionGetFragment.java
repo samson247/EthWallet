@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,7 @@ public class TransactionGetFragment extends Fragment implements View.OnClickList
     private Spinner unitOptions;
     private TextView lowFundsText;
     private TextView linkToBuy;
+    private ProgressBar progressBar;
 
     /**
      * The method called to initialize view for this class
@@ -61,6 +63,10 @@ public class TransactionGetFragment extends Fragment implements View.OnClickList
                         .convertBalance(unitOptions.getSelectedItem().toString()) + " " + unitOptions.getSelectedItem();
 
                 ((TransactionFragment)getParentFragment()).setBalance(balance);
+                DropdownFragment fragment = ((TransactionFragment)getParentFragment()).getDropdownFragment();
+                if(fragment != null) {
+                    fragment.setBalanceText();
+                }
             }
 
             @Override
@@ -68,6 +74,7 @@ public class TransactionGetFragment extends Fragment implements View.OnClickList
 
             }
         });
+        progressBar = view.findViewById(R.id.progressBar3);
 
         return view;
     }
@@ -75,7 +82,7 @@ public class TransactionGetFragment extends Fragment implements View.OnClickList
     @Override
     public void onStart() {
         super.onStart();
-        if(!((TransactionFragment)getParentFragment()).getViewModel().getAppBalance()) {
+        if(!((TransactionFragment)getParentFragment()).getViewModel().compareAppBalance("0")) {
             amount.setVisibility(View.INVISIBLE);
             unitOptions.setVisibility(View.INVISIBLE);
             getEtherButton.setVisibility(View.INVISIBLE);
@@ -91,9 +98,20 @@ public class TransactionGetFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         if(v.getId() == getEtherButton.getId()) {
-            //set loading bar
-            Log.d("yo123", "goint to braintree...");
-            ((WalletView)getActivity()).startBraintree();
+            getEtherButton.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
+            if(((TransactionFragment)getParentFragment()).getViewModel().getTxInProgress()) {
+                toastOnUIThread("Transaction already in progress");
+            }
+            else if(amount.getText().toString().equals("")) {
+                toastOnUIThread("Invalid amount");
+            }
+            else if(((TransactionFragment)getParentFragment()).getViewModel().compareAppBalance(amount.getText().toString())) {
+                ((WalletView)getActivity()).startBraintree();
+            }
+            else {
+                toastOnUIThread("Insufficient App Funds");
+            }
         }
         else if(v.getId() == linkToBuy.getId()) {
             Intent newsLinkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ethereum.org/en/get-eth/"));
@@ -106,19 +124,19 @@ public class TransactionGetFragment extends Fragment implements View.OnClickList
      * @param result the result code of Braintree transaction
      */
     public void notifyResult(int result) {
+        progressBar.setVisibility(View.INVISIBLE);
+        getEtherButton.setVisibility(View.VISIBLE);
         String amountToSend = amount.getText().toString();
         amount.setText(null);
-        Log.d("yo123", "result of braintree = " + result);
         if(result == 1) {
             toastOnUIThread("Transaction sent");
             // send ether to user of amount = what they paid
             ((TransactionFragment)getParentFragment()).getViewModel().forwardGetEther(amountToSend, unitOptions.getSelectedItem().toString(), this);
-            //Toast.makeText(getContext(), "Transaction sent", Toast.LENGTH_LONG);
-            //toastOnUIThread();
         }
         else {
             toastOnUIThread("Transaction Failed");
         }
+        amount.setText("");
     }
 
     /**
@@ -129,6 +147,12 @@ public class TransactionGetFragment extends Fragment implements View.OnClickList
         return amount.getText().toString();
     }
 
+    public void setAmountEditable() {
+        amount.setText("");
+        amount.setCursorVisible(true);
+        amount.setFocusable(true);
+    }
+
     /**
      * Notifies user when transaction has been mined
      */
@@ -136,8 +160,12 @@ public class TransactionGetFragment extends Fragment implements View.OnClickList
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_LONG);
-                toast.show();
+                try {
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

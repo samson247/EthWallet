@@ -27,7 +27,7 @@
         android:layout_marginTop="50dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Cappy"
+        android:text=""
         android:hint="@string/wallet_name"/>
 
     <EditText

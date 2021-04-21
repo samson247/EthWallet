@@ -1,6 +1,7 @@
 package com.example.capstonewallet.Views.Fragments;
 
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import com.example.capstonewallet.Models.Clients.TransactionClient;
 import com.example.capstonewallet.R;
 import com.example.capstonewallet.Views.Activities.WalletView;
+
+import java.util.Date;
 
 /**
  * Fragment class for transaction info popup
@@ -45,15 +48,15 @@ public class TransactionInfoFragment extends Fragment {
         gasPrice = view.findViewById(R.id.gasPriceText);
         gasLimit = view.findViewById(R.id.gasLimitText);
         gasUsed = view.findViewById(R.id.gasUsedText);
-
-        time.setText("Time: " + transactionData.getTime());
-        hash.setText("Hash: " + transactionData.getHash());
-        sender.setText("Sender: " + transactionData.getSender());
-        receiver.setText("Receiver: " + transactionData.getReceiver());
-        amount.setText("Amount: " + transactionData.getValue());
-        gasPrice.setText("Gas Price: " + transactionData.getGasPrice());
-        gasLimit.setText("Gas Limit: " + transactionData.getGas());
-        gasUsed.setText("Gas Used: " + transactionData.getGasUsed());
+        Date date = new java.util.Date(Long.parseLong(transactionData.getTime()) * 1000);
+        time.setText("Time:           " + (String) DateFormat.format("yyyy-MM-dd HH:mm:ss", date));
+        hash.setText(transactionData.getHash());
+        sender.setText(transactionData.getSender());
+        receiver.setText(transactionData.getReceiver());
+        amount.setText("Amount:      " + transactionData.getValue());
+        gasPrice.setText("Gas Price:   " + transactionData.getGasPrice());
+        gasLimit.setText("Gas Limit:   " + transactionData.getGas());
+        gasUsed.setText("Gas Used:   " + transactionData.getGasUsed());
 
         return view;
     }

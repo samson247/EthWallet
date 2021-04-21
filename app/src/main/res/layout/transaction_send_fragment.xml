@@ -42,7 +42,7 @@
         android:layout_toEndOf="@+id/etherRecipientEditText"
         android:digits="0123456789."
         android:ems="4"
-        android:hint="Amount"
+        android:hint="Amount  "
         android:inputType="numberDecimal"
         android:imeOptions="actionDone"
         android:textAlignment="viewEnd" />

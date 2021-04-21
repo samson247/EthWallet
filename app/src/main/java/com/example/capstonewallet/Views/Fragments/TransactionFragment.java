@@ -56,6 +56,7 @@ public class TransactionFragment extends Fragment implements View.OnClickListene
             return this.getView();
         }
         View view = inflater.inflate(R.layout.fragment_transaction, container, false);
+        ((WalletView)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         binding = FragmentTransactionBinding.inflate(getLayoutInflater());
         balance = view.findViewById(binding.balanceTextView.getId());
         history = view.findViewById(binding.transactionHistoryText.getId());
@@ -226,6 +227,7 @@ public class TransactionFragment extends Fragment implements View.OnClickListene
         else if(dropdownFragment.isHidden()) {
             dropdownButton.setImageDrawable(getResources().getDrawable(R.drawable.drop_up, null));
             getChildFragmentManager().beginTransaction().show(dropdownFragment).commit();
+            dropdownFragment.setBalanceText();
         }
         else {
             dropdownButton.setImageDrawable(getResources().getDrawable(R.drawable.drop_down_big, null));
@@ -300,6 +302,10 @@ public class TransactionFragment extends Fragment implements View.OnClickListene
 
     public String getBalance() {
         return balance.getText().toString();
+    }
+
+    public DropdownFragment getDropdownFragment() {
+        return dropdownFragment;
     }
 
     /**

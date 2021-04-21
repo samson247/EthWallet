@@ -1,8 +1,5 @@
 package com.example.capstonewallet.Views.Fragments;
 
-import android.content.res.ColorStateList;
-import android.graphics.LightingColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,25 +15,16 @@ import com.example.capstonewallet.R;
 import com.example.capstonewallet.Views.Activities.WalletView;
 import com.example.capstonewallet.databinding.FragmentBottomNavigationBinding;
 
-import devlight.io.library.ntb.NavigationTabBar;
-
 
 public class BottomNavigationFragment extends Fragment implements View.OnClickListener {
     private FragmentBottomNavigationBinding binding;
     private FragmentManager fragmentManager;
     private WalletView walletView;
-    private NavigationTabBar navigationTabBar;
     private RelativeLayout transactionButton;
     private RelativeLayout contactsButton;
     private RelativeLayout newsButton;
     private RelativeLayout accountButton;
-
-    /*
-    public LoginFragment getInstance(Context context) {
-        //super(R.layout.create_account);
-        //walletModel = new WalletModel(context);
-        return this;
-    }*/
+    private boolean transactionOpen = false;
 
     public void setFragmentManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -63,21 +51,6 @@ public class BottomNavigationFragment extends Fragment implements View.OnClickLi
 
         accountButton = (RelativeLayout) view.findViewById(R.id.accountButton);
         accountButton.setOnClickListener(this::onClick);
-        //fragmentBinding.createAccountButton.setOnClickListener(this::onClick);
-        //fragmentBinding.loginButton.setOnClickListener(this::onClick);
-        //loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-        //final Button loginButton = (Button) view.findViewById(fragmentBinding.loginButton.getId());
-        //loginButton.setOnClickListener(this::onClick);
-        /*final Button transactionButton = (Button) view.findViewById(binding.button2.getId());
-        transactionButton.setOnClickListener(this::onClick);
-        final Button stockNewsButton = (Button) view.findViewById(binding.button3.getId());
-        stockNewsButton.setOnClickListener(this::onClick);
-        final Button accountButton = (Button) view.findViewById(binding.button4.getId());
-        accountButton.setOnClickListener(this::onClick);
-        Log.d("yo123", "oncreateview Bottom Frag");*/
-
-
-
         return view;
     }
 
@@ -94,17 +67,21 @@ public class BottomNavigationFragment extends Fragment implements View.OnClickLi
         String fragmentClass = "";
 
         if(v.getId() == binding.transactionButton.getId()) {
-            //TransactionFragment fragment = new TransactionFragment();
-            ((WalletView)getActivity()).hideTopFragment();
-            ((WalletView)getActivity()).showLoadingScreen();
-            transactionButton.setBackgroundColor(getResources().getColor(R.color.navytint, null));
-            fragmentClass = "TransactionFragment";
-            //walletView.switchTopFragment("TransactionFragment");
+            if(!transactionOpen) {
+                ((WalletView)getActivity()).hideTopFragment();
+                ((WalletView)getActivity()).showLoadingScreen();
+                transactionButton.setBackgroundColor(getResources().getColor(R.color.navytint, null));
+                transactionOpen = true;
+                fragmentClass = "TransactionFragment";
+            }
+            else {
+                transactionButton.setBackgroundColor(getResources().getColor(R.color.navytint, null));
+                return;
+            }
         }
         else if(v.getId() == binding.contactsButton.getId()) {
             fragmentClass = "AddressBookFragment";
             contactsButton.setBackgroundColor(getResources().getColor(R.color.navytint, null));
-            //walletView.switchTopFragment("");
         }
         else if(v.getId() == binding.newsButton.getId()) {
             ((WalletView)getActivity()).hideTopFragment();
@@ -113,36 +90,14 @@ public class BottomNavigationFragment extends Fragment implements View.OnClickLi
             newsButton.setBackgroundColor(getResources().getColor(R.color.navytint, null));
         }
         else if(v.getId() == binding.accountButton.getId()) {
-            //AccountFragment fragment = new AccountFragment();
             fragmentClass = "AccountFragment";
             accountButton.setBackgroundColor(getResources().getColor(R.color.navytint, null));
-            //walletView.switchTopFragment("AccountFragment");
         }
 
-        //getActivity().getSupportFragmentManager().findFragmentByTag("transaction").getChildFragmentManager().beginTransaction().commit();
-        //Fragment fragment = getChildFragmentManager().findFragmentByTag("transaction");
-        //getChildFragmentManager().beginTransaction().add(R.id.container_top, fragment).commit();
-
-        /*if(fragmentClass.equals("TransactionFragment")) {
-            //Fragment fragment = getChildFragmentManager().findFragmentByTag("transaction");
-            Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag(fragmentClass);
-            if(fragment != null) {
-                Log.d("fragclass", "skipping dat " + fragmentClass);
-                //getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container_top, fragment).commit();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container_top, fragment).commit();
-                //fragman.beginTransaction().remove(fragman.findFragmentById(R.id.fraglog)).commit();
-                //fragmentManager.beginTransaction().replace(walletBinding.containerTop.getId(), fragment).commit();
-            }
-        }*/
-
+        if(!fragmentClass.equals("TransactionFragment")) {
+            transactionOpen = false;
+        }
         Log.d("fragclass", fragmentClass);
         walletView.switchTopFragment(fragmentClass);
-
-
-        //walletView.switchTopFragment(fragmentClass);
-
-        //walletView.switchTopFragment(fragmentClass);
-        //getActivity().getSupportFragmentManager().
-
     }
 }

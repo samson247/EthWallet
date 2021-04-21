@@ -3,6 +3,7 @@ package com.example.capstonewallet.Views.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +62,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     public void onBindViewHolder(@NonNull NewsAdapter.NewsViewHolder holder, int position) {
         holder.newsText.setText(this.newsText.get(position));
         holder.url = this.newsUrl.get(position);
+        holder.setIsRecyclable(false);
 
         // Opens URL when article is clicked
         holder.newsText.setOnClickListener(new View.OnClickListener() {

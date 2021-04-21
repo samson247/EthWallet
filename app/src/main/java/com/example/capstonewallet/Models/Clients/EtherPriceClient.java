@@ -2,6 +2,8 @@ package com.example.capstonewallet.Models.Clients;
 
 import android.util.Log;
 
+import com.example.capstonewallet.BuildConfig;
+
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -27,7 +29,7 @@ public class EtherPriceClient {
                 .addQueryParameter("module", "stats")
                 .addQueryParameter("action", "ethprice")
                 .addQueryParameter("address", "0xddbd2b932c763ba5b1b7ae3b362eac3e8d40121a")
-                .addQueryParameter("apikey", "PK7JGX1HN3H4WS4R4SIMERA75GH9I9F926")
+                .addQueryParameter("apikey", BuildConfig.PRICE_API_KEY)
                 .build();
 
         Log.d("yo123", url.toString());

@@ -71,8 +71,6 @@ public class LoginView extends AppCompatActivity  {
                 getSupportFragmentManager().beginTransaction().hide(loginFragment).commit();
                 getSupportFragmentManager().beginTransaction().show(createAccountFragment).commit();
             }
-            //getSupportFragmentManager().beginTransaction().hide(loginFragment);
-            //getSupportFragmentManager().beginTransaction().show(createAccountFragment).commit();
         }
     }
 }

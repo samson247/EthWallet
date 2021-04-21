@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="100dp"
         android:text="Add Contact"
         android:textSize="30sp"
         android:textColor="@color/navy"/>
@@ -29,7 +29,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
         android:inputType="text"
-        android:imeOptions="actionNext"/>
+        android:imeOptions="actionNext"
+        android:minEms="6"
+        android:textAlignment="center"/>
 
     <EditText
         android:id="@+id/addContactAddress"
@@ -41,7 +43,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="15dp"
         android:inputType="text"
-        android:imeOptions="actionDone"/>
+        android:textSize="15sp"
+        android:imeOptions="actionDone"
+        android:minEms="15"
+        android:textAlignment="center"/>
 
     <Button
         android:id="@+id/addContactAddButton"
@@ -52,13 +57,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
-        android:text="Add Contact"
+        android:text="Done"
         android:textColor="@color/grey"/>
-
-    <!--<ImageButton
-        android:id="@+id/backArrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/back_arrow" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

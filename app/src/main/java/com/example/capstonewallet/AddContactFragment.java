@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import com.example.capstonewallet.Views.Activities.WalletView;
@@ -23,6 +24,7 @@ import com.example.capstonewallet.viewmodels.AddContactViewModel;
  */
 public class AddContactFragment extends Fragment implements View.OnClickListener {
     private Button addContactButton;
+    private TextView addContactHeading;
     private EditText name;
     private EditText address;
     private String editName = null;
@@ -65,11 +67,12 @@ public class AddContactFragment extends Fragment implements View.OnClickListener
         address = view.findViewById(R.id.addContactAddress);
         addContactButton = view.findViewById(R.id.addContactAddButton);
         addContactButton.setOnClickListener(this::onClick);
+        addContactHeading = view.findViewById(R.id.addContactHeading);
 
         if(editName != null) {
             name.setText(editName);
             address.setText(editAddress);
-            addContactButton.setText("Edit Contact");
+            addContactHeading.setText("Edit Contact");
         }
         return view;
     }

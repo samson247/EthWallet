@@ -41,34 +41,30 @@ public class DropdownFragment extends Fragment {
         setBalanceText();
     }
 
-    /*@Override
-    public void onResume() {
-        super.onResume();
-        setBalanceText();
-    }*/
-
     public void setBalanceText() {
         String balance = ((TransactionFragment)getParentFragment()).getBalance();
         Log.d("yo1234", "balancee: " + balance);
         if(balance.contains("ETH")) {
             String gweiBalance = ((TransactionFragment)getParentFragment()).getViewModel().convertBalance("Gwei");
             String weiBalance = ((TransactionFragment)getParentFragment()).getViewModel().convertBalance("Wei");
-            balanceText1.setText(gweiBalance);
-            balanceText2.setText(weiBalance);
+            balanceText1.setText(gweiBalance + " Gwei");
+            balanceText2.setText(weiBalance + " Wei");
         }
         else if(balance.contains("Gwei")) {
             String ethBalance = ((TransactionFragment)getParentFragment()).getViewModel().getBalance();
             String weiBalance = ((TransactionFragment)getParentFragment()).getViewModel().convertBalance("Wei");
-            balanceText1.setText(ethBalance);
-            balanceText2.setText(weiBalance);
+            balanceText1.setText(ethBalance + " ETH");
+            balanceText2.setText(weiBalance + " Wei");
         }
         else {
             String ethBalance = ((TransactionFragment)getParentFragment()).getViewModel().getBalance();
             String gweiBalance = ((TransactionFragment)getParentFragment()).getViewModel().convertBalance("Gwei");
-            balanceText1.setText(ethBalance);
-            balanceText2.setText(gweiBalance);
+            balanceText1.setText(ethBalance + " ETH");
+            balanceText2.setText(gweiBalance + " Gwei");
         }
         String price = ((WalletView)getActivity()).getWalletViewModel().getEtherPrice();
-        usdValue.setText("$" + price);
+        Double result = Double.parseDouble(price) * Double.parseDouble(((TransactionFragment)getParentFragment()).getViewModel().getBalance());
+        String roundedBalance = String.format("%.2f", result);
+        usdValue.setText("$" + roundedBalance);
     }
 }
