@@ -7,19 +7,6 @@
     tools:context=".Views.Activities.WalletView"
     android:background="@color/grey">
 
-    <!--<LinearLayout
-        android:id="@+id/container_top"
-        android:layout_width="fill_parent"
-        android:layout_height="270pt"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/container_bottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2">
-
-    </LinearLayout>-->
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container_top"
         android:layout_width="match_parent"
@@ -31,17 +18,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <!--<LinearLayout
-        android:id="@+id/container_bottom"
-        android:layout_width="fill_parent"
-        android:layout_height="75dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2">
-    </LinearLayout>-->
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container_bottom"
         android:layout_width="match_parent"
@@ -49,19 +25,7 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2"/>
-
-    <!--<LinearLayout
-        android:id="@+id/container_middle"
-        android:layout_width="fill_parent"
-        android:layout_height="120pt"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2">
-    </LinearLayout>-->
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container_middle"
@@ -70,8 +34,7 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2"/>
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container_news"
@@ -81,27 +44,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
-
-    <!--<LinearLayout
-        android:id="@+id/container_news"
-        android:layout_width="fill_parent"
-        android:layout_height="180pt"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-    </LinearLayout>-->
-
-    <!--<LinearLayout
-        android:id="@+id/container_stock"
-        android:layout_width="fill_parent"
-        android:layout_height="100pt"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/container_news"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </LinearLayout>-->
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container_stock"
